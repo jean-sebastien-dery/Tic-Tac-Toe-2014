@@ -1,4 +1,4 @@
 #ignore npm stuff#
-node_modules
-node_modules/*
+node-modules
+node-modules/*
 *.sublime*
