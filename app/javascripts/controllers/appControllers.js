@@ -14,6 +14,18 @@ App.config(['$routeProvider',
         templateUrl: 'views/lobby.html',
         controller: 'LobbyController'
       }).
+      when('/singleplayer', {
+        templateUrl: 'views/singleplayer.html',
+        controller: 'SPController'
+      }).
+      when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginController'
+      }).
+      when('/mainmenu', {
+        templateUrl: 'views/mainmenu.ejs',
+        controller: 'MenuController'
+      }).
       otherwise({
         redirectTo: '/home'
       });
@@ -26,5 +38,17 @@ Tic.controller('IndexController', ['$scope', function ($scope) {
 }]);
 
 Tic.controller('LobbyController', ['$scope', function ($scope) {
+
+}]);
+
+Tic.controller('SPController', ['$scope', function ($scope) {
+
+}]);
+
+Tic.controller('LoginController', ['$scope', function ($scope) {
+
+}]);
+
+Tic.controller('MenuController', ['$scope', function ($scope) {
 
 }]);

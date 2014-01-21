@@ -59,7 +59,7 @@ exports.logUser = function (profile, done) {
 	});
 };
 
-exports.createUser = function (req, res) {
+exports.registerUser = function (req, res) {
 	var user = new User(req.body);
 
 	user.save(function (err) {

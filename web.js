@@ -46,7 +46,10 @@ passport.use(new LocalStrategy({
 ));
 
 function ensureAuthenticated (req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
+    if (req.isAuthenticated()) { 
+      console.log("I am authenticated");
+      return next(); 
+    }
     res.redirect('/');
 }
 
@@ -100,6 +103,9 @@ app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
 });
 
+app.get('/views/mainmenu.ejs', ensureAuthenticated, function (req, res) {
+    res.render('mainmenu', {user: req.user});
+});
 
 /***** Dynamic Files *****/
 
