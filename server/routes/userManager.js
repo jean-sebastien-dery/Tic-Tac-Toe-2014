@@ -62,14 +62,11 @@ exports.logUser = function (profile, done) {
 exports.createUser = function (req, res) {
 	var user = new User(req.body);
 
-	var promise = new mongoose.Promise;
-
 	user.save(function (err) {
 		if (err){
-			promise.resolve(err);
+			res.send(500, err);
 		}else{
-			promise.resolve(null, user);
+			res.send(200);
 		}
 	});
-	return promise;
 };
