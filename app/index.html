@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<!--[if IE 8]> 				 <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> 
+
+<html ng-app="app"> <!--<![endif]-->
+
+<head>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>TicTacToe</title>
+  
+  <link rel="stylesheet" href="stylesheets/app.css">
+
+	<script type="text/javascript" src="javascripts/vendor/angular_v1_2_7.js"></script>
+	<script type="text/javascript" src="javascripts/vendor/ngRoute_v1_2_7.js"></script>
+	<script type="text/javascript" src="javascripts/vendor/jquery.js"></script>
+	<script type="text/javascript" src="javascripts/controllers/appControllers.js"></script>
+  
+</head>
+<body class="main" >
+
+	<div> Anyone wants to play tictactoe?</div>
+	<div class="lobby-link">Go to <a href="#/lobby">lobby</a></div>
+	<div><a href="#/home">Go to home</a></div>
+
+  	<div ng-view></div>
+
+</body>
+</html>
