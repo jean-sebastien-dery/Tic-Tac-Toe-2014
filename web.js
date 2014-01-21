@@ -47,7 +47,7 @@ passport.use(new LocalStrategy({
 
 function ensureAuthenticated (req, res, next) {
     if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login');
+    res.redirect('/');
 }
 
 mongoose.connect('mongodb://localhost/tictac');
@@ -83,6 +83,22 @@ if ('development' == app.get('env')) {
 }
 
 // routes
+app.post('/api/v1/login/', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) { return next(err) }
+        if (!user) {
+            return res.redirect('/')
+        }
+        req.logIn(user, function (err) {
+            if (err) { return next(err); }
+            return res.redirect('/home');
+        });
+    })(req, res, next);
+});
+
+app.post('/api/v1/register', function (req, res) {
+    userManager.registerUser(req, res);
+});
 
 
 /***** Dynamic Files *****/

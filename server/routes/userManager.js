@@ -2,16 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-	tutor: {type:{tags:[Schema.ObjectId]}},
 	username:{
 		type	: String,
 		unique	: true	},
-	firstName		: {type:String},
-	lastName		: {type:String},
 	password 		: {type:String},
-	location 		: {type:String},
-	tutorId			: {type:String},
-	created 		: {type:Date}
 });
 
 var tutorSchema = new Schema({
@@ -79,32 +73,3 @@ exports.createUser = function (req, res) {
 	});
 	return promise;
 };
-
-exports.updateTutor = function (tutor) {
-
-	var promise = new mongoose.Promise;
-
-	User.update({_id : tutor.userId}, {tutorId : tutor._id}).exec(function (err) {
-		if (err){
-			promise.resolve(err);
-		}else{
-			promise.resolve(null, tutor);
-		}
-	});
-	return promise;
-};
-
-exports.isTutor = function(userId){
-
-	var promise = new mongoose.Promise;
-
-	User.findById(userId, function(err, user){
-		if(err){
-			promise.resolve(err);
-		}else{
-			promise.resolve(null, user.tutorId);
-		}
-	});
-
-	return promise;
-}
