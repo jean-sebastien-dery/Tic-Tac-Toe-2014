@@ -15,10 +15,11 @@ div.home {
 		font-size: 2em;
 		border-bottom: 1px solid #ccc;
 		color:#0c0c24;
+		padding: 0 0 0.2em 0;
 	}
 
 	.options {
-		padding-top: 0.5em;
+		padding-top: 2.8em;
 
 		>.label {
 			padding-right: 0.2em;
@@ -28,6 +29,10 @@ div.home {
 	}
 
 	div.form-group {
-		padding-bottom : 1em;
+		padding: 0.5em 0 0 1em;
+	}
+
+	button {
+		margin: 0 0.5em 0 0;
 	}
 }

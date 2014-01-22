@@ -48,8 +48,12 @@ passport.use(new LocalStrategy({
 function ensureAuthenticated (req, res, next) {
     if (req.params.name == 'home') {
       return res.render('views/home');
+
     } else if (req.params.name == 'singleplayer') {
       return res.render('views/singleplayer');
+
+    } else if (req.params.name == 'register') {
+      return res.render('views/register');
     }
 
     if (req.isAuthenticated()) { 
