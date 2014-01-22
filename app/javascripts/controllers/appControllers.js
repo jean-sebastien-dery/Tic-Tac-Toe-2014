@@ -7,24 +7,29 @@ App.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
       when('/home', {
-        templateUrl: 'views/home.html',
-        controller: 'IndexController'
+        templateUrl   : 'tictac-partials/home',
+        controller    : 'HomeController',
+        controllerAs  : 'home'
       }).
       when('/lobby', {
-        templateUrl: 'views/lobby.html',
-        controller: 'LobbyController'
+        templateUrl   : 'tictac-partials/lobby',
+        controller    : 'LobbyController',
+        controllerAs  : 'lobby'
       }).
       when('/singleplayer', {
-        templateUrl: 'views/singleplayer.html',
-        controller: 'SPController'
+        templateUrl   : 'tictac-partials/singleplayer',
+        controller    : 'SPController',
+        controllerAs  : 'spControl'
       }).
-      when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginController'
+      when('/register', {
+        templateUrl   : 'tictac-partials/register',
+        controller    : 'RegisterController',
+        controllerAs  : 'register'
       }).
       when('/mainmenu', {
-        templateUrl: 'views/mainmenu.ejs',
-        controller: 'MenuController'
+        templateUrl   : 'tictac-partials/mainmenu',
+        controller    : 'MainMenuController',
+        controllerAs  : 'main'
       }).
       otherwise({
         redirectTo: '/home'
@@ -33,7 +38,28 @@ App.config(['$routeProvider',
 
 var Tic = angular.module('tictactoe', []);
 
-Tic.controller('IndexController', ['$scope', function ($scope) {
+Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $q, $location) {
+  var controller = this;
+
+  this.user = {
+    username : "",
+    password : ""
+  }
+
+  this.login = function () {
+    var deferred = $q.defer();
+
+    $http.post('/api/v1/login/', controller.user).success(function () {
+
+      // Redirect user to main menu
+      $location.path('/mainmenu');
+
+    }).error(function () {
+
+      // Not able to login
+      alert('error in login');
+    });
+  }
 
 }]);
 
@@ -45,10 +71,10 @@ Tic.controller('SPController', ['$scope', function ($scope) {
 
 }]);
 
-Tic.controller('LoginController', ['$scope', function ($scope) {
+Tic.controller('RegisterController', ['$scope', function ($scope) {
 
 }]);
 
-Tic.controller('MenuController', ['$scope', function ($scope) {
+Tic.controller('MainMenuController', ['$scope', function ($scope) {
 
 }]);

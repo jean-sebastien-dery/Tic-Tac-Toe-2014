@@ -46,6 +46,10 @@ passport.use(new LocalStrategy({
 ));
 
 function ensureAuthenticated (req, res, next) {
+    if (req.params.name == 'home') {
+      return res.render('views/home');
+    }
+
     if (req.isAuthenticated()) { 
       console.log("I am authenticated");
       return next(); 
@@ -94,7 +98,7 @@ app.post('/api/v1/login/', function (req, res, next) {
         }
         req.logIn(user, function (err) {
             if (err) { return next(err); }
-            return res.redirect('/home');
+            return res.redirect('#/mainmenu');
         });
     })(req, res, next);
 });
@@ -103,8 +107,17 @@ app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
 });
 
-app.get('/views/mainmenu.ejs', ensureAuthenticated, function (req, res) {
-    res.render('mainmenu', {user: req.user});
+app.get('/', function (req, res) {
+  res.redirect('/tictac');
+})
+
+app.get('/tictac', function (req, res) {
+    res.render('index');
+});
+
+app.get('/tictac-partials/:name', ensureAuthenticated, function (req, res) {
+    var name = req.params.name;
+    res.render('views/' + name);
 });
 
 /***** Dynamic Files *****/

@@ -1,0 +1,15 @@
+<div> welcome to home page </div>
+<ul> 
+	<li>
+		<a href="#/singleplayer">Quick Single Player Game</a>
+	</li>
+	<li>
+		<a href="#/register">Register</a>
+	</li>
+</ul>
+
+<form method="post"> 
+	<input type="text" ng-model="home.user.username" placeholder="Username">
+	<input type="password" ng-model="home.user.password" placeholder="Password">
+	<button ng-click="home.login()">Login</button>
+</form>
