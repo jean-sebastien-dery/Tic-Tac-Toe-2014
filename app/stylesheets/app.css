@@ -31,3 +31,8 @@ div.home div.form-group {
 div.home button {
   margin: 0 0.5em 0 0;
 }
+
+/* line 42, ../sass/app.scss */
+div.register a {
+  padding-left: 1em;
+}

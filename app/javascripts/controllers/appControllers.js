@@ -43,7 +43,8 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
 
   this.user = {
     username : "",
-    password : ""
+    password : "",
+    confirmedPassword : ""
   }
 
   this.login = function () {
