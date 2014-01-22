@@ -11,20 +11,29 @@
   <title>TicTacToe</title>
   
   <link rel="stylesheet" href="stylesheets/app.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.css">
+  
+</head>
+<body>
 
+	<div class="main-container">
+		<div ng-view></div>		
+	</div>
+
+
+	<!-- Angularjs and Jquery -->
 	<script type="text/javascript" src="javascripts/vendor/angular_v1_2_7.js"></script>
 	<script type="text/javascript" src="javascripts/vendor/ngRoute_v1_2_7.js"></script>
 	<script type="text/javascript" src="javascripts/vendor/jquery.js"></script>
+
+
+	<!-- Bootstrap -->
+	<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+
+	<!-- Controllers -->
 	<script type="text/javascript" src="javascripts/controllers/appControllers.js"></script>
-  
-</head>
-<body class="main" >
 
-	<div> Anyone wants to play tictactoe?</div>
-	<div class="lobby-link">Go to <a href="#/lobby">lobby</a></div>
-	<div><a href="#/home">Go to home</a></div>
-
-  	<div ng-view></div>
 
 </body>
 </html>

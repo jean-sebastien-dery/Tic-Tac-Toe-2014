@@ -61,6 +61,10 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
     });
   }
 
+  this.register = function () {
+    $location.path('/register');
+  }
+
 }]);
 
 Tic.controller('LobbyController', ['$scope', function ($scope) {
