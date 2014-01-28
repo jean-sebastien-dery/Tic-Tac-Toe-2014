@@ -1,9 +1,21 @@
+@import "compass/typography/links/link-colors";
+
 
 /* Index */
 
+div.title {
+	width: 100%;
+	padding-top: 3%;
+	padding-bottom: 2%;
+	
+	h1 {
+		font-size: 5em;
+		text-align:center;
+	}
+}
+
 div.main-container {
 	width: 100%;
-	padding-top: 10%;
 }
 
 
@@ -41,5 +53,12 @@ div.register {
 
 	a {
 		padding-left: 1em;
+	}
+}
+
+div.col-md-9 {
+	a {
+		font-size: 2em;
+		//@include link-colors(#000000, #0000FF, #FF0000, #666666, #444444)
 	}
 }
