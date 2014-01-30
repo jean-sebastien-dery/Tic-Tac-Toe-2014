@@ -36,9 +36,14 @@ App.config(['$routeProvider',
         controller    : 'MainMenuController',
         controllerAs  : 'main'
       }).
+      when('/creategame', {
+        templateUrl   : 'tictac-partials/creategame',
+        controller    : 'CreateGameController',
+        controllerAs  : 'createGame'
+      }).
       otherwise({
         redirectTo: '/home'
-      });
+     });
 }]);
 
 var Tic = angular.module('tictactoe', []);
@@ -90,5 +95,9 @@ Tic.controller('RegisterController', ['$scope', function ($scope) {
 }]);
 
 Tic.controller('MainMenuController', ['$scope', function ($scope) {
+
+}]);
+
+Tic.controller('CreateGameController', ['$scope', function ($scope) {
 
 }]);
