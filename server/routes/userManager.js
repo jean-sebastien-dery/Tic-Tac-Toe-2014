@@ -10,6 +10,8 @@ var userSchema = new Schema({
 	lastName		: {type:String},
 	password 		: {type:String},
 	location 		: {type:String},
+	gameWon			: {type:Number},
+	gameLose		: {type:Number},
 	tutorId			: {type:String},
 	created 		: {type:Date}
 });
@@ -18,6 +20,14 @@ var tutorSchema = new Schema({
   userId:  {type:Schema.ObjectId, required:true, unique:true},
   tags: [Schema.ObjectId] 
 });
+
+
+
+var gameSchema = new Schema(
+	createBy: {type:Schema.ObjectId, required:true, unique:true},
+	
+);
+
 
 var User = mongoose.model('User', userSchema);
 
