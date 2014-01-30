@@ -2,3 +2,6 @@
 node-modules
 node-modules/*
 *.sublime*
+data/
+startServer.sh
+*.swp

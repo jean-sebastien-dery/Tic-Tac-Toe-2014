@@ -16,6 +16,11 @@ App.config(['$routeProvider',
         controller    : 'LobbyController',
         controllerAs  : 'lobby'
       }).
+      when('/waitingroom', {
+        templateUrl   : 'tictac-partials/waitingroom',
+        controller    : 'WRController',
+        controllerAs  : 'wrController'
+      }).
       when('/singleplayer', {
         templateUrl   : 'tictac-partials/singleplayer',
         controller    : 'SPController',
@@ -31,9 +36,14 @@ App.config(['$routeProvider',
         controller    : 'MainMenuController',
         controllerAs  : 'main'
       }).
+      when('/creategame', {
+        templateUrl   : 'tictac-partials/creategame',
+        controller    : 'CreateGameController',
+        controllerAs  : 'createGame'
+      }).
       otherwise({
         redirectTo: '/home'
-      });
+     });
 }]);
 
 var Tic = angular.module('tictactoe', []);
@@ -76,10 +86,18 @@ Tic.controller('SPController', ['$scope', function ($scope) {
 
 }]);
 
+Tic.controller('WRController', ['$scope', function ($scope) {
+
+}]);
+
 Tic.controller('RegisterController', ['$scope', function ($scope) {
 
 }]);
 
 Tic.controller('MainMenuController', ['$scope', function ($scope) {
+
+}]);
+
+Tic.controller('CreateGameController', ['$scope', function ($scope) {
 
 }]);

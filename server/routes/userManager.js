@@ -3,12 +3,39 @@ var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
 	username:{
-		type	: String,
-		unique	: true	},
-	password 	: {type:String},
+		type		: String,
+		unique		: true	},
+		password 	: {type:String},
+		gameWon		: {type:Number},
+		gameLose	: {type:Number},
+});
+
+//username of the player who created this game
+var gameSchema = new Schema({
+	createdByUsername: {
+		type : String,
+		unique: true
+	},
+	gameName : {type:String},
+
 });
 
 var User = mongoose.model('User', userSchema);
+var Game = mongoose.model('Game', gameSchema);
+
+
+exports.FindGameByUsername = function (username, cb){
+	Game.findOne({'username': username}, function(err, user) {
+		if(err){
+			cb(err);
+		}
+		else{
+			cb(null,user);
+		}
+	});
+
+};
+
 
 exports.findById = function (id, done) {
 	User.findById(id, function(err, user){
