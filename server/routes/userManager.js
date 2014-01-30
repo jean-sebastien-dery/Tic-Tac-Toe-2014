@@ -5,12 +5,7 @@ var userSchema = new Schema({
 	username:{
 		type	: String,
 		unique	: true	},
-	password 		: {type:String},
-});
-
-var tutorSchema = new Schema({
-  userId:  {type:Schema.ObjectId, required:true, unique:true},
-  tags: [Schema.ObjectId] 
+	password 	: {type:String},
 });
 
 var User = mongoose.model('User', userSchema);
@@ -19,7 +14,7 @@ exports.findById = function (id, done) {
 	User.findById(id, function(err, user){
 		if(!err) done(null, user);
 		else done(err, null);
-	})
+	});
 };
 
 exports.findUserByUsername = function (username, cb) {

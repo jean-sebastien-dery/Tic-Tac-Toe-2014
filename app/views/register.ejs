@@ -6,7 +6,7 @@
 				<form method="post" class="form-horizontal" role="form" name="registerForm" action="/api/v1/register"> 
 					<div class="form-group" ng-class="{'has-error': registerForm.username.$error.required || registerForm.username.$error.minlength || registerForm.username.$error.maxlength}">
 						<input type="text" class="form-control" ng-model="home.user.username" placeholder="Username" name="username" ng-minlength="5" ng-maxlength="20" required>
-						<span ng-show="!registerForm.username.$error.required && (registerForm.username.$error.minlength || registerForm.username.$error.maxlength) && registerForm.username.$dirty">Username ust be between 5 and 20 characters.</span>
+						<span  ng-show="!registerForm.username.$error.required && (registerForm.username.$error.minlength || registerForm.username.$error.maxlength) && registerForm.username.$dirty">Username must be between 5 and 20 characters.</span>
 					</div>
 					<div class="form-group">
 						<input type="password" class="form-control" ng-model="home.user.password" name="password" placeholder="Password">
