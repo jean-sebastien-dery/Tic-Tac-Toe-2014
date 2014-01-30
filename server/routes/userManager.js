@@ -6,11 +6,18 @@ var userSchema = new Schema({
 		type	: String,
 		unique	: true	},
 	password 		: {type:String},
+	gameWon: {type:Number},
+	gameLose: {type:Number}. 
 });
 
 var tutorSchema = new Schema({
   userId:  {type:Schema.ObjectId, required:true, unique:true},
   tags: [Schema.ObjectId] 
+});
+
+var gameCreated = new Schema({}
+	createdBy : {type:Schema.ObjectId, required:true, unique:true}
+
 });
 
 var User = mongoose.model('User', userSchema);
