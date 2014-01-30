@@ -20,6 +20,18 @@ div.main-container {
 	width: 100%;
 }
 
+div.content-background {
+	background: white;
+	border-style: solid;
+	border-color: #000000;
+	border-width: 1px;
+	@include border-radius(10px);
+}
+
+div.content-container {
+	margin: 1em;
+}
+
 div.title {
 	width: 100%;
 	padding-top: 6%;
@@ -56,11 +68,6 @@ div.home {
 	}
 
 	div.login-form {
-		background: white;
-		border-style: solid;
-		border-color: #000000;
-		border-width: 1px;
-		@include border-radius(10px);
 
 		/* Centers div horizontally */
 		float: none;
@@ -69,7 +76,7 @@ div.home {
 	}
 
 	div.form-group {
-		padding: 1em 1em 0 1em;
+		padding: 0 0 1em 0;
 	}
 
 	div.quick-game {
