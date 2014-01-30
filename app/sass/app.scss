@@ -1,34 +1,48 @@
-@import "compass/typography/links/link-colors";
+@import "compass/css3";
+@import "compass/utilities";
 
 
-/* Index */
+/* ------------------------
+ * Index page
+ * ------------------------
+ */
 
-div.title {
-	width: 100%;
-	padding-top: 3%;
-	padding-bottom: 2%;
-	
-	h1 {
-		font-size: 5em;
-		text-align:center;
-	}
+html, body {
+	background-color: #2F70A7;
+	background-image: url('../images/background.png'); 
+	background-repeat: no-repeat;
+	background-position: center;
+	@include background-size(cover);
 }
 
 div.main-container {
 	width: 100%;
 }
 
+div.title {
+	width: 100%;
+	padding-top: 6%;
+	
 
-/* Home page */
+	img {
+		/* Centers image horizontally */
+		display: block; 
+		margin: 0 auto; 
+	}
+	
+	h1 {
+		font-size: 5em;
+		font-family: "Verdana";
+		text-align:center;
+	}
+}
+
+/* ------------------------
+ * Home page
+ * ------------------------
+ */
 
 div.home {
-
-	h2 {
-		font-size: 2em;
-		border-bottom: 1px solid #ccc;
-		color:#0c0c24;
-		padding: 0 0 0.2em 0;
-	}
 
 	.options {
 		padding-top: 2.8em;
@@ -40,8 +54,31 @@ div.home {
 		}
 	}
 
+	div.login-form {
+		background: white;
+		border-style: solid;
+		border-color: #000000;
+		border-width: 1px;
+		@include border-radius(10px);
+
+		/* Centers div horizontally */
+		float: none;
+	    margin: 0 auto;
+
+	}
+
 	div.form-group {
-		padding: 0.5em 0 0 1em;
+		padding: 1em 1em 0 1em;
+	}
+
+	div.quick-game {
+		text-align: center;
+
+		a {
+			font-weight:bold;
+		}
+
+		padding-bottom: 1em;
 	}
 
 	button {
@@ -49,16 +86,14 @@ div.home {
 	}
 }
 
+/* ------------------------
+ * Registration page
+ * ------------------------
+ */
+
 div.register {
 
 	a {
 		padding-left: 1em;
-	}
-}
-
-div.col-md-9 {
-	a {
-		font-size: 2em;
-		//@include link-colors(#000000, #0000FF, #FF0000, #666666, #444444)
 	}
 }

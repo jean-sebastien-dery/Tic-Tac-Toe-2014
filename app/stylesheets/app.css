@@ -1,54 +1,95 @@
-/* Index */
-/* line 6, ../sass/app.scss */
-div.title {
-  width: 100%;
-  padding-top: 3%;
-  padding-bottom: 2%;
-}
-/* line 11, ../sass/app.scss */
-div.title h1 {
-  font-size: 5em;
-  text-align: center;
+/* ------------------------
+ * Index page
+ * ------------------------
+ */
+/* line 10, ../sass/app.scss */
+html, body {
+  background-color: #2F70A7;
+  background-image: url("../images/background.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  -moz-background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
-/* line 17, ../sass/app.scss */
+/* line 18, ../sass/app.scss */
 div.main-container {
   width: 100%;
 }
 
-/* Home page */
-/* line 26, ../sass/app.scss */
-div.home h2 {
-  font-size: 2em;
-  border-bottom: 1px solid #ccc;
-  color: #0c0c24;
-  padding: 0 0 0.2em 0;
+/* line 22, ../sass/app.scss */
+div.title {
+  width: 100%;
+  padding-top: 6%;
+}
+/* line 27, ../sass/app.scss */
+div.title img {
+  /* Centers image horizontally */
+  display: block;
+  margin: 0 auto;
 }
 /* line 33, ../sass/app.scss */
+div.title h1 {
+  font-size: 5em;
+  font-family: "Verdana";
+  text-align: center;
+}
+
+/* ------------------------
+ * Home page
+ * ------------------------
+ */
+/* line 47, ../sass/app.scss */
 div.home .options {
   padding-top: 2.8em;
 }
-/* line 36, ../sass/app.scss */
+/* line 50, ../sass/app.scss */
 div.home .options > .label {
   padding-right: 0.2em;
   font-size: 1em;
   color: #ccc;
 }
-/* line 43, ../sass/app.scss */
-div.home div.form-group {
-  padding: 0.5em 0 0 1em;
+/* line 57, ../sass/app.scss */
+div.home div.login-form {
+  background: white;
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -khtml-border-radius: 10px;
+  border-radius: 10px;
+  /* Centers div horizontally */
+  float: none;
+  margin: 0 auto;
 }
-/* line 47, ../sass/app.scss */
+/* line 70, ../sass/app.scss */
+div.home div.form-group {
+  padding: 1em 1em 0 1em;
+}
+/* line 74, ../sass/app.scss */
+div.home div.quick-game {
+  text-align: center;
+  padding-bottom: 1em;
+}
+/* line 77, ../sass/app.scss */
+div.home div.quick-game a {
+  font-weight: bold;
+}
+/* line 84, ../sass/app.scss */
 div.home button {
   margin: 0 0.5em 0 0;
 }
 
-/* line 54, ../sass/app.scss */
+/* ------------------------
+ * Registration page
+ * ------------------------
+ */
+/* line 96, ../sass/app.scss */
 div.register a {
   padding-left: 1em;
-}
-
-/* line 60, ../sass/app.scss */
-div.col-md-9 a  {
-  font-size: 2em;
 }
