@@ -16,6 +16,11 @@ App.config(['$routeProvider',
         controller    : 'LobbyController',
         controllerAs  : 'lobby'
       }).
+      when('/waitingroom', {
+        templateUrl   : 'tictac-partials/waitingroom',
+        controller    : 'WRController',
+        controllerAs  : 'wrController'
+      }).
       when('/singleplayer', {
         templateUrl   : 'tictac-partials/singleplayer',
         controller    : 'SPController',
@@ -73,6 +78,10 @@ Tic.controller('LobbyController', ['$scope', function ($scope) {
 }]);
 
 Tic.controller('SPController', ['$scope', function ($scope) {
+
+}]);
+
+Tic.controller('WRController', ['$scope', function ($scope) {
 
 }]);
 
