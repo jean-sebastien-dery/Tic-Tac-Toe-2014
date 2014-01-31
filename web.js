@@ -59,8 +59,9 @@ function ensureAuthenticated (req, res, next) {
     if (req.isAuthenticated()) { 
       console.log("I am authenticated");
       return next(); 
+    } else {
+      res.redirect('/tictac/');
     }
-    res.redirect('/');
 }
 
 mongoose.connect('mongodb://localhost/tictac');
@@ -100,11 +101,11 @@ app.post('/api/v1/login/', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) { return next(err) }
         if (!user) {
-            return res.redirect('/')
+            return res.send(400);
         }
         req.logIn(user, function (err) {
             if (err) { return next(err); }
-            return res.redirect('#/mainmenu');
+            return res.send(200);
         });
     })(req, res, next);
 });
@@ -113,12 +114,21 @@ app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
 });
 
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('#/login');
+});
+
 app.get('/', function (req, res) {
   res.redirect('/tictac');
 })
 
 app.get('/tictac', function (req, res) {
     res.render('index');
+});
+
+app.get('/tictac-partials/mainmenu', ensureAuthenticated, function (req, res) {
+    res.render('views/mainmenu');
 });
 
 app.get('/tictac-partials/:name', ensureAuthenticated, function (req, res) {

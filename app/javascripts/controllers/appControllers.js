@@ -67,6 +67,8 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
 
     }).error(function () {
 
+      $location.path('/');
+
       // Not able to login
       alert('error in login');
     });
@@ -78,26 +80,26 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
 
 }]);
 
-Tic.controller('LobbyController', ['$scope', function ($scope) {
+Tic.controller('LobbyController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('SPController', ['$scope', function ($scope) {
+Tic.controller('SPController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('WRController', ['$scope', function ($scope) {
+Tic.controller('WRController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('RegisterController', ['$scope', function ($scope) {
+Tic.controller('RegisterController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('MainMenuController', ['$scope', function ($scope) {
+Tic.controller('MainMenuController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('CreateGameController', ['$scope', function ($scope) {
+Tic.controller('CreateGameController', ['$location', function ($location) {
 
 }]);
