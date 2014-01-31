@@ -27,6 +27,10 @@ div.content-background {
 	border-color: #000000;
 	border-width: 1px;
 	@include border-radius(10px);
+
+	/* Centers div horizontally */
+	float: none;
+    margin: 0 auto;
 }
 
 div.content-container {
@@ -104,5 +108,30 @@ div.register {
 
 	a {
 		padding-left: 1em;
+	}
+}
+
+/* ------------------------
+ * Waiting Room
+ * ------------------------
+ */
+
+div.waitingroom {
+
+	h2.title {
+		padding-bottom: 1em;
+	}
+
+	div {
+
+		text-align: center;
+	}
+
+	img.avatar {
+		border: 1px solid #000000;
+	}
+
+	button {
+		margin: 1em 0 1.5em 0;
 	}
 }
