@@ -92,3 +92,17 @@ exports.registerUser = function (req, res) {
 		}
 	});
 };
+
+exports.registerGame = function(req, res){
+
+	var game= new Game(req.body);
+
+	game.save(function (err) {
+		if (err){
+			res.send(500, err);
+		}else{
+			res.redirect('/');
+		}
+	});
+
+}
