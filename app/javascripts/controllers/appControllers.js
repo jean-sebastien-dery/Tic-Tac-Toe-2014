@@ -89,7 +89,7 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', functi
     WebSocketFactory.emit('join', username);
   }, function (err) {
     alert('Enable to join the lobby');
-  })
+  });
 
   this.players = [];
 

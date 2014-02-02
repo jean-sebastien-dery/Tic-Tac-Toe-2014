@@ -138,18 +138,11 @@ div.waitingroom {
 }
 
 /* ------------------------
-<<<<<<< HEAD
  * Create Game
  * ------------------------
  */
-div.creategame {
-=======
- * Lobby
- * ------------------------
- */
 
-div.lobby {
->>>>>>> 7e125d7368af9addb9528836963ed1240982a773
+div.creategame {
 
 	h2.title {
 		padding-bottom: 1em;
@@ -160,16 +153,22 @@ div.lobby {
 		text-align: center;
 	}
 
-<<<<<<< HEAD
-	img.avatar {
-		border: 1px solid #000000;
-	}
 
 	button {
 		margin: 1em 0 1.5em 0;
-=======
+	}
+}
+
+
+div.lobby {
+
 	li {
 		list-style-type: none;
+	}
+
+	div {
+
+		text-align: center;
 	}
 
 	.game:hover {
@@ -178,7 +177,6 @@ div.lobby {
 
 	p {
 		margin: 0 0 0 0;
->>>>>>> 7e125d7368af9addb9528836963ed1240982a773
 	}
 }
 
