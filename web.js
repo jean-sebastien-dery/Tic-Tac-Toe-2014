@@ -124,6 +124,10 @@ app.post('/api/v1/findGameByUser', function (req, res) {
     userManager.FindGameByUsername(req, res);
 });
 
+app.post('/api/v1/getAllGames', function (req, res) {
+    userManager.getAllGames(req, res);
+});
+
 app.get('/logout', function (req, res) {
   req.logout();
   res.redirect('#/login');
