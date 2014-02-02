@@ -10,8 +10,8 @@ html, body {
   background-image: url("../images/background.png");
   background-repeat: no-repeat;
   background-position: center;
-  -moz-background-size: cover;
   -webkit-background-size: cover;
+  -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
@@ -27,11 +27,10 @@ div.content-background {
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  -o-border-radius: 10px;
+  -moz-border-radius: 10px;
   -ms-border-radius: 10px;
-  -khtml-border-radius: 10px;
+  -o-border-radius: 10px;
   border-radius: 10px;
   /* Centers div horizontally */
   float: none;
@@ -126,5 +125,26 @@ div.waitingroom img.avatar {
 }
 /* line 134, ../sass/app.scss */
 div.waitingroom button {
+  margin: 1em 0 1.5em 0;
+}
+
+/* ------------------------
+ * Create Game
+ * ------------------------
+ */
+/* line 145, ../sass/app.scss */
+div.creategame h2.title {
+  padding-bottom: 1em;
+}
+/* line 149, ../sass/app.scss */
+div.creategame div {
+  text-align: center;
+}
+/* line 154, ../sass/app.scss */
+div.creategame img.avatar {
+  border: 1px solid #000000;
+}
+/* line 158, ../sass/app.scss */
+div.creategame button {
   margin: 1em 0 1.5em 0;
 }
