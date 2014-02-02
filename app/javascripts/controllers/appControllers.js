@@ -80,7 +80,7 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
 
 }]);
 
-Tic.controller('LobbyController', ['$location', function ($location) {
+Tic.controller('LobbyController', ['WebSocketFactory', function (WebSocketFactory) {
 
 }]);
 

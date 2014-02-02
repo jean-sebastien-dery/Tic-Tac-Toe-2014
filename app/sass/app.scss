@@ -137,13 +137,31 @@ div.waitingroom {
 }
 
 /* ------------------------
- * Main menu
+ * Lobby
  * ------------------------
  */
-div.mainmenu {
 
-	li.red {
-		color: red;
+div.lobby {
+
+	h2.title {
+		padding-bottom: 1em;
+	}
+
+	div {
+
+		text-align: center;
+	}
+
+	li {
+		list-style-type: none;
+	}
+
+	.game:hover {
+		background-color:#FBFAF4;
+	}
+
+	p {
+		margin: 0 0 0 0;
 	}
 }
 

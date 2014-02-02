@@ -129,10 +129,26 @@ div.waitingroom button {
 }
 
 /* ------------------------
- * Main menu
+ * Lobby
  * ------------------------
  */
-/* line 145, ../sass/app.scss */
-div.mainmenu li.red {
-  color: red;
+/* line 146, ../sass/app.scss */
+div.lobby h2.title {
+  padding-bottom: 1em;
+}
+/* line 150, ../sass/app.scss */
+div.lobby div {
+  text-align: center;
+}
+/* line 155, ../sass/app.scss */
+div.lobby li {
+  list-style-type: none;
+}
+/* line 159, ../sass/app.scss */
+div.lobby .game:hover {
+  background-color: #FBFAF4;
+}
+/* line 163, ../sass/app.scss */
+div.lobby p {
+  margin: 0 0 0 0;
 }

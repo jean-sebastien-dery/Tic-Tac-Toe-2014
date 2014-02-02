@@ -158,7 +158,7 @@ var people  = {};
 socket.sockets.on('connection', function (clientSocket) {
   console.log('connected', clientSocket.id);
   clientSocket.on('join', function (userId) {
-    //console.log('Join',userId);
+    console.log('Join',userId);
     people[clientSocket.id] = { userId : userId, isAvailable : false};  
   });
 
