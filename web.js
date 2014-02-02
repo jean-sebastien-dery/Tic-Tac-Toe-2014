@@ -64,6 +64,8 @@ function ensureAuthenticated (req, res, next) {
     }
 }
 
+
+
 mongoose.connect('mongodb://localhost/tictac');
 
 var db = mongoose.connection;
@@ -112,6 +114,18 @@ app.post('/api/v1/login/', function (req, res, next) {
 
 app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
+});
+
+app.post('/api/v1/registerGame', function (req, res) {
+    userManager.registerGame(req, res);
+});
+
+app.post('/api/v1/findGameByUser', function (req, res) {
+    userManager.FindGameByUsername(req, res);
+});
+
+app.post('/api/v1/getAllGames', function (req, res) {
+    userManager.getAllGames(req, res);
 });
 
 app.get('/logout', function (req, res) {
