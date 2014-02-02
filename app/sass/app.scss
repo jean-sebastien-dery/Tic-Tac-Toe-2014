@@ -84,6 +84,7 @@ div.home {
 		padding: 0 0 1em 0;
 	}
 
+
 	div.quick-game {
 		text-align: center;
 
@@ -137,10 +138,18 @@ div.waitingroom {
 }
 
 /* ------------------------
+<<<<<<< HEAD
  * Create Game
  * ------------------------
  */
 div.creategame {
+=======
+ * Lobby
+ * ------------------------
+ */
+
+div.lobby {
+>>>>>>> 7e125d7368af9addb9528836963ed1240982a773
 
 	h2.title {
 		padding-bottom: 1em;
@@ -151,12 +160,25 @@ div.creategame {
 		text-align: center;
 	}
 
+<<<<<<< HEAD
 	img.avatar {
 		border: 1px solid #000000;
 	}
 
 	button {
 		margin: 1em 0 1.5em 0;
+=======
+	li {
+		list-style-type: none;
+	}
+
+	.game:hover {
+		background-color:#FBFAF4;
+	}
+
+	p {
+		margin: 0 0 0 0;
+>>>>>>> 7e125d7368af9addb9528836963ed1240982a773
 	}
 }
 
