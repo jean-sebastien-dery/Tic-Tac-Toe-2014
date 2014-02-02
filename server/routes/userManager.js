@@ -24,6 +24,18 @@ var User = mongoose.model('User', userSchema);
 var Game = mongoose.model('Game', gameSchema);
 
 
+exports.getAllGames = function (req, res){
+	var games = {};
+
+    User.find({}, function (err, game) {
+        games[game._id] = game;
+    });
+
+    res.send(games);
+
+}
+
+
 exports.FindGameByUsername = function (username, cb){
 	Game.findOne({'username': username}, function(err, user) {
 		if(err){
@@ -35,6 +47,8 @@ exports.FindGameByUsername = function (username, cb){
 	});
 
 };
+
+
 
 
 exports.findById = function (id, done) {
