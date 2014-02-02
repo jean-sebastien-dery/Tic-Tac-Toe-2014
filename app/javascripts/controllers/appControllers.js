@@ -48,7 +48,7 @@ App.config(['$routeProvider',
 
 var Tic = angular.module('tictactoe', []);
 
-Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $q, $location) {
+Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService', function ($http, $q, $location, UserInfoService) {
   var controller = this;
 
   this.user = {
@@ -63,6 +63,7 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
     $http.post('/api/v1/login/', controller.user).success(function () {
 
       // Redirect user to main menu
+      UserInfoService.saveUser(controller.user);
       $location.path('/mainmenu');
 
     }).error(function () {
@@ -80,7 +81,34 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
 
 }]);
 
-Tic.controller('LobbyController', ['WebSocketFactory', function (WebSocketFactory) {
+Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', function (WebSocketFactory, UserInfoService) {
+  var controller = this;
+
+  // Joining the lobby
+  UserInfoService.getUsername().then(function (username) {
+    WebSocketFactory.emit('join', username);
+  }, function (err) {
+    alert('Enable to join the lobby');
+  })
+
+  this.players = [];
+
+  WebSocketFactory.emit('update-player', {});
+
+
+  WebSocketFactory.receive('update', function (msg) {
+    console.log(msg);
+  });
+
+
+  WebSocketFactory.receive('update-player', function (players) {
+    controller.players.length = 0;
+    $.each(players, function (id, player) {
+      controller.players.push(player);
+    });
+  });
+
+
 
 }]);
 

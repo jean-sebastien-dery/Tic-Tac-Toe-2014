@@ -3,6 +3,10 @@ Tic.factory('WebSocketFactory', function ($rootScope) {
 
     var Service = {};
 
+    /******************************/
+    /* Messages helping functions */
+    /******************************/
+
     Service.receive = function (event, cb) {
         console.log('RECEIVES -> ', event);
         socket.on(event, function () {
@@ -25,15 +29,40 @@ Tic.factory('WebSocketFactory', function ($rootScope) {
         });
     };
 
-    Service.emit('test', {
-        type: 'client-event',
-    }, function (err, timeframes) {
-        if (err) {
-            cb('ERROR: not able to get period timeframes ' + err);
-        } else {
-            console.log('emiting test worked');
-        }
-    });
-
     return Service;
 });
+
+Tic.factory('UserInfoService', function ($http, $q) {
+
+    var user = {
+        username : ""
+    };
+
+    var Service = {};
+
+
+    Service.saveUser = function (userObj) {
+        user.username = userObj.username;
+    }
+
+    Service.getUsername = function () {
+
+        var deferred = $q.defer();
+
+        if (user.username != undefined && user.username != "") {
+            deferred.resolve(user.username);
+        } else {
+            $http.get('/api/v1/whoAmI/').then( function (me) {
+                user.username = me.data;
+                deferred.resolve(user.username);
+            }, function (err) {
+                console.log(err);
+                deferred.reject(err);
+            });
+        }
+
+        return deferred.promise;
+    }
+
+    return Service;
+})

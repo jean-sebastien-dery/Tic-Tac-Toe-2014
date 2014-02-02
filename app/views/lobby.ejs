@@ -72,20 +72,10 @@
 							</div>
 						</div>
 						<ul>
-							<li>
+							<li ng-repeat="player in lobby.players">
 								<div class="row">
 									<div class="col-md-6">
-										<span>Player 1</span>
-									</div>
-									<div class="col-md-6">
-										<span>Score 1600</span>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="row">
-									<div class="col-md-6">
-										<span>Player 2</span>
+										<span>{{ player.username }}</span>
 									</div>
 									<div class="col-md-6">
 										<span>Score 1600</span>
