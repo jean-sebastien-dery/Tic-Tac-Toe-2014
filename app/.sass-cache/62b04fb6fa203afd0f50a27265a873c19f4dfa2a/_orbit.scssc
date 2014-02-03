@@ -1,856 +1,0 @@
-3.2.12 (Media Mark)
-14ff77c7b87323f97ca62fcc1c7892766fbe1d0a
-o:Sass::Tree::RootNode
-:@template"!// Orbit Variables
-//
-$include-html-orbit-classes: $include-html-classes !default;
-
-// We use these to control the caption styles
-$orbit-container-bg: #f5f5f5 !default;
-$orbit-caption-bg: rgba(0,0,0,0.6) !default;
-$orbit-caption-font-color: #fff !default;
-$orbit-caption-font-size: em-calc(14) !default;
-$orbit-caption-position: "bottom" !default; // Supported values: "bottom", "under"
-$orbit-caption-padding: em-calc(10,14) !default;
-$orbit-caption-height: auto !default;
-
-// We use these to control the left/right nav styles
-$orbit-nav-bg: rgba(0,0,0,0.6) !default;
-$orbit-nav-bg-hover: rgba(0,0,0,0.6) !default;
-$orbit-nav-arrow-color: #fff !default;
-$orbit-nav-arrow-color-hover: #ccc !default;
-
-// We use these to control the timer styles
-$orbit-timer-bg: rgba(0,0,0,0.6) !default;
-$orbit-timer-show-progress-bar: true !default;
-
-// We use these to control the bullet nav styles
-$orbit-bullet-nav-color: #999 !default;
-$orbit-bullet-nav-color-active: #555 !default;
-$orbit-bullet-radius: em-calc(12) !default;
-
-// We use these to controls the style of slide numbers
-$orbit-slide-number-bg: rgba(0,0,0,0) !default;
-$orbit-slide-number-font-color: #fff !default;
-$orbit-slide-number-padding: em-calc(5) !default;
-
-// Graceful Loading Wrapper and preloader
-$wrapper-class: "slideshow-wrapper" !default;
-$preloader-class: "preloader" !default;
-
-
-@if $include-html-orbit-classes != false {
-
-  @if $experimental {
-    @-webkit-keyframes rotate {
-      from { -webkit-transform: rotate(0deg); }
-      to { -webkit-transform: rotate(360deg); }
-    }
-    @-moz-keyframes rotate {
-      from { -moz-transform: rotate(0deg); }
-      to { -moz-transform: rotate(360deg); }
-    }
-    @-o-keyframes rotate {
-      from { -o-transform: rotate(0deg); }
-      to { -o-transform: rotate(360deg); }
-    }
-  }
-  @keyframes rotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* Orbit Graceful Loading */
-  .#{$wrapper-class} {
-    position: relative;
-
-    ul {
-      // Prevent bullets showing before .orbit-container is loaded
-      list-style-type: none;
-      margin: 0;
-
-      // Hide all list items
-      li,
-      li .orbit-caption { display: none; }
-
-      // ...except for the first one
-      li:first-child { display: block; }
-    }
-
-    .orbit-container { background-color: transparent;
-
-      // Show images when .orbit-container is loaded
-      li { display: block;
-
-        .orbit-caption { display: block; }
-      }
-    }
-  }
-
-  // Orbit preloader
-  .#{$preloader-class} {
-    display: block;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -20px;
-    margin-left: -20px;
-    border: solid 3px;
-    border-color: #555 #fff;
-    @include radius(1000px);
-    @if $experimental {
-      -webkit-animation-name: rotate;
-      -webkit-animation-duration: 1.5s;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: linear;
-      -moz-animation-name: rotate;
-      -moz-animation-duration: 1.5s;
-      -moz-animation-iteration-count: infinite;
-      -moz-animation-timing-function: linear;
-      -o-animation-name: rotate;
-      -o-animation-duration: 1.5s;
-      -o-animation-iteration-count: infinite;
-      -o-animation-timing-function: linear;
-    }
-    animation-name: rotate;
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-  }
-
-  .orbit-container {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-    background: $orbit-container-bg;
-
-    .orbit-slides-container {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      position: relative;
-
-      img { display: block; max-width: 100%; }
-
-      &>* {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        @if $text-direction == rtl {
-          margin-right: 100%;
-        }
-        @else {
-          margin-left: 100%;
-        }
-
-        &:first-child {
-          @if $text-direction == rtl {
-          margin-right: 0%;
-          }
-          @else {
-          margin-left: 0%;
-          }
-        }
-
-        .orbit-caption {
-          @if $orbit-caption-position == "bottom" {
-            position: absolute;
-            bottom: 0;
-          } @else if $orbit-caption-position == "under" {
-            position: relative;
-          }
-
-          background-color: $orbit-caption-bg;
-          color: $orbit-caption-font-color;
-          width: 100%;
-          padding: 10px 14px;
-          font-size: em-calc(14);
-        }
-      }
-    }
-
-    .orbit-slide-number {
-      position: absolute;
-      top: 10px;
-      #{$default-float}: 10px;
-      font-size: 12px;
-      span { font-weight: 700; padding: $orbit-slide-number-padding;}
-      color: $orbit-slide-number-font-color;
-      background: $orbit-slide-number-bg;
-      z-index: 10;
-    }
-
-    .orbit-timer {
-      position: absolute;
-      top: 10px;
-      #{$opposite-direction}: 10px;
-      height: 6px;
-      width: 100px;
-      z-index: 10;
-      .orbit-progress {
-        @if $orbit-timer-show-progress-bar {
-          height: 100%;
-          background-color: $orbit-timer-bg;
-          display: block;
-          width: 0%;
-        }
-      }
-
-      // Play button
-      & > span {
-        display: none;
-        position: absolute;
-        top: 10px;
-        #{$opposite-direction}: 0;
-        width: 11px;
-        height: 14px;
-        border: solid 4px #000;
-        border-top: none;
-        border-bottom: none;
-      }
-
-      // Pause button
-      &.paused {
-        & > span {
-          #{$opposite-direction}: -6px;
-          top: 9px;
-          width: 11px;
-          height: 14px;
-          border: inset 8px;
-          border-right-style: solid;
-          border-color: transparent transparent transparent #000;
-        }
-      }
-    }
-
-    &:hover .orbit-timer > span { display: block; }
-
-    // Let's get those controls to be right in the center on each side
-    .orbit-prev,
-    .orbit-next {
-      position: absolute;
-      top: 50%;
-      margin-top: -25px;
-      background-color: $orbit-nav-bg;
-      width: 50px;
-      height: 60px;
-      line-height: 50px;
-      color: white;
-      text-indent: -9999px !important;
-      z-index: 10;
-
-      &:hover {
-        background-color: $orbit-nav-bg-hover;
-      }
-
-      & > span {
-        position: absolute;
-        top: 50%;
-        margin-top: -16px;
-        display: block;
-        width: 0;
-        height: 0;
-        border: inset 16px;
-      }
-    }
-    .orbit-prev { #{$default-float}: 0;
-      & > span {
-        border-#{$opposite-direction}-style: solid;
-        border-color: transparent;
-        border-#{$opposite-direction}-color: $orbit-nav-arrow-color;
-      }
-      &:hover > span {
-        border-#{$opposite-direction}-color: $orbit-nav-arrow-color-hover;
-      }
-    }
-    .orbit-next { #{$opposite-direction}: 0;
-      & > span {
-        border-color: transparent;
-        border-#{$default-float}-style: solid;
-        border-#{$default-float}-color: $orbit-nav-arrow-color;
-        #{$default-float}: 50%;
-        margin-#{$default-float}: -8px;
-      }
-      &:hover > span {
-        border-#{$default-float}-color: $orbit-nav-arrow-color-hover;
-      }
-    }
-  }
-
-  .orbit-bullets {
-    margin: 0 auto 30px auto;
-    overflow: hidden;
-    position: relative;
-    top: 10px;
-
-    li {
-      display: block;
-      width: $orbit-bullet-radius;
-      height: $orbit-bullet-radius;
-      background: $orbit-bullet-nav-color;
-      float: $default-float;
-      margin-#{$opposite-direction}: 6px;
-      border: solid 1px $orbit-bullet-nav-color-active;
-      @include radius(1000px);
-
-      &.active {
-        background: $orbit-bullet-nav-color-active;
-      }
-
-      &:last-child { margin-#{$opposite-direction}: 0; }
-    }
-  }
-
-  .touch {
-    .orbit-container {
-      .orbit-prev,
-      .orbit-next { display: none; }
-    }
-
-    .orbit-bullets { display: none; }
-  }
-
-
-  @media #{$small} {
-
-    .touch {
-      .orbit-container {
-        .orbit-prev,
-        .orbit-next { display: inherit; }
-      }
-
-      .orbit-bullets { display: block; }
-    }
-
-  }
-
-  @media only screen and (max-width: #{$small-screen}) {
-    .orbit-stack-on-small {
-      .orbit-slides-container {height: auto !important;}
-      .orbit-slides-container > * {
-        position: relative;
-        margin-left: 0% !important;
-      }
-      .orbit-timer,
-      .orbit-next,
-      .orbit-prev,
-      .orbit-bullets {display: none;}
-    }
-  }
-
-}
-:@has_childrenT:@options{ :@children[$o:Sass::Tree::CommentNode
-:
-@type:silent:@value["/* Orbit Variables
- * */;@;	[ :
-@lineio:Sass::Tree::VariableNode:
-@name"include-html-orbit-classes;@;	[ ;i:@guarded"!default:
-@expro:Sass::Script::Variable	;"include-html-classes;@:@underscored_name"include_html_classes;io;
-
-;;;["5/* We use these to control the caption styles */;@;	[ ;i
-o;;"orbit-container-bg;@;	[ ;i;"!default;o:Sass::Script::Color	;0;@:@attrs{	:rediõ:
-alphai:
-greeniõ:	blueiõ;io;;"orbit-caption-bg;@;	[ ;i;"!default;o:Sass::Script::Funcall;"	rgba;@:@splat0;i:@keywords{ :
-@args[	o:Sass::Script::Number:@denominator_units[ ;i ;@:@numerator_units[ :@original"0;io;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';f0.59999999999999998 33;@;![ ;""0.6;io;;"orbit-caption-font-color;@;	[ ;i;"!default;o;	;0;@;{	;iÿ;i;iÿ;iÿ;io;;"orbit-caption-font-size;@;	[ ;i;"!default;o;;"em-calc;@;0;i;{ ;[o;; @';i;@;![ ;""14;io;;"orbit-caption-position;@;	[ ;i;"!default;o:Sass::Script::String	;:string;"bottom;@;io;
-
-;;;["./* Supported values: "bottom", "under" */;@;	[ ;io;;"orbit-caption-padding;@;	[ ;i;"!default;o;;"em-calc;@;0;i;{ ;[o;; @';i;@;![ ;""10;io;; @';i;@;![ ;""14;io;;"orbit-caption-height;@;	[ ;i;"!default;o;#	;:identifier;"	auto;@;io;
-
-;;;["</* We use these to control the left/right nav styles */;@;	[ ;io;;"orbit-nav-bg;@;	[ ;i;"!default;o;;"	rgba;@;0;i;{ ;[	o;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';f0.59999999999999998 33;@;![ ;""0.6;io;;"orbit-nav-bg-hover;@;	[ ;i;"!default;o;;"	rgba;@;0;i;{ ;[	o;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';f0.59999999999999998 33;@;![ ;""0.6;io;;"orbit-nav-arrow-color;@;	[ ;i;"!default;o;	;0;@;{	;iÿ;i;iÿ;iÿ;io;;" orbit-nav-arrow-color-hover;@;	[ ;i;"!default;o;	;0;@;{	;iÌ;i;iÌ;iÌ;io;
-
-;;;["3/* We use these to control the timer styles */;@;	[ ;io;;"orbit-timer-bg;@;	[ ;i;"!default;o;;"	rgba;@;0;i;{ ;[	o;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';i ;@;![ ;""0;io;; @';f0.59999999999999998 33;@;![ ;""0.6;io;;""orbit-timer-show-progress-bar;@;	[ ;i;"!default;o:Sass::Script::Bool;T;@;io;
-
-;;;["8/* We use these to control the bullet nav styles */;@;	[ ;io;;"orbit-bullet-nav-color;@;	[ ;i;"!default;o;	;0;@;{	;i™;i;i™;i™;io;;""orbit-bullet-nav-color-active;@;	[ ;i;"!default;o;	;0;@;{	;iZ;i;iZ;iZ;io;;"orbit-bullet-radius;@;	[ ;i ;"!default;o;;"em-calc;@;0;i ;{ ;[o;; @';i;@;![ ;""12;i o;
-
-;;;[">/* We use these to controls the style of slide numbers */;@;	[ ;i"o;;"orbit-slide-number-bg;@;	[ ;i#;"!default;o;;"	rgba;@;0;i#;{ ;[	o;; @';i ;@;![ ;""0;i#o;; @';i ;@;![ ;""0;i#o;; @';i ;@;![ ;""0;i#o;; @';i ;@;![ ;""0;i#o;;""orbit-slide-number-font-color;@;	[ ;i$;"!default;o;	;0;@;{	;iÿ;i;iÿ;iÿ;i$o;;"orbit-slide-number-padding;@;	[ ;i%;"!default;o;;"em-calc;@;0;i%;{ ;[o;; @';i
-;@;![ ;""5;i%o;
-
-;;;["1/* Graceful Loading Wrapper and preloader */;@;	[ ;i'o;;"wrapper-class;@;	[ ;i(;"!default;o;#	;;$;"slideshow-wrapper;@;i(o;;"preloader-class;@;	[ ;i);"!default;o;#	;;$;"preloader;@;i)u:Sass::Tree::IfNodeçb[o:Sass::Script::Operation
-:@options{ :
-@linei,:@operand2o:Sass::Script::Bool:@valueF;@;i,:@operator:neq:@operand1o:Sass::Script::Variable	:
-@name"include-html-orbit-classes;@:@underscored_name"include_html_orbit_classes;i,0[u:Sass::Tree::IfNodeô[o:Sass::Script::Variable	:
-@name"experimental:@options{ :@underscored_name"experimental:
-@linei.0[o:Sass::Tree::DirectiveNode
-:@has_childrenT:@value["@-webkit-keyframes "rotate" ;@:@children[o:Sass::Tree::RuleNode;T;@:
-@tabsi ;[o:Sass::Tree::PropNode;o:Sass::Script::Funcall;"rotate;@:@splat0;	i0:@keywords{ :
-@args[o:Sass::Script::Number:@denominator_units[ ;i ;@:@numerator_units["deg:@original"	0deg;	i0;["-webkit-transform:@prop_syntax:new;@;i ;[ ;	i0;	i0:
-@rule["	from:@parsed_ruleso:"Sass::Selector::CommaSequence:@filename" ;	i0:@members[o:Sass::Selector::Sequence;[o:#Sass::Selector::SimpleSequence
-;@#:@sourceso:Set:
-@hash{ ;	i0:@subject0;[o:Sass::Selector::Element	;["	from;@#;	i0:@namespace0o;;T;@;i ;[o;;o;;"rotate;@;0;	i1;{ ;[o;;[ ;ih;@;["deg;"360deg;	i1;["-webkit-transform;;;@;i ;[ ;	i1;	i1;["to;o;;" ;	i1;[o; ;[o;!
-;@@;"o;#;${ ;	i1;%0;[o;&	;["to;@@;	i1;'0;	i/o;
-
-;T;["@-moz-keyframes "rotate" ;@;[o;;T;@;i ;[o;;o;;"rotate;@;0;	i4;{ ;[o;;[ ;i ;@;["deg;"	0deg;	i4;["-moz-transform;;;@;i ;[ ;	i4;	i4;["	from;o;;" ;	i4;[o; ;[o;!
-;@c;"o;#;${ ;	i4;%0;[o;&	;["	from;@c;	i4;'0o;;T;@;i ;[o;;o;;"rotate;@;0;	i5;{ ;[o;;[ ;ih;@;["deg;"360deg;	i5;["-moz-transform;;;@;i ;[ ;	i5;	i5;["to;o;;" ;	i5;[o; ;[o;!
-;@{;"o;#;${ ;	i5;%0;[o;&	;["to;@{;	i5;'0;	i3o;
-
-;T;["@-o-keyframes "rotate" ;@;[o;;T;@;i ;[o;;o;;"rotate;@;0;	i8;{ ;[o;;[ ;i ;@;["deg;"	0deg;	i8;["-o-transform;;;@;i ;[ ;	i8;	i8;["	from;o;;" ;	i8;[o; ;[o;!
-;@ž;"o;#;${ ;	i8;%0;[o;&	;["	from;@ž;	i8;'0o;;T;@;i ;[o;;o;;"rotate;@;0;	i9;{ ;[o;;[ ;ih;@;["deg;"360deg;	i9;["-o-transform;;;@;i ;[ ;	i9;	i9;["to;o;;" ;	i9;[o; ;[o;!
-;@»;"o;#;${ ;	i9;%0;[o;&	;["to;@»;	i9;'0;	i7o:Sass::Tree::DirectiveNode
-:@has_childrenT;
-["@keyframes "rotate" ;@:@children[o:Sass::Tree::RuleNode;T;@:
-@tabsi ;[o:Sass::Tree::PropNode;
-o:Sass::Script::Funcall;"rotate;@:@splat0;i=:@keywords{ :
-@args[o:Sass::Script::Number:@denominator_units[ ;
-i ;@:@numerator_units["deg:@original"	0deg;i=;["transform:@prop_syntax:new;@;i ;[ ;i=;i=:
-@rule["	from:@parsed_ruleso:"Sass::Selector::CommaSequence:@filename" ;i=:@members[o:Sass::Selector::Sequence;&[o:#Sass::Selector::SimpleSequence
-;%@&:@sourceso:Set:
-@hash{ ;i=:@subject0;&[o:Sass::Selector::Element	;["	from;%@&;i=:@namespace0o;;T;@;i ;[o;;
-o;;"rotate;@;0;i>;{ ;[o;;[ ;
-ih;@;["deg;"360deg;i>;["transform; ;!;@;i ;[ ;i>;i>;"["to;#o;$;%" ;i>;&[o;';&[o;(
-;%@C;)o;*;+{ ;i>;,0;&[o;-	;["to;%@C;i>;.0;i<o:Sass::Tree::CommentNode
-:
-@type:normal;
-["!/* Orbit Graceful Loading */;@;[ ;iAo;;T;@;i ;[o;;
-o:Sass::Script::String;0:identifier;
-"relative;@;["position; ;!;@;i ;[ ;iCo;;T;@;i ;[o;/
-;0:silent;
-["D/* Prevent bullets showing before .orbit-container is loaded */;@;[ ;iFo;;
-o;2;0;3;
-"	none;@;["list-style-type; ;!;@;i ;[ ;iGo;;
-o;2;0;3;
-"0;@;["margin; ;!;@;i ;[ ;iHo;/
-;0;4;
-["/* Hide all list items */;@;[ ;iJo;;T;@;i ;[o;;
-o;2;0;3;
-"	none;@;["display; ;!;@;i ;[ ;iL;iL;"[" li,
-      li .orbit-caption;#o;$;%" ;iL;&[o;';&[o;(
-;%@{;)o;*;+{ ;iL;,0;&[o;-	;["li;%@{;iL;.0o;';&["
-o;(
-;%@{;)o;*;+{ ;iL;,0;&[o;-	;["li;%@{;iL;.0o;(
-;%@{;)o;*;+{ ;iL;,0;&[o:Sass::Selector::Class;["orbit-caption;%@{;iLo;/
-;0;4;
-["&/* ...except for the first one */;@;[ ;iNo;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;iO;iO;"["li:first-child;#o;$;%" ;iO;&[o;';&[o;(
-;%@¡;)o;*;+{ ;iO;,0;&[o;-	;["li;%@¡;iO;.0o:Sass::Selector::Pseudo
-;["first-child:	@arg0;%@¡;iO:@syntactic_type:
-class;iE;"["ul;#o;$;%" ;iE;&[o;';&[o;(
-;%@²;)o;*;+{ ;iE;,0;&[o;-	;["ul;%@²;iE;.0o;;T;@;i ;[o;;
-o;2;0;3;
-"transparent;@;["background-color; ;!;@;i ;[ ;iRo;/
-;0;4;
-["6/* Show images when .orbit-container is loaded */;@;[ ;iTo;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;iUo;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;iW;iW;"[".orbit-caption;#o;$;%" ;iW;&[o;';&[o;(
-;%@Ü;)o;*;+{ ;iW;,0;&[o;5;["orbit-caption;%@Ü;iW;iU;"["li;#o;$;%" ;iU;&[o;';&[o;(
-;%@ê;)o;*;+{ ;iU;,0;&[o;-	;["li;%@ê;iU;.0;iR;"[".orbit-container;#o;$;%" ;iR;&[o;';&[o;(
-;%@ø;)o;*;+{ ;iR;,0;&[o;5;["orbit-container;%@ø;iR;iB;"[".o;	;"wrapper-class;@;"wrapper_class;iBo;/
-;0;4;
-["/* Orbit preloader */;@;[ ;i\o;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;i^o;;
-o;2;0;3;
-"	40px;@;["
-width; ;!;@;i ;[ ;i_o;;
-o;2;0;3;
-"	40px;@;["height; ;!;@;i ;[ ;i`o;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;iao;;
-o;2;0;3;
-"50%;@;["top; ;!;@;i ;[ ;ibo;;
-o;2;0;3;
-"50%;@;["	left; ;!;@;i ;[ ;ico;;
-o;2;0;3;
-"
--20px;@;["margin-top; ;!;@;i ;[ ;ido;;
-o;2;0;3;
-"
--20px;@;["margin-left; ;!;@;i ;[ ;ieo;;
-o;2;0;3;
-"solid 3px;@;["border; ;!;@;i ;[ ;ifo;;
-o;2;0;3;
-"#555 #fff;@;["border-color; ;!;@;i ;[ ;igo:Sass::Tree::MixinNode;"radius;@;[ ;0;ih;{ ;[o;;[ ;
-iè;@;["px;"1000px;ihu;„[o:Sass::Script::Variable	:
-@name"experimental:@options{ :@underscored_name"experimental:
-@lineii0[o:Sass::Tree::PropNode:@valueo:Sass::Script::String:
-@type:identifier;"rotate;@;["-webkit-animation-name:@prop_syntax:new;@:
-@tabsi :@children[ ;	ijo;
-;o;;;;"	1.5s;@;["-webkit-animation-duration;;;@;i ;[ ;	iko;
-;o;;;;"infinite;@;["&-webkit-animation-iteration-count;;;@;i ;[ ;	ilo;
-;o;;;;"linear;@;["&-webkit-animation-timing-function;;;@;i ;[ ;	imo;
-;o;;;;"rotate;@;["-moz-animation-name;;;@;i ;[ ;	ino;
-;o;;;;"	1.5s;@;["-moz-animation-duration;;;@;i ;[ ;	ioo;
-;o;;;;"infinite;@;["#-moz-animation-iteration-count;;;@;i ;[ ;	ipo;
-;o;;;;"linear;@;["#-moz-animation-timing-function;;;@;i ;[ ;	iqo;
-;o;;;;"rotate;@;["-o-animation-name;;;@;i ;[ ;	iro;
-;o;;;;"	1.5s;@;["-o-animation-duration;;;@;i ;[ ;	iso;
-;o;;;;"infinite;@;["!-o-animation-iteration-count;;;@;i ;[ ;	ito;
-;o;;;;"linear;@;["!-o-animation-timing-function;;;@;i ;[ ;	iuo;;
-o;2;0;3;
-"rotate;@;["animation-name; ;!;@;i ;[ ;iwo;;
-o;2;0;3;
-"	1.5s;@;["animation-duration; ;!;@;i ;[ ;ixo;;
-o;2;0;3;
-"infinite;@;["animation-iteration-count; ;!;@;i ;[ ;iyo;;
-o;2;0;3;
-"linear;@;["animation-timing-function; ;!;@;i ;[ ;iz;i];"[".o;	;"preloader-class;@;"preloader_class;i]o;;T;@;i ;[o;;
-o;2;0;3;
-"hidden;@;["overflow; ;!;@;i ;[ ;i~o;;
-o;2;0;3;
-"	100%;@;["
-width; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"relative;@;["position; ;!;@;i ;[ ;i{o;;
-o;	;"orbit-container-bg;@;"orbit_container_bg;i|;["background; ;!;@;i ;[ ;i|o;;T;@;i ;[o;;
-o;2;0;3;
-"	none;@;["list-style; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"0;@;["margin; ;!;@;i ;[ ;i€o;;
-o;2;0;3;
-"0;@;["padding; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"relative;@;["position; ;!;@;i ;[ ;i‚o;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;i„o;;
-o;2;0;3;
-"	100%;@;["max-width; ;!;@;i ;[ ;i„;i„;"["img;#o;$;%" ;i„;&[o;';&[o;(
-;%@¸;)o;*;+{ ;i„;,0;&[o;-	;["img;%@¸;i„;.0o;;T;@;i ;[o;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;i‡o;;
-o;2;0;3;
-"0;@;["top; ;!;@;i ;[ ;iˆo;;
-o;2;0;3;
-"	100%;@;["
-width; ;!;@;i ;[ ;i‰u;7[o:Sass::Script::Operation
-:@options{ :
-@lineiŠ:@operand2o:Sass::Script::String	:
-@type:identifier:@value"rtl;@;iŠ:@operator:eq:@operand1o:Sass::Script::Variable	:
-@name"text-direction;@:@underscored_name"text_direction;iŠu:Sass::Tree::IfNode´[00[o:Sass::Tree::PropNode:@valueo:Sass::Script::String:
-@type:identifier;"	100%:@options{ :
-@name["margin-left:@prop_syntax:new;
-@
-:
-@tabsi :@children[ :
-@lineiŽ[o:Sass::Tree::PropNode;o;	;
-;;"	100%;@;["margin-right:@prop_syntax:new;@:
-@tabsi :@children[ ;i‹o;;T;@;i ;[u;3[o:Sass::Script::Operation
-:@options{ :
-@linei’:@operand2o:Sass::Script::String	:
-@type:identifier:@value"rtl;@;i’:@operator:eq:@operand1o:Sass::Script::Variable	:
-@name"text-direction;@:@underscored_name"text_direction;i’u:Sass::Tree::IfNode²[00[o:Sass::Tree::PropNode:@valueo:Sass::Script::String:
-@type:identifier;"0%:@options{ :
-@name["margin-left:@prop_syntax:new;
-@
-:
-@tabsi :@children[ :
-@linei–[o:Sass::Tree::PropNode;o;	;
-;;"0%;@;["margin-right:@prop_syntax:new;@:
-@tabsi :@children[ ;i“;i‘;"["&:first-child;#o;$;%" ;i‘;&[o;';&[o;(
-;%@Þ;)o;*;+{ ;i‘;,0;&[o:Sass::Selector::Parent;%@Þ;i‘o;6
-;["first-child;70;%@Þ;i‘;8;9o;;T;@;i ;[u;Z[o:Sass::Script::Operation
-:@options{ :
-@linei›:@operand2o:Sass::Script::String	:
-@type:string:@value"bottom;@;i›:@operator:eq:@operand1o:Sass::Script::Variable	:
-@name"orbit-caption-position;@:@underscored_name"orbit_caption_position;i›u:Sass::Tree::IfNode…[o:Sass::Script::Operation
-:@options{ :
-@lineiž:@operand2o:Sass::Script::String	:
-@type:string:@value"
-under;@;iž:@operator:eq:@operand1o:Sass::Script::Variable	:
-@name"orbit-caption-position;@:@underscored_name"orbit_caption_position;iž0[o:Sass::Tree::PropNode;o;	;
-:identifier;"relative;@;["position:@prop_syntax:new;@:
-@tabsi :@children[ ;iŸ[o:Sass::Tree::PropNode;o;	;
-:identifier;"absolute;@;["position:@prop_syntax:new;@:
-@tabsi :@children[ ;iœo;;o;	;
-;;"0;@;["bottom;;;@;i ;[ ;io;;
-o;	;"orbit-caption-bg;@;"orbit_caption_bg;i¢;["background-color; ;!;@;i ;[ ;i¢o;;
-o;	;"orbit-caption-font-color;@;"orbit_caption_font_color;i£;["
-color; ;!;@;i ;[ ;i£o;;
-o;2;0;3;
-"	100%;@;["
-width; ;!;@;i ;[ ;i¤o;;
-o;2;0;3;
-"10px 14px;@;["padding; ;!;@;i ;[ ;i¥o;;
-o;;"em-calc;@;0;i¦;{ ;[o;;[ ;
-i;@;[ ;"14;i¦;["font-size; ;!;@;i ;[ ;i¦;iš;"[".orbit-caption;#o;$;%" ;iš;&[o;';&[o;(
-;%@;)o;*;+{ ;iš;,0;&[o;5;["orbit-caption;%@;iš;i†;"["
-& > *;#o;$;%" ;i†;&[o;';&[o;(
-;%@$;)o;*;+{ ;i†;,0;&[o;;;%@$;i†">o;(
-;%@$;)o;*;+{ ;i†;,0;&[o:Sass::Selector::Universal;%@$;i†;.0;i~;"[".orbit-slides-container;#o;$;%" ;i~;&[o;';&[o;(
-;%@6;)o;*;+{ ;i~;,0;&[o;5;["orbit-slides-container;%@6;i~o;;T;@;i ;[o;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;i¬o;;
-o;2;0;3;
-"	10px;@;["top; ;!;@;i ;[ ;i­o;;
-o;2;0;3;
-"	10px;@;[o;	;"default-float;@;"default_float;i®; ;!;@;i ;[ ;i®o;;
-o;2;0;3;
-"	12px;@;["font-size; ;!;@;i ;[ ;i¯o;;T;@;i ;[o;;
-o;2;0;3;
-"700;@;["font-weight; ;!;@;i ;[ ;i°o;;
-o;	;"orbit-slide-number-padding;@;"orbit_slide_number_padding;i°;["padding; ;!;@;i ;[ ;i°;i°;"["	span;#o;$;%" ;i°;&[o;';&[o;(
-;%@o;)o;*;+{ ;i°;,0;&[o;-	;["	span;%@o;i°;.0o;;
-o;	;""orbit-slide-number-font-color;@;""orbit_slide_number_font_color;i±;["
-color; ;!;@;i ;[ ;i±o;;
-o;	;"orbit-slide-number-bg;@;"orbit_slide_number_bg;i²;["background; ;!;@;i ;[ ;i²o;;
-o;2;0;3;
-"10;@;["z-index; ;!;@;i ;[ ;i³;i«;"[".orbit-slide-number;#o;$;%" ;i«;&[o;';&[o;(
-;%@‘;)o;*;+{ ;i«;,0;&[o;5;["orbit-slide-number;%@‘;i«o;;T;@;i ;[o;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;i·o;;
-o;2;0;3;
-"	10px;@;["top; ;!;@;i ;[ ;i¸o;;
-o;2;0;3;
-"	10px;@;[o;	;"opposite-direction;@;"opposite_direction;i¹; ;!;@;i ;[ ;i¹o;;
-o;2;0;3;
-"6px;@;["height; ;!;@;i ;[ ;iºo;;
-o;2;0;3;
-"
-100px;@;["
-width; ;!;@;i ;[ ;i»o;;
-o;2;0;3;
-"10;@;["z-index; ;!;@;i ;[ ;i¼o;;T;@;i ;[u;û[o:Sass::Script::Variable	:
-@name""orbit-timer-show-progress-bar:@options{ :@underscored_name""orbit_timer_show_progress_bar:
-@linei¾0[	o:Sass::Tree::PropNode:@valueo:Sass::Script::String:
-@type:identifier;"	100%;@;["height:@prop_syntax:new;@:
-@tabsi :@children[ ;	i¿o;
-;o; 	;"orbit-timer-bg;@;"orbit_timer_bg;	iÀ;["background-color;;;@;i ;[ ;	iÀo;
-;o;;;;"
-block;@;["display;;;@;i ;[ ;	iÁo;
-;o;;;;"0%;@;["
-width;;;@;i ;[ ;	iÂ;i½;"[".orbit-progress;#o;$;%" ;i½;&[o;';&[o;(
-;%@Ê;)o;*;+{ ;i½;,0;&[o;5;["orbit-progress;%@Ê;i½o;/
-;0;4;
-["/* Play button */;@;[ ;iÆo;;T;@;i ;[o;;
-o;2;0;3;
-"	none;@;["display; ;!;@;i ;[ ;iÈo;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;iÉo;;
-o;2;0;3;
-"	10px;@;["top; ;!;@;i ;[ ;iÊo;;
-o;2;0;3;
-"0;@;[o;	;"opposite-direction;@;"opposite_direction;iË; ;!;@;i ;[ ;iËo;;
-o;2;0;3;
-"	11px;@;["
-width; ;!;@;i ;[ ;iÌo;;
-o;2;0;3;
-"	14px;@;["height; ;!;@;i ;[ ;iÍo;;
-o;2;0;3;
-"solid 4px #000;@;["border; ;!;@;i ;[ ;iÎo;;
-o;2;0;3;
-"	none;@;["border-top; ;!;@;i ;[ ;iÏo;;
-o;2;0;3;
-"	none;@;["border-bottom; ;!;@;i ;[ ;iÐ;iÇ;"["& > span;#o;$;%" ;iÇ;&[o;';&[o;(
-;%@;)o;*;+{ ;iÇ;,0;&[o;;;%@;iÇ">o;(
-;%@;)o;*;+{ ;iÇ;,0;&[o;-	;["	span;%@;iÇ;.0o;/
-;0;4;
-["/* Pause button */;@;[ ;iÓo;;T;@;i ;[o;;T;@;i ;[o;;
-o;2;0;3;
-"	-6px;@;[o;	;"opposite-direction;@;"opposite_direction;iÖ; ;!;@;i ;[ ;iÖo;;
-o;2;0;3;
-"9px;@;["top; ;!;@;i ;[ ;i×o;;
-o;2;0;3;
-"	11px;@;["
-width; ;!;@;i ;[ ;iØo;;
-o;2;0;3;
-"	14px;@;["height; ;!;@;i ;[ ;iÙo;;
-o;2;0;3;
-"inset 8px;@;["border; ;!;@;i ;[ ;iÚo;;
-o;2;0;3;
-"
-solid;@;["border-right-style; ;!;@;i ;[ ;iÛo;;
-o;2;0;3;
-"-transparent transparent transparent #000;@;["border-color; ;!;@;i ;[ ;iÜ;iÕ;"["& > span;#o;$;%" ;iÕ;&[o;';&[o;(
-;%@^;)o;*;+{ ;iÕ;,0;&[o;;;%@^;iÕ">o;(
-;%@^;)o;*;+{ ;iÕ;,0;&[o;-	;["	span;%@^;iÕ;.0;iÔ;"["&.paused;#o;$;%" ;iÔ;&[o;';&[o;(
-;%@r;)o;*;+{ ;iÔ;,0;&[o;;;%@r;iÔo;5;["paused;%@r;iÔ;i¶;"[".orbit-timer;#o;$;%" ;i¶;&[o;';&[o;(
-;%@;)o;*;+{ ;i¶;,0;&[o;5;["orbit-timer;%@;i¶o;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;iá;iá;"[" &:hover .orbit-timer > span;#o;$;%" ;iá;&[o;';&[	o;(
-;%@—;)o;*;+{ ;iá;,0;&[o;;;%@—;iáo;6
-;["
-hover;70;%@—;iá;8;9o;(
-;%@—;)o;*;+{ ;iá;,0;&[o;5;["orbit-timer;%@—;iá">o;(
-;%@—;)o;*;+{ ;iá;,0;&[o;-	;["	span;%@—;iá;.0o;/
-;0;4;
-["J/* Let's get those controls to be right in the center on each side */;@;[ ;ião;;T;@;i ;[o;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;iæo;;
-o;2;0;3;
-"50%;@;["top; ;!;@;i ;[ ;iço;;
-o;2;0;3;
-"
--25px;@;["margin-top; ;!;@;i ;[ ;ièo;;
-o;	;"orbit-nav-bg;@;"orbit_nav_bg;ié;["background-color; ;!;@;i ;[ ;iéo;;
-o;2;0;3;
-"	50px;@;["
-width; ;!;@;i ;[ ;iêo;;
-o;2;0;3;
-"	60px;@;["height; ;!;@;i ;[ ;iëo;;
-o;2;0;3;
-"	50px;@;["line-height; ;!;@;i ;[ ;iìo;;
-o;2;0;3;
-"
-white;@;["
-color; ;!;@;i ;[ ;iío;;
-o;2;0;3;
-"-9999px !important;@;["text-indent; ;!;@;i ;[ ;iîo;;
-o;2;0;3;
-"10;@;["z-index; ;!;@;i ;[ ;iïo;;T;@;i ;[o;;
-o;	;"orbit-nav-bg-hover;@;"orbit_nav_bg_hover;iò;["background-color; ;!;@;i ;[ ;iò;iñ;"["&:hover;#o;$;%" ;iñ;&[o;';&[o;(
-;%@;)o;*;+{ ;iñ;,0;&[o;;;%@;iño;6
-;["
-hover;70;%@;iñ;8;9o;;T;@;i ;[o;;
-o;2;0;3;
-"absolute;@;["position; ;!;@;i ;[ ;iöo;;
-o;2;0;3;
-"50%;@;["top; ;!;@;i ;[ ;i÷o;;
-o;2;0;3;
-"
--16px;@;["margin-top; ;!;@;i ;[ ;iøo;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;iùo;;
-o;2;0;3;
-"0;@;["
-width; ;!;@;i ;[ ;iúo;;
-o;2;0;3;
-"0;@;["height; ;!;@;i ;[ ;iûo;;
-o;2;0;3;
-"inset 16px;@;["border; ;!;@;i ;[ ;iü;iõ;"["& > span;#o;$;%" ;iõ;&[o;';&[o;(
-;%@<;)o;*;+{ ;iõ;,0;&[o;;;%@<;iõ">o;(
-;%@<;)o;*;+{ ;iõ;,0;&[o;-	;["	span;%@<;iõ;.0;iå;"["!.orbit-prev,
-    .orbit-next;#o;$;%" ;iå;&[o;';&[o;(
-;%@P;)o;*;+{ ;iå;,0;&[o;5;["orbit-prev;%@P;iåo;';&["
-o;(
-;%@P;)o;*;+{ ;iå;,0;&[o;5;["orbit-next;%@P;iåo;;T;@;i ;[o;;
-o;2;0;3;
-"0;@;[o;	;"default-float;@;"default_float;iÿ; ;!;@;i ;[ ;iÿo;;T;@;i ;[o;;
-o;2;0;3;
-"
-solid;@;["border-o;	;"opposite-direction;@;"opposite_direction;i"-style; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"transparent;@;["border-color; ;!;@;i ;[ ;io;;
-o;	;"orbit-nav-arrow-color;@;"orbit_nav_arrow_color;i;["border-o;	;"opposite-direction;@;"opposite_direction;i"-color; ;!;@;i ;[ ;i;i ;"["& > span;#o;$;%" ;i ;&[o;';&[o;(
-;%@;)o;*;+{ ;i ;,0;&[o;;;%@;i ">o;(
-;%@;)o;*;+{ ;i ;,0;&[o;-	;["	span;%@;i ;.0o;;T;@;i ;[o;;
-o;	;" orbit-nav-arrow-color-hover;@;" orbit_nav_arrow_color_hover;i;["border-o;	;"opposite-direction;@;"opposite_direction;i"-color; ;!;@;i ;[ ;i;i;"["&:hover > span;#o;$;%" ;i;&[o;';&[o;(
-;%@°;)o;*;+{ ;i;,0;&[o;;;%@°;io;6
-;["
-hover;70;%@°;i;8;9">o;(
-;%@°;)o;*;+{ ;i;,0;&[o;-	;["	span;%@°;i;.0;iÿ;"[".orbit-prev;#o;$;%" ;iÿ;&[o;';&[o;(
-;%@Ç;)o;*;+{ ;iÿ;,0;&[o;5;["orbit-prev;%@Ç;iÿo;;T;@;i ;[o;;
-o;2;0;3;
-"0;@;[o;	;"opposite-direction;@;"opposite_direction;i	; ;!;@;i ;[ ;i	o;;T;@;i ;[
-o;;
-o;2;0;3;
-"transparent;@;["border-color; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"
-solid;@;["border-o;	;"default-float;@;"default_float;i"-style; ;!;@;i ;[ ;io;;
-o;	;"orbit-nav-arrow-color;@;"orbit_nav_arrow_color;i;["border-o;	;"default-float;@;"default_float;i"-color; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"50%;@;[o;	;"default-float;@;"default_float;i; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"	-8px;@;["margin-o;	;"default-float;@;"default_float;i; ;!;@;i ;[ ;i;i
-;"["& > span;#o;$;%" ;i
-;&[o;';&[o;(
-;%@;)o;*;+{ ;i
-;,0;&[o;;;%@;i
-">o;(
-;%@;)o;*;+{ ;i
-;,0;&[o;-	;["	span;%@;i
-;.0o;;T;@;i ;[o;;
-o;	;" orbit-nav-arrow-color-hover;@;" orbit_nav_arrow_color_hover;i;["border-o;	;"default-float;@;"default_float;i"-color; ;!;@;i ;[ ;i;i;"["&:hover > span;#o;$;%" ;i;&[o;';&[o;(
-;%@.;)o;*;+{ ;i;,0;&[o;;;%@.;io;6
-;["
-hover;70;%@.;i;8;9">o;(
-;%@.;)o;*;+{ ;i;,0;&[o;-	;["	span;%@.;i;.0;i	;"[".orbit-next;#o;$;%" ;i	;&[o;';&[o;(
-;%@E;)o;*;+{ ;i	;,0;&[o;5;["orbit-next;%@E;i	;i};"[".orbit-container;#o;$;%" ;i};&[o;';&[o;(
-;%@S;)o;*;+{ ;i};,0;&[o;5;["orbit-container;%@S;i}o;;T;@;i ;[
-o;;
-o;2;0;3;
-"0 auto 30px auto;@;["margin; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"hidden;@;["overflow; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"relative;@;["position; ;!;@;i ;[ ;io;;
-o;2;0;3;
-"	10px;@;["top; ;!;@;i ;[ ;io;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;io;;
-o;	;"orbit-bullet-radius;@;"orbit_bullet_radius;i;["
-width; ;!;@;i ;[ ;io;;
-o;	;"orbit-bullet-radius;@;"orbit_bullet_radius;i ;["height; ;!;@;i ;[ ;i o;;
-o;	;"orbit-bullet-nav-color;@;"orbit_bullet_nav_color;i!;["background; ;!;@;i ;[ ;i!o;;
-o;	;"default-float;@;"default_float;i";["
-float; ;!;@;i ;[ ;i"o;;
-o;2;0;3;
-"6px;@;["margin-o;	;"opposite-direction;@;"opposite_direction;i#; ;!;@;i ;[ ;i#o;;
-o:Sass::Script::List	;
-[o;2	;0;3;
-"
-solid;@;i$o;;[ ;
-i;@;["px;"1px;i$o;	;""orbit-bullet-nav-color-active;@;""orbit_bullet_nav_color_active;i$;@;i$:@separator:
-space;["border; ;!;@;i ;[ ;i$o;:;"radius;@;[ ;0;i%;{ ;[o;;[ ;
-iè;@;["px;"1000px;i%o;;T;@;i ;[o;;
-o;	;""orbit-bullet-nav-color-active;@;""orbit_bullet_nav_color_active;i(;["background; ;!;@;i ;[ ;i(;i';"["&.active;#o;$;%" ;i';&[o;';&[o;(
-;%@Ë;)o;*;+{ ;i';,0;&[o;;;%@Ë;i'o;5;["active;%@Ë;i'o;;T;@;i ;[o;;
-o;2;0;3;
-"0;@;["margin-o;	;"opposite-direction;@;"opposite_direction;i+; ;!;@;i ;[ ;i+;i+;"["&:last-child;#o;$;%" ;i+;&[o;';&[o;(
-;%@å;)o;*;+{ ;i+;,0;&[o;;;%@å;i+o;6
-;["last-child;70;%@å;i+;8;9;i;"["li;#o;$;%" ;i;&[o;';&[o;(
-;%@ô;)o;*;+{ ;i;,0;&[o;-	;["li;%@ô;i;.0;i;"[".orbit-bullets;#o;$;%" ;i;&[o;';&[o;(
-;%@;)o;*;+{ ;i;,0;&[o;5;["orbit-bullets;%@;io;;T;@;i ;[o;;T;@;i ;[o;;T;@;i ;[o;;
-o;2;0;3;
-"	none;@;["display; ;!;@;i ;[ ;i2;i2;"["#.orbit-prev,
-      .orbit-next;#o;$;%" ;i2;&[o;';&[o;(
-;%@;)o;*;+{ ;i2;,0;&[o;5;["orbit-prev;%@;i2o;';&["
-o;(
-;%@;)o;*;+{ ;i2;,0;&[o;5;["orbit-next;%@;i2;i0;"[".orbit-container;#o;$;%" ;i0;&[o;';&[o;(
-;%@4;)o;*;+{ ;i0;,0;&[o;5;["orbit-container;%@4;i0o;;T;@;i ;[o;;
-o;2;0;3;
-"	none;@;["display; ;!;@;i ;[ ;i5;i5;"[".orbit-bullets;#o;$;%" ;i5;&[o;';&[o;(
-;%@J;)o;*;+{ ;i5;,0;&[o;5;["orbit-bullets;%@J;i5;i/;"[".touch;#o;$;%" ;i/;&[o;';&[o;(
-;%@X;)o;*;+{ ;i/;,0;&[o;5;["
-touch;%@X;i/o:Sass::Tree::MediaNode;T;
-" ;@;i ;[o;;T;@;i ;[o;;T;@;i ;[o;;T;@;i ;[o;;
-o;2;0;3;
-"inherit;@;["display; ;!;@;i ;[ ;i>;i>;"["%.orbit-prev,
-        .orbit-next;#o;$;%" ;i>;&[o;';&[o;(
-;%@u;)o;*;+{ ;i>;,0;&[o;5;["orbit-prev;%@u;i>o;';&["
-o;(
-;%@u;)o;*;+{ ;i>;,0;&[o;5;["orbit-next;%@u;i>;i<;"[".orbit-container;#o;$;%" ;i<;&[o;';&[o;(
-;%@;)o;*;+{ ;i<;,0;&[o;5;["orbit-container;%@;i<o;;T;@;i ;[o;;
-o;2;0;3;
-"
-block;@;["display; ;!;@;i ;[ ;iA;iA;"[".orbit-bullets;#o;$;%" ;iA;&[o;';&[o;(
-;%@£;)o;*;+{ ;iA;,0;&[o;5;["orbit-bullets;%@£;iA;i;;"[".touch;#o;$;%" ;i;;&[o;';&[o;(
-;%@±;)o;*;+{ ;i;;,0;&[o;5;["
-touch;%@±;i;:@query[o;	;"
-small;@;"
-small;i9;i9o;@;T;
-" ;@;i ;[o;;T;@;i ;[o;;T;@;i ;[o;;
-o;2;0;3;
-"auto !important;@;["height; ;!;@;i ;[ ;iH;iH;"[".orbit-slides-container;#o;$;%" ;iH;&[o;';&[o;(
-;%@Ð;)o;*;+{ ;iH;,0;&[o;5;["orbit-slides-container;%@Ð;iHo;;T;@;i ;[o;;
-o;2;0;3;
-"relative;@;["position; ;!;@;i ;[ ;iJo;;
-o;2;0;3;
-"0% !important;@;["margin-left; ;!;@;i ;[ ;iK;iI;"[" .orbit-slides-container > *;#o;$;%" ;iI;&[o;';&[o;(
-;%@ì;)o;*;+{ ;iI;,0;&[o;5;["orbit-slides-container;%@ì;iI">o;(
-;%@ì;)o;*;+{ ;iI;,0;&[o;<;%@ì;iI;.0o;;T;@;i ;[o;;
-o;2;0;3;
-"	none;@;["display; ;!;@;i ;[ ;iP;iP;"["M.orbit-timer,
-      .orbit-next,
-      .orbit-prev,
-      .orbit-bullets;#o;$;%" ;iP;&[	o;';&[o;(
-;%@;)o;*;+{ ;iP;,0;&[o;5;["orbit-timer;%@;iPo;';&["
-o;(
-;%@;)o;*;+{ ;iP;,0;&[o;5;["orbit-next;%@;iPo;';&["
-o;(
-;%@;)o;*;+{ ;iP;,0;&[o;5;["orbit-prev;%@;iPo;';&["
-o;(
-;%@;)o;*;+{ ;iP;,0;&[o;5;["orbit-bullets;%@;iP;iG;"[".orbit-stack-on-small;#o;$;%" ;iG;&[o;';&[o;(
-;%@4;)o;*;+{ ;iG;,0;&[o;5;["orbit-stack-on-small;%@4;iG;A["	only" "screen"
- and "(o;2	;0;3;
-"max-width;@;iF": o: Sass::Script::Interpolation:@whitespace_beforeiÀ;@:@after0;iF:@originally_textF:	@mido;	;"small-screen;@;"small_screen;iF:@whitespace_after0:@before0");iF;i
