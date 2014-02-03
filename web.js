@@ -64,7 +64,8 @@ function ensureAuthenticated (req, res, next) {
       console.log("I am authenticated");
       return next(); 
     } else {
-      res.render('views/home');
+      //res.render('views/home');
+      
     }
 }
 
@@ -195,11 +196,11 @@ socket.on('connection', function (client) {
   });
 
   client.on('update-players', function () {
-    socket.sockets.emit('update-players', people);
+    socket.emit('update-players', people);
   });
 
   client.on('update-games', function () {
-    socket.sockets.emit('update-games', games);
+    socket.emit('update-games', games);
   });
 
   client.on('disconnect', function () {

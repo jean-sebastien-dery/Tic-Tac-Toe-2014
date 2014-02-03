@@ -83,7 +83,7 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
 }]);
 
 Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$location', function (WebSocketFactory, UserInfoService, $location) {
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
   var controller = this;
 
   // Model
@@ -115,16 +115,19 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
   });
 
 
-  WebSocketFactory.emit('join-game', game, function(err){
-    if (err){
-      alert("cannot join this game");
-    }
-    else{
-      $location.path("/waitingroom");
-    }
+  this.joinGame = function (game) {
+
+    WebSocketFactory.emit('join-game', game, function(err){
+      if (err){
+        alert("cannot join this game");
+      }
+      else{
+        $location.path("/waitingroom");
+      }
 
 
-  })
+    })
+  }
 
 
 
@@ -136,7 +139,7 @@ Tic.controller('SPController', ['UserInfoService', function (UserInfoService) {
 
 Tic.controller('WRController', ['$timeout', 'UserInfoService', 'WebSocketFactory', function ( $timeout, UserInfoService, WebSocketFactory) {
   var controller = this;
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
 
   //Model
   this.gameStarted = false;
@@ -186,12 +189,12 @@ Tic.controller('RegisterController', ['UserInfoService', function (UserInfoServi
 }]);
 
 Tic.controller('MainMenuController', ['UserInfoService', function (UserInfoService) {
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
 
 }]);
 
 Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserInfoService', function ($location, WebSocketFactory, UserInfoService) {
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
   var controller = this;
 
   this.time   = 0;
