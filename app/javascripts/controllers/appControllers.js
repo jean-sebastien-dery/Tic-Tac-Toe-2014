@@ -122,25 +122,26 @@ Tic.controller('SPController', ['UserInfoService', function (UserInfoService) {
 
 }]);
 
-Tic.controller('WRController', ['$scope', '$timeout', 'UserInfoService', function ($scope, $timeout, UserInfoService) {
+Tic.controller('WRController', ['$timeout', 'UserInfoService', function ( $timeout, UserInfoService) {
+  var controller = this;
   UserInfoService.validateLogin();
-  $scope.gameStarted = false;
-
-  this.gameStarted = function () {
-    return $scope.gameStarted;
-  }
+  this.gameStarted = false;
+  this.counter = 5;
 
   this.startGame = function () {
-    $scope.gameStarted = true;
-    $scope.counter = 5;
+    this.gameStarted = true;
+    this.counter = 5;
 
     /* This is probably not the best way to do it but it works.
        Feel free to change it if you want! */
-    $timeout(function() { $scope.counter--; }, 1000);
-    $timeout(function() { $scope.counter--; }, 2000);
-    $timeout(function() { $scope.counter--; }, 3000);
-    $timeout(function() { $scope.counter--; }, 4000);
-    $timeout(function() { $scope.counter--; }, 5000);
+    $timeout(function() { 
+      controller.counter--; }, 1000);
+    $timeout(function() { controller.counter--; }, 2000);
+    $timeout(function() { controller.counter--; }, 3000);
+    $timeout(function() { 
+      controller.counter--; 
+    }, 4000);
+    $timeout(function() { controller.counter--; }, 5000);
   }
   
 }]);
@@ -193,10 +194,6 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
     }, function (err) {
       alert('Enable to join the lobby');
     });
-
-    
-
-
   }
 
 

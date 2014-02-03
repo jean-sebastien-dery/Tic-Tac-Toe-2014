@@ -12,10 +12,10 @@
 						<img src="images/test-avatar.png" class="avatar"></img>
 						<p><b>Mickey</b></p>
 					</div>
-					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="waitingroom.gameStarted()" ng-controller="WRController">
-						{{counter}}
+					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="waitingroom.gameStarted" ng-controller="WRController">
+						{{ waitingroom.counter}}
 					</div>
-					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="!waitingroom.gameStarted()">
+					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-hide="waitingroom.gameStarted">
 						v.
 					</div>
 					<div class="col-xs-5 col-sm-5 col-md-5">

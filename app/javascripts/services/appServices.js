@@ -78,10 +78,10 @@ Tic.factory('UserInfoService', function ($http, $q, $location) {
 
         var deferred = $q.defer();
 
-        $http.get('/api/v1/isLoggedIn').then(function () {
+        $http.get('/api/v1/isLoggedIn').success(function () {
             deferred.resolve();
 
-        }, function (err) {
+        }).error(function (err) {
             $location.path('/home');
             deferred.reject();
         });
