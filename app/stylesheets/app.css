@@ -161,3 +161,7 @@ div.lobby .game:hover {
 div.lobby p {
   margin: 0 0 0 0;
 }
+/* line 138, ../sass/app.scss */
+div.waitingroom div.countdown {
+  font-size: 70px;
+}
