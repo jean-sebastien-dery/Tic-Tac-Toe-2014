@@ -14,22 +14,22 @@
 	  						<div class="col-md-4">
 	  						</div>
 	  						<div class="col-md-1">
-	  						 	<label>
+	  						 	<label ng-click="createGame.setRounds(3)">
 						    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>2/3
 						  		</label>
 	  						 </div>
 	  						 <div class="col-md-1">
-	  						 	<label>
+	  						 	<label ng-click="createGame.setRounds(5)">
 						    		<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1" checked>3/5
 						  		</label>
 	  						 </div>
 	  						 <div class="col-md-1">
-	  						 	<label>
+	  						 	<label ng-click="createGame.setRounds(7)">
 						    		<input type="radio" name="optionsRadios" id="optionsRadios3" value="option1" checked>4/7
 						  		</label>
 	  						 </div>
 	  						 <div class="col-md-1">
-	  						 	<label>
+	  						 	<label ng-click="createGame.setRounds(9)">
 						    		<input type="radio" name="optionsRadios" id="optionsRadios4" value="option1" checked>5/9
 						  		</label>
 	  						 </div>
@@ -42,17 +42,17 @@
 								    Set time for each round <span class="caret"></span> 
 								  </a>
 								  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-								    <li>2 sec</li>
-								    <li>3 sec</li>
-								    <li>5 sec</li>
-								    <li>8 sec</li>
-								    <li>10 sec</li>
+								    <li ng-click="createGame.setTimer(2)">2 sec</li>
+								    <li ng-click="createGame.setTimer(3)">3 sec</li>
+								    <li ng-click="createGame.setTimer(5)">5 sec</li>
+								    <li ng-click="createGame.setTimer(8)">8 sec</li>
+								    <li ng-click="createGame.setTimer(10)">10 sec</li>
 								  </ul>
 							</div>
 						</div>
 					</div>
-					<button ng-click="#" 	type="button" 	class="btn btn-primary">Cancel</button>
-					<button ng-click="#" 	type="button" 	class="btn btn-primary">Cancel</button>
+					<button ng-click="createGame.create()" 	type="button" 	class="btn btn-primary">Create</button>
+					<button	type="button" 	class="btn btn-primary">Cancel</button>
 				</form>
 			</div>
 		</div>

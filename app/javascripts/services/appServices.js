@@ -1,4 +1,4 @@
-Tic.factory('WebSocketFactory', function ($rootScope) {
+Tic.factory('WebSocketFactory', function ($rootScope, UserInfoService) {
     var socket = io.connect('/');
 
     var Service = {};
@@ -28,6 +28,16 @@ Tic.factory('WebSocketFactory', function ($rootScope) {
             });
         });
     };
+
+     // Need to get the username to join the lobby
+    UserInfoService.getUsername().then(function (username) {
+
+        // Join the lobby
+        Service.emit('join', username);
+
+    }, function (err) {
+        alert('Enable to join the lobby');
+    });
 
     return Service;
 });

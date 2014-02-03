@@ -6,8 +6,7 @@ var express         	= require('express')
   , mongoose          = require('mongoose')
   , userManager       = require('./server/routes/userManager.js')
   , LocalStrategy     = require('passport-local').Strategy
-  , gameManager       = require('./server/lib/gameManager.js')
-  , uuid              = require('node-uuid');
+  , gameManager       = require('./server/lib/gameManager.js');
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -174,26 +173,54 @@ socket.on('connection', function (client) {
 
       socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
 
-      socket.sockets.emit('update-player', people);
+      socket.sockets.emit('update-players', people);
       client.emit('game-lists', {games : games});
+
+      console.log('username joined the lobby', name);
+
+
       //clients.push(client);
     }
+  });
 
-    client.on('update-player', function () {
-      socket.sockets.emit('update-player', people);
-    });
+  client.on('update-players', function () {
+    socket.sockets.emit('update-players', people);
+  });
 
-    client.on('disconnect', function () {
-      if (people[client.id]) {
+  client.on('update-games', function () {
+    socket.sockets.emit('update-games', games);
+  });
 
-        // Handle the lobby scenario
-        delete people[client.id];
-        socket.sockets.emit('update-player', people);
+  client.on('disconnect', function () {
+    if (people[client.id]) {
 
-        // Handle the in game scenario
+      // Handle the lobby scenario
+      delete people[client.id];
+      socket.sockets.emit('update-players', people);
 
+      // Handle the in game scenario
+
+    }
+  });
+
+  client.on('create-game', function (game, cb) {
+
+    gameManager.parseGame(game, client.id, function (err, game) {
+      if (err) {
+        cb(err);
+
+      } else {
+
+        // Save the game
+        games[game.id] = game;
+
+        // Broadcast new game
+        socket.sockets.emit('update-games',games);
+
+        cb(null, game);
       }
     })
+
   });
 
 

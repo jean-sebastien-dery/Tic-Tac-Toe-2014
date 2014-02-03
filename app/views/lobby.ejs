@@ -13,57 +13,23 @@
 							</div>
 						</div>
 						<ul>
-							<li>
+							<li ng-repeat="game in lobby.games">
 								<div class="row game">
 									<div class="col-md-4">
-										<span>Game 1</span>
+										<span>{{ game.creator }}</span>
 									</div>
 									<div class="col-md-2">
-										<span>2/3</span>
+										<span>{{ game.rounds }}</span>
 									</div>
 									<div class="col-md-3">
-										<span>2 sec</span>
+										<span>{{ game.time }}</span>
 									</div>
 									<div class="col-md-3">
 										<p class="text-right"><a href="#">join</a></p>
 									</div>
 								</div>
 							</li>
-							<li>
-								<div class="row game">
-									<div class="col-md-4">
-										<span>Game 1</span>
-									</div>
-									<div class="col-md-2">
-										<span>2/3</span>
-									</div>
-									<div class="col-md-3">
-										<span>2 sec</span>
-									</div>
-									<div class="col-md-3">
-										<p class="text-right"><a href="#">join</a></p>
-									</div>
-								</div>
-							</li>
-							<li>
-								<div class="row game">
-									<div class="col-md-4">
-										<span>Game 1</span>
-									</div>
-									<div class="col-md-2">
-										<span>2/3</span>
-									</div>
-									<div class="col-md-3">
-										<span>2 sec</span>
-									</div>
-									<div class="col-md-3">
-										<p class="text-right"><a href="#">join</a></p>
-									</div>
-								</div>
-							</li>
-
 						</ul>
-						
 					</div>
 					<div class="col-md-6">
 						<div class="row">

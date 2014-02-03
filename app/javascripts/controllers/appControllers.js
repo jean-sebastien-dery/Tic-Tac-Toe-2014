@@ -81,30 +81,34 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
 
 }]);
 
-Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', function (WebSocketFactory, UserInfoService) {
+Tic.controller('LobbyController', ['WebSocketFactory', function (WebSocketFactory) {
   var controller = this;
 
-  // Joining the lobby
-  UserInfoService.getUsername().then(function (username) {
-    WebSocketFactory.emit('join', username);
-  }, function (err) {
-    alert('Enable to join the lobby');
-  });
-
+  // Model
   this.players = [];
+  this.games   = [];
 
-  WebSocketFactory.emit('update-player', {});
-
+  // Initialize the list when browser is refreshed
+  WebSocketFactory.emit('update-players', {});
+  WebSocketFactory.emit('update-games', {});
 
   WebSocketFactory.receive('update', function (msg) {
     console.log(msg);
   });
 
-
-  WebSocketFactory.receive('update-player', function (players) {
+  // Update players list
+  WebSocketFactory.receive('update-players', function (players) {
     controller.players.length = 0;
     $.each(players, function (id, player) {
       controller.players.push(player);
+    });
+  });
+
+  // Update games list
+  WebSocketFactory.receive('update-games', function (games) {
+    controller.games.length = 0;
+    $.each(games, function (id, game) {
+      controller.games.push(game);
     });
   });
 
@@ -128,6 +132,49 @@ Tic.controller('MainMenuController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('CreateGameController', ['$location', function ($location) {
+Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserInfoService', function ($location, WebSocketFactory, UserInfoService) {
+  var controller = this;
+
+  this.time   = 0;
+  this.rounds = 0;
+
+  this.setTimer = function (time) {
+    controller.time = time;
+  }
+
+  this.setRounds = function (rounds) {
+    controller.rounds = rounds;
+  }
+  
+  this.create = function () {
+
+
+    // Joining the username to join the lobby
+    UserInfoService.getUsername().then(function (username) {
+
+      var game = {
+          time    : controller.time, 
+          rounds  : controller.rounds,
+          creator : username
+        }
+
+      // Join the lobby
+      WebSocketFactory.emit('create-game', game, function (err, game) {
+        if (err) {
+          alert('not able to create the game');
+        } else {
+          $location.path('/waitingroom');
+        }
+      });
+
+    }, function (err) {
+      alert('Enable to join the lobby');
+    });
+
+    
+
+
+  }
+
 
 }]);
