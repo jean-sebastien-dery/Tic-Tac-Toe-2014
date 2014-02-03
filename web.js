@@ -245,11 +245,11 @@ socket.on('connection', function (client) {
   });
 
   client.on('join-game', function(game, cb){
-    people[client.id]=game.id;
+    people[client.id].game =game.id;
     client.join(game.id);
-    games[game.id].players.push(client.id);
+    games[game.id].players.push({clientID: client.id, username: people[client.id].username});
 
-    socket.sockets.in(game.id).emit('join-game', {game : game, newPlayer: people[client.id].username});
+    socket.sockets.in(game.id).emit('join-game', games[game.id]);
 
     cb(null);
 
