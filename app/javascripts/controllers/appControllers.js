@@ -81,7 +81,8 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
 
 }]);
 
-Tic.controller('LobbyController', ['WebSocketFactory', function (WebSocketFactory) {
+Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', function (WebSocketFactory, UserInfoService) {
+  UserInfoService.validateLogin();
   var controller = this;
 
   // Model
@@ -116,23 +117,26 @@ Tic.controller('LobbyController', ['WebSocketFactory', function (WebSocketFactor
 
 }]);
 
-Tic.controller('SPController', ['$location', function ($location) {
+Tic.controller('SPController', ['UserInfoService', function (UserInfoService) {
 
 }]);
 
-Tic.controller('WRController', ['$location', function ($location) {
+Tic.controller('WRController', ['UserInfoService', function (UserInfoService) {
+    UserInfoService.validateLogin();
 
 }]);
 
-Tic.controller('RegisterController', ['$location', function ($location) {
+Tic.controller('RegisterController', ['UserInfoService', function (UserInfoService) {
 
 }]);
 
-Tic.controller('MainMenuController', ['$location', function ($location) {
+Tic.controller('MainMenuController', ['UserInfoService', function (UserInfoService) {
+  UserInfoService.validateLogin();
 
 }]);
 
 Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserInfoService', function ($location, WebSocketFactory, UserInfoService) {
+  UserInfoService.validateLogin();
   var controller = this;
 
   this.time   = 0;

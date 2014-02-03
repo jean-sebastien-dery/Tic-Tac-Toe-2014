@@ -61,7 +61,7 @@ function ensureAuthenticated (req, res, next) {
       console.log("I am authenticated");
       return next(); 
     } else {
-      res.redirect('/tictac/');
+      res.render('views/home');
     }
 }
 
@@ -115,7 +115,15 @@ app.post('/api/v1/login/', function (req, res, next) {
 
 app.get('/api/v1/whoAmI/', function (req, res) {
   res.send(200, req.user._doc.username);
-})
+});
+
+app.get('/api/v1/isLoggedIn', function (req, res) {
+  if (req.user != undefined) {
+    res.send(200);
+  } else {
+    res.send(400);
+  }
+});
 
 app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
