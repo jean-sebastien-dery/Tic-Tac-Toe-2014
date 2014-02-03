@@ -128,3 +128,7 @@ div.waitingroom img.avatar {
 div.waitingroom button {
   margin: 1em 0 1.5em 0;
 }
+/* line 138, ../sass/app.scss */
+div.waitingroom div.countdown {
+  font-size: 70px;
+}

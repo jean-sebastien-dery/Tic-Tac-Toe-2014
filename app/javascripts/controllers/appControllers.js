@@ -19,7 +19,7 @@ App.config(['$routeProvider',
       when('/waitingroom', {
         templateUrl   : 'tictac-partials/waitingroom',
         controller    : 'WRController',
-        controllerAs  : 'wrController'
+        controllerAs  : 'waitingroom'
       }).
       when('/singleplayer', {
         templateUrl   : 'tictac-partials/singleplayer',
@@ -47,6 +47,7 @@ App.config(['$routeProvider',
 }]);
 
 var Tic = angular.module('tictactoe', []);
+var timeout;
 
 Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $q, $location) {
   var controller = this;
@@ -86,8 +87,27 @@ Tic.controller('SPController', ['$scope', function ($scope) {
 
 }]);
 
-Tic.controller('WRController', ['$scope', function ($scope) {
+Tic.controller('WRController', ['$scope', '$timeout', function ($scope, $timeout) {
+  
+  $scope.gameStarted = false;
 
+  this.gameStarted = function () {
+    return $scope.gameStarted;
+  }
+
+  this.startGame = function () {
+    $scope.gameStarted = true;
+    $scope.counter = 5;
+
+    /* This is probably not the best way to do it but it works.
+       Feel free to change it if you want! */
+    $timeout(function() { $scope.counter--; }, 1000);
+    $timeout(function() { $scope.counter--; }, 2000);
+    $timeout(function() { $scope.counter--; }, 3000);
+    $timeout(function() { $scope.counter--; }, 4000);
+    $timeout(function() { $scope.counter--; }, 5000);
+  }
+  
 }]);
 
 Tic.controller('RegisterController', ['$scope', function ($scope) {
