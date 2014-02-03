@@ -15,6 +15,18 @@
 						<ul>
 							<li ng-repeat="game in lobby.games">
 								<div class="row game">
+                                                                        <div class="col-md-4">
+                                                                                <span><b>Host</b></span>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                                <span><b>Rounds</b></span>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                                <span><b>Countdown</b></span>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                                <span><b>Join</b></span>
+                                                                        </div>
 									<div class="col-md-4">
 										<span>{{ game.creator }}</span>
 									</div>
@@ -40,6 +52,12 @@
 						<ul>
 							<li ng-repeat="player in lobby.players">
 								<div class="row">
+									<div class="col-md-6">
+                                                                                <span><b>Player Name</b></span>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                                <span><b>Player Score</b></span>
+                                                                        </div>
 									<div class="col-md-6">
 										<span>{{ player.username }}</span>
 									</div>
