@@ -10,7 +10,7 @@
 				<div class="row">
 					<div class="col-xs-5 col-sm-5 col-md-5">
 						<img src="images/test-avatar.png" class="avatar"></img>
-						<p><b>Mickey</b></p>
+						<p><b>{{waitingroom.creator}}</b></p>
 					</div>
 					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="waitingroom.gameStarted" ng-controller="WRController">
 						{{ waitingroom.counter}}
@@ -20,7 +20,7 @@
 					</div>
 					<div class="col-xs-5 col-sm-5 col-md-5">
 						<img src="images/unknown-player-avatar.png" class="avatar">
-						<p><b>Unknow player</b></p>
+						<p><b>{{waitingroom.newPlayer}}</b></p>
 					</div>
 				</div>
 				<div class="row">

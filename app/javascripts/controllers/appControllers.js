@@ -82,7 +82,7 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
 
 }]);
 
-Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', function (WebSocketFactory, UserInfoService) {
+Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$location', function (WebSocketFactory, UserInfoService, $location) {
   UserInfoService.validateLogin();
   var controller = this;
 
@@ -115,6 +115,18 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', functi
   });
 
 
+  WebSocketFactory.emit('join-game', game, function(err){
+    if (err){
+      alert("cannot join this game");
+    }
+    else{
+      $location.path("/waitingroom");
+    }
+
+
+  })
+
+
 
 }]);
 
@@ -131,6 +143,8 @@ Tic.controller('WRController', ['$timeout', 'UserInfoService', 'WebSocketFactory
   this.counter = 5;
   this.rounds = 0;
   this.timer= 0;
+  this.creator = "unknown";
+  this.newPlayer = "another unknown";
 
   this.startGame = function () {
     this.gameStarted = true;
@@ -152,6 +166,16 @@ Tic.controller('WRController', ['$timeout', 'UserInfoService', 'WebSocketFactory
   WebSocketFactory.receive("get-game", function(game){
     controller.rounds = game.rounds;
     controller.timer= game.timer;
+    controller.creator = game.creator;
+  });
+
+  WebSocketFactory.receive("join-game", function(data){
+    var game= data.game;
+    var newPlayer=data.newPlayer;
+    
+    controller.newPlayer=newPlayer;
+
+
   });
 
   
