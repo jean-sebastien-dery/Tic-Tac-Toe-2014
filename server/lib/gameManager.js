@@ -37,7 +37,7 @@ exports.parseGame = function (game, clientID, cb) {
 	}
 
 	if (err.length == 0) {
-		parsedGame = new Game(game.rounds, game.timer, game.creator, clientID)
+		parsedGame = new Game(game.rounds, game.time, game.creator, clientID)
 	}
 
 	err = (err.length > 0 ? err : null);

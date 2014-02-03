@@ -122,11 +122,15 @@ Tic.controller('SPController', ['UserInfoService', function (UserInfoService) {
 
 }]);
 
-Tic.controller('WRController', ['$timeout', 'UserInfoService', function ( $timeout, UserInfoService) {
+Tic.controller('WRController', ['$timeout', 'UserInfoService', 'WebSocketFactory', function ( $timeout, UserInfoService, WebSocketFactory) {
   var controller = this;
   UserInfoService.validateLogin();
+
+  //Model
   this.gameStarted = false;
   this.counter = 5;
+  this.rounds = 0;
+  this.timer= 0;
 
   this.startGame = function () {
     this.gameStarted = true;
@@ -143,6 +147,13 @@ Tic.controller('WRController', ['$timeout', 'UserInfoService', function ( $timeo
     }, 4000);
     $timeout(function() { controller.counter--; }, 5000);
   }
+
+  WebSocketFactory.emit("get-game", {})
+  WebSocketFactory.receive("get-game", function(game){
+    controller.rounds = game.rounds;
+    controller.timer= game.timer;
+  });
+
   
 }]);
 

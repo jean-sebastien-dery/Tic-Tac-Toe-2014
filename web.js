@@ -224,8 +224,10 @@ socket.on('connection', function (client) {
 
         // Save the game
         games[game.id] = game;
+        people[client.id].game = game.id;
 
         // Broadcast new game
+        //emit to everyone
         socket.sockets.emit('update-games',games);
 
         cb(null, game);
@@ -233,6 +235,14 @@ socket.on('connection', function (client) {
     })
 
   });
+
+  client.on('get-game', function(){
+    var game= games[people[client.id].game];
+
+    client.emit("get-game", game);
+
+  })
+
 
 
 });
