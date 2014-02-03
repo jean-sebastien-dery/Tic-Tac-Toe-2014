@@ -225,7 +225,7 @@ socket.on('connection', function (client) {
         // Save the game
         games[game.id] = game;
         people[client.id].game = game.id;
-
+        client.join(game.id);
         // Broadcast new game
         //emit to everyone
         socket.sockets.emit('update-games',games);
@@ -241,7 +241,22 @@ socket.on('connection', function (client) {
 
     client.emit("get-game", game);
 
+  });
+
+  client.on('join-game', function(game, cb){
+    people[client.id]=game.id;
+    client.join(game.id);
+    games[game.id].players.push(client.id);
+
+    socket.sockets.in(game.id).emit('join-game', {game : game, newPlayer: people[client.id].username});
+
+    cb(null);
+
+
   })
+
+
+
 
 
 
