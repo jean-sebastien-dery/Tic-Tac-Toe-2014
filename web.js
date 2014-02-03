@@ -5,7 +5,9 @@ var express         	= require('express')
   , passport 			    = require('passport')
   , mongoose          = require('mongoose')
   , userManager       = require('./server/routes/userManager.js')
-  , LocalStrategy     = require('passport-local').Strategy;
+  , LocalStrategy     = require('passport-local').Strategy
+  , gameManager       = require('./server/lib/gameManager.js')
+  , uuid              = require('node-uuid');
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -62,9 +64,12 @@ function ensureAuthenticated (req, res, next) {
     if (req.isAuthenticated()) { 
       console.log("I am authenticated");
       return next(); 
+    } else {
+      res.redirect('/tictac/');
     }
-    res.redirect('/');
 }
+
+
 
 mongoose.connect('mongodb://localhost/tictac');
 
@@ -103,17 +108,38 @@ app.post('/api/v1/login/', function (req, res, next) {
     passport.authenticate('local', function (err, user, info) {
         if (err) { return next(err) }
         if (!user) {
-            return res.redirect('/')
+            return res.send(400);
         }
         req.logIn(user, function (err) {
             if (err) { return next(err); }
-            return res.redirect('#/mainmenu');
+            return res.send(200);
         });
     })(req, res, next);
 });
 
+app.get('/api/v1/whoAmI/', function (req, res) {
+  res.send(200, req.user._doc.username);
+})
+
 app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
+});
+
+app.post('/api/v1/registerGame', function (req, res) {
+    userManager.registerGame(req, res);
+});
+
+app.post('/api/v1/findGameByUser', function (req, res) {
+    userManager.FindGameByUsername(req, res);
+});
+
+app.post('/api/v1/getAllGames', function (req, res) {
+    userManager.getAllGames(req, res);
+});
+
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('#/login');
 });
 
 app.get('/', function (req, res) {
@@ -124,6 +150,10 @@ app.get('/tictac', function (req, res) {
     res.render('index');
 });
 
+app.get('/tictac-partials/mainmenu', ensureAuthenticated, function (req, res) {
+    res.render('views/mainmenu');
+});
+
 app.get('/tictac-partials/:name', ensureAuthenticated, function (req, res) {
     var name = req.params.name;
     res.render('views/' + name);
@@ -132,16 +162,45 @@ app.get('/tictac-partials/:name', ensureAuthenticated, function (req, res) {
 /***** Dynamic Files *****/
 
 var socket = require('socket.io').listen(app.listen(app.get('port')));
+
 var people  = {};
+var games   = {};
+//var clients = [];
 
-socket.sockets.on('connection', function (clientSocket) {
-  console.log('connected', clientSocket.id);
-  clientSocket.on('join', function (userId) {
-    //console.log('Join',userId);
-    people[clientSocket.id] = { userId : userId, isAvailable : false};  
+socket.on('connection', function (client) {
+  client.on('join', function(name) {
+
+    if (name != "") {
+      gameID = null;
+      people[client.id] = {username : name, game : gameID};
+      client.emit("update", "Connected to the lobby");
+
+      socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
+
+      socket.sockets.emit('update-player', people);
+      client.emit('game-lists', {games : games});
+      //clients.push(client);
+    }
+
+    client.on('update-player', function () {
+      socket.sockets.emit('update-player', people);
+    });
+
+    client.on('disconnect', function () {
+      if (people[client.id]) {
+
+        // Handle the lobby scenario
+        delete people[client.id];
+        socket.sockets.emit('update-player', people);
+
+        // Handle the in game scenario
+
+      }
+    })
   });
 
-  clientSocket.on('disconnect', function () {
-    delete people[clientSocket.id];
-  });
+
 });
+
+
+

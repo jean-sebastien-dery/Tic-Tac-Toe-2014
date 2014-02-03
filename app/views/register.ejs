@@ -15,7 +15,7 @@
 						<input type="password" class="form-control" ng-model="home.user.confirmedPassword" name="pw2" ttt-confirm="home.user.password" placeholder="Confirm Password">
 						<span ng-show='registerForm.pw2.$error.equal'>Password must match</span>
 					</div>
-					<button type="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid">Register</button>
+					<button type="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid" name="register">Register</button>
 					<a href="#/home">cancel</a>
 				</form>
 			</div>

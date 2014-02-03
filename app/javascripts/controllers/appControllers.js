@@ -49,7 +49,7 @@ App.config(['$routeProvider',
 var Tic = angular.module('tictactoe', []);
 var timeout;
 
-Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $q, $location) {
+Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService', function ($http, $q, $location, UserInfoService) {
   var controller = this;
 
   this.user = {
@@ -64,9 +64,12 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
     $http.post('/api/v1/login/', controller.user).success(function () {
 
       // Redirect user to main menu
+      UserInfoService.saveUser(controller.user);
       $location.path('/mainmenu');
 
     }).error(function () {
+
+      $location.path('/');
 
       // Not able to login
       alert('error in login');
@@ -79,11 +82,38 @@ Tic.controller('HomeController', ['$http', '$q', '$location', function ($http, $
 
 }]);
 
-Tic.controller('LobbyController', ['$scope', function ($scope) {
+Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService', function (WebSocketFactory, UserInfoService) {
+  var controller = this;
+
+  // Joining the lobby
+  UserInfoService.getUsername().then(function (username) {
+    WebSocketFactory.emit('join', username);
+  }, function (err) {
+    alert('Enable to join the lobby');
+  });
+
+  this.players = [];
+
+  WebSocketFactory.emit('update-player', {});
+
+
+  WebSocketFactory.receive('update', function (msg) {
+    console.log(msg);
+  });
+
+
+  WebSocketFactory.receive('update-player', function (players) {
+    controller.players.length = 0;
+    $.each(players, function (id, player) {
+      controller.players.push(player);
+    });
+  });
+
+
 
 }]);
 
-Tic.controller('SPController', ['$scope', function ($scope) {
+Tic.controller('SPController', ['$location', function ($location) {
 
 }]);
 
@@ -110,14 +140,14 @@ Tic.controller('WRController', ['$scope', '$timeout', function ($scope, $timeout
   
 }]);
 
-Tic.controller('RegisterController', ['$scope', function ($scope) {
+Tic.controller('RegisterController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('MainMenuController', ['$scope', function ($scope) {
+Tic.controller('MainMenuController', ['$location', function ($location) {
 
 }]);
 
-Tic.controller('CreateGameController', ['$scope', function ($scope) {
+Tic.controller('CreateGameController', ['$location', function ($location) {
 
 }]);

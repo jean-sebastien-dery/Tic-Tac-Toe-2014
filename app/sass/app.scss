@@ -84,6 +84,7 @@ div.home {
 		padding: 0 0 1em 0;
 	}
 
+
 	div.quick-game {
 		text-align: center;
 
@@ -139,3 +140,47 @@ div.waitingroom {
 		font-size: 70px;
 	}
 }
+
+/* ------------------------
+ * Create Game
+ * ------------------------
+ */
+
+div.creategame {
+
+	h2.title {
+		padding-bottom: 1em;
+	}
+
+	div {
+
+		text-align: center;
+	}
+
+
+	button {
+		margin: 1em 0 1.5em 0;
+	}
+}
+
+
+div.lobby {
+
+	li {
+		list-style-type: none;
+	}
+
+	div {
+
+		text-align: center;
+	}
+
+	.game:hover {
+		background-color:#FBFAF4;
+	}
+
+	p {
+		margin: 0 0 0 0;
+	}
+}
+
