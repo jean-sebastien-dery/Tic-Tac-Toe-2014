@@ -12,25 +12,27 @@
 								<h3>Available games</h3>
 							</div>
 						</div>
+						<div class="col-md-12">
+							<div class="col-md-3">
+                            	<span><b>Host</b></span>
+                            </div>
+                            <div class="col-md-3">
+                                <span><b>Rounds</b></span>
+                            </div>
+                            <div class="col-md-3">
+                                <span><b>Countdown</b></span>
+                            </div>
+                            <div class="col-md-3">
+                                <span><b>Join</b></span>
+                            </div>
+                        </div>
 						<ul>
 							<li ng-repeat="game in lobby.games">
 								<div class="row game">
-                                                                        <div class="col-md-4">
-                                                                                <span><b>Host</b></span>
-                                                                        </div>
-                                                                        <div class="col-md-2">
-                                                                                <span><b>Rounds</b></span>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                                <span><b>Countdown</b></span>
-                                                                        </div>
-                                                                        <div class="col-md-3">
-                                                                                <span><b>Join</b></span>
-                                                                        </div>
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<span>{{ game.creator }}</span>
 									</div>
-									<div class="col-md-2">
+									<div class="col-md-3">
 										<span>{{ game.rounds }}</span>
 									</div>
 									<div class="col-md-3">
@@ -49,15 +51,17 @@
 								<h3>Online Players</h3>
 							</div>
 						</div>
+                        <div class="col-md-12">
+							<div class="col-md-6">
+	                            <span><b>Player Name</b></span>
+	                        </div>
+	                        <div class="col-md-6">
+	                            <span><b>Player Score</b></span>
+	                        </div>
+                        </div>
 						<ul>
 							<li ng-repeat="player in lobby.players">
 								<div class="row">
-									<div class="col-md-6">
-                                                                                <span><b>Player Name</b></span>
-                                                                        </div>
-                                                                        <div class="col-md-6">
-                                                                                <span><b>Player Score</b></span>
-                                                                        </div>
 									<div class="col-md-6">
 										<span>{{ player.username }}</span>
 									</div>
