@@ -206,9 +206,30 @@ socket.on('connection', function (client) {
   client.on('disconnect', function () {
     if (people[client.id]) {
 
+      // Handle cancelling during waiting room scenario 
+      var gameID = people[client.id].game;
+
+      if(gameID != null){ // check if disconnector is waiting for a game
+        var game = games[gameID];
+        if(game.players[0].playerID == client.id){ // disconnector is creator
+          if(game.players.length > 1){ //check if there are multiple players in game
+            socket.sockets.in(gameID).emit('game-cancelled');
+          }
+          delete games[gameID];
+          socket.sockets.emit('update-game', games);
+        }
+        // check if disconnector is someone who joined a game
+        if(game.players.length > 1 && game.players[1].playerID == client.id){ 
+          game.players.slice(1,1);
+          socket.sockets.in(gameID).emit('joiner-left');
+          game.waiting = true;
+        }
+      }
+
       // Handle the lobby scenario
       delete people[client.id];
       socket.sockets.emit('update-players', people);
+
 
       // Handle the in game scenario
 
@@ -245,7 +266,7 @@ socket.on('connection', function (client) {
   });
 
   client.on('join-game', function(game, cb){
-    people[client.id].game =game.id;
+    people[client.id].game = game.id;
     client.join(game.id);
     games[game.id].players.push({clientID: client.id, username: people[client.id].username});
 
@@ -255,11 +276,6 @@ socket.on('connection', function (client) {
 
 
   })
-
-
-
-
-
 
 });
 
