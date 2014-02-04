@@ -5,4 +5,4 @@ node-modules/*
 data/
 startServer.sh
 *.swp
-app/.sass-cache/*
+app/.sass-cache/
