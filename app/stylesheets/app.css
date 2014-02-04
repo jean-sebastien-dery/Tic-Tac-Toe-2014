@@ -127,41 +127,49 @@ div.waitingroom img.avatar {
 div.waitingroom button {
   margin: 1em 0 1.5em 0;
 }
+/* line 139, ../sass/app.scss */
+div.waitingroom div.countdown {
+  font-size: 70px;
+}
 
 /* ------------------------
  * Create Game
  * ------------------------
  */
-/* line 147, ../sass/app.scss */
+/* line 151, ../sass/app.scss */
 div.creategame h2.title {
   padding-bottom: 1em;
 }
-/* line 151, ../sass/app.scss */
+/* line 155, ../sass/app.scss */
 div.creategame div {
   text-align: center;
 }
-/* line 157, ../sass/app.scss */
+/* line 161, ../sass/app.scss */
 div.creategame button {
   margin: 1em 0 1.5em 0;
 }
 
-/* line 165, ../sass/app.scss */
+/* line 169, ../sass/app.scss */
+div.lobby ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+/* line 175, ../sass/app.scss */
 div.lobby li {
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
-/* line 169, ../sass/app.scss */
+/* line 181, ../sass/app.scss */
 div.lobby div {
   text-align: center;
 }
-/* line 174, ../sass/app.scss */
+/* line 186, ../sass/app.scss */
 div.lobby .game:hover {
   background-color: #FBFAF4;
 }
-/* line 178, ../sass/app.scss */
+/* line 190, ../sass/app.scss */
 div.lobby p {
   margin: 0 0 0 0;
-}
-/* line 138, ../sass/app.scss */
-div.waitingroom div.countdown {
-  font-size: 70px;
 }

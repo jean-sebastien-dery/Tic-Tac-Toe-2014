@@ -166,8 +166,16 @@ div.creategame {
 
 div.lobby {
 
+	ul {
+		list-style-type: none;
+		padding:0;
+		margin:0;
+	}
+
 	li {
 		list-style-type: none;
+		padding:0;
+		margin:0;
 	}
 
 	div {
