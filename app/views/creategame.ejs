@@ -7,7 +7,7 @@
 				</div>
 				<form method="post" class="form-horizontal" role="form">
 					<div class="row">
-					<div class="col-md-12">Number of games needed to win</div>
+					<div class="col-md-12">Please select the number of games needed to win:</div>
 					</div>
 					<div class="row">
 						<div class="radio">
@@ -35,20 +35,20 @@
 	  						 </div>
 						</div>
 					</div>
+					<br>
+					<br>
 					<div class="row">
-						<div class="col-md-3 .col-md-offset-8">
-							<div class="dropdown">
-								  <a id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="/page.html">
-								    Set time for each round <span class="caret"></span> 
-								  </a>
-								  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-								    <li ng-click="createGame.setTimer(2)">2 sec</li>
-								    <li ng-click="createGame.setTimer(3)">3 sec</li>
-								    <li ng-click="createGame.setTimer(5)">5 sec</li>
-								    <li ng-click="createGame.setTimer(8)">8 sec</li>
-								    <li ng-click="createGame.setTimer(10)">10 sec</li>
-								  </ul>
-							</div>
+					<div class="col-md-12">Please choose the time limit for each round:</div>
+					</div>
+					<div class="col-md-5">
+					</div>
+					<div class="row">
+						<div class="btn-group">
+	  						<button class="btn" ng-click="createGame.setTimer(2)">2 seconds</button>
+	  						<button class="btn" ng-click="createGame.setTimer(3)">3 seconds</button>
+	  						<button class="btn" ng-click="createGame.setTimer(5)">5 seconds</button>
+	  						<button class="btn" ng-click="createGame.setTimer(8)">8 seconds</button>
+	  						<button class="btn" ng-click="createGame.setTimer(10)">10 seconds</button>
 						</div>
 					</div>
 					<button ng-click="createGame.create()" 	type="button" 	class="btn btn-primary">Create</button>
