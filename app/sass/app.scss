@@ -163,32 +163,42 @@ div.creategame {
 	}
 }
 
+/* ------------------------
+ * Lobby
+ * ------------------------
+ */
 
 div.lobby {
 
-	ul {
-		list-style-type: none;
-		padding:0;
-		margin:0;
-	}
-
-	li {
-		list-style-type: none;
-		padding:0;
-		margin:0;
-	}
-
 	div {
-
 		text-align: center;
 	}
 
-	.game:hover {
-		background-color:#FBFAF4;
+	.table-cell {
+		padding-left: 0;
+		padding-right: 0;
 	}
 
-	p {
-		margin: 0 0 0 0;
+	.game {
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+
+	a:hover {
+		text-decoration: none;
+	}
+
+	a {
+		font-weight: bold;
+	}
+
+	.game:hover {
+		background-color:#fffdea;
+		@include border-radius(3px);
+	}
+
+	button {
+		margin-top: 1em;
 	}
 }
 

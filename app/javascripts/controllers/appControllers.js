@@ -129,6 +129,10 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
     })
   }
 
+  this.creategame = function () {
+    $location.path('/creategame');
+  }
+
 
 
 }]);
