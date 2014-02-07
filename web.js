@@ -70,8 +70,8 @@ function ensureAuthenticated (req, res, next) {
 }
 
 
-
-mongoose.connect('mongodb://localhost/tictac');
+mongoose.connect('mongodb://heroku:56b54697714d24409a0b29cf86abfca4@troup.mongohq.com:10064/app22012673');
+//mongoose.connect('mongodb://localhost/tictac');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
