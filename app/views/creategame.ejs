@@ -3,11 +3,11 @@
 		<div class="row">
 			<div class="col-xs-8 col-sm-8 col-md-8 content-background">
 				<div class="row">
-					<h2 class="title">Game settings</h2>
+					<h2 class="title"><b>Game settings</b></h2>
 				</div>
 				<form method="post" class="form-horizontal" role="form">
 					<div class="row">
-					<div class="col-md-12">Please select the number of games needed to win:</div>
+					<div class="col-md-12"><b>Please select the number of games needed to win:</b></div>
 					</div>
 					<div class="row">
 						<div class="radio">
@@ -15,22 +15,22 @@
 	  						</div>
 	  						<div class="col-md-1">
 	  						 	<label ng-click="createGame.setRounds(3)">
-						    		<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>2/3
+						    		<input type="radio" name="rounds" value="2/3" checked>2/3
 						  		</label>
 	  						 </div>
 	  						 <div class="col-md-1">
 	  						 	<label ng-click="createGame.setRounds(5)">
-						    		<input type="radio" name="optionsRadios" id="optionsRadios2" value="option1" checked>3/5
+						    		<input type="radio" name="rounds" value="3/5" checked>3/5
 						  		</label>
 	  						 </div>
 	  						 <div class="col-md-1">
 	  						 	<label ng-click="createGame.setRounds(7)">
-						    		<input type="radio" name="optionsRadios" id="optionsRadios3" value="option1" checked>4/7
+						    		<input type="radio" name="rounds" value="4/7" checked>4/7
 						  		</label>
 	  						 </div>
 	  						 <div class="col-md-1">
 	  						 	<label ng-click="createGame.setRounds(9)">
-						    		<input type="radio" name="optionsRadios" id="optionsRadios4" value="option1" checked>5/9
+						    		<input type="radio" name="rounds" value="5/9" checked>5/9
 						  		</label>
 	  						 </div>
 						</div>
@@ -38,20 +38,40 @@
 					<br>
 					<br>
 					<div class="row">
-					<div class="col-md-12">Please choose the time limit for each round:</div>
-					</div>
-					<div class="col-md-5">
+					<div class="col-md-12"><b>Please choose the time limit for each round:</b></div>
 					</div>
 					<div class="row">
-						<div class="btn-group">
-	  						<button class="btn" ng-click="createGame.setTimer(2)">2 seconds</button>
-	  						<button class="btn" ng-click="createGame.setTimer(3)">3 seconds</button>
-	  						<button class="btn" ng-click="createGame.setTimer(5)">5 seconds</button>
-	  						<button class="btn" ng-click="createGame.setTimer(8)">8 seconds</button>
-	  						<button class="btn" ng-click="createGame.setTimer(10)">10 seconds</button>
+						<div class="radio">
+	  						<div class="col-md-4">
+	  						</div>
+	  						<div class="col-md-1">
+	  						 	<label ng-click="createGame.setTimer(2)">
+						    		<input type="radio" name="timer" value="2" checked>2
+						  		</label>
+	  						 </div>
+	  						 <div class="col-md-1">
+	  						 	<label ng-click="createGame.setTimer(3)">
+						    		<input type="radio" name="timer" value="3" checked>3
+						  		</label>
+	  						 </div>
+	  						 <div class="col-md-1">
+	  						 	<label ng-click="createGame.setTimer(5)">
+						    		<input type="radio" name="timer" value="5" checked>5
+						  		</label>
+	  						 </div>
+	  						 <div class="col-md-1">
+	  						 	<label ng-click="createGame.setTimer(8)">
+						    		<input type="radio" name="timer" value="8" checked>8
+						  		</label>
+	  						 </div>
+	  						 <div class="col-md-1">
+	  						 	<label ng-click="createGame.setTimer(10)">
+						    		<input type="radio" name="timer" value="10" checked>10
+						  		</label>
+	  						 </div>
 						</div>
 					</div>
-					<button ng-click="createGame.create()" 	type="button" 	class="btn btn-primary">Create</button>
+					<button ng-click="createGame.create()" 	type="button" 	class="btn btn-primary">Create game</button>
 					<button	type="button" 	class="btn btn-primary">Cancel</button>
 				</form>
 			</div>

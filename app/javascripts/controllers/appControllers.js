@@ -83,7 +83,7 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
 }]);
 
 Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$location', function (WebSocketFactory, UserInfoService, $location) {
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
   var controller = this;
 
   // Model
@@ -91,8 +91,15 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
   this.games   = [];
 
   // Initialize the list when browser is refreshed
-  WebSocketFactory.emit('update-players', {});
-  WebSocketFactory.emit('update-games', {});
+  WebSocketFactory.init().then(function () {
+
+    WebSocketFactory.emit('update-players', {});
+    WebSocketFactory.emit('update-games', {});
+
+  }, function (err) {
+    alert('Not able to join the lobby');
+    $location.path('/mainmenu');
+  });
 
   WebSocketFactory.receive('update', function (msg) {
     console.log(msg);
@@ -127,6 +134,10 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
 
 
     })
+  }
+
+  this.creategame = function () {
+    $location.path('/creategame');
   }
 
 
@@ -207,8 +218,16 @@ Tic.controller('RegisterController', ['UserInfoService', function (UserInfoServi
 
 }]);
 
-Tic.controller('MainMenuController', ['UserInfoService', function (UserInfoService) {
+Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
   UserInfoService.validateLogin();
+
+  this.joinLobby = function () {
+    WebSocketFactory.init().then(function () {
+      $location.path('/lobby');
+    }, function (err) {
+      alert('Not able to join the lobby');
+    });
+  }
 
 }]);
 

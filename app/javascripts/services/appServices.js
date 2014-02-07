@@ -1,4 +1,4 @@
-Tic.factory('WebSocketFactory', function ($rootScope, UserInfoService) {
+Tic.factory('WebSocketFactory', function ($rootScope, $q, UserInfoService) {
     var socket = io.connect('/');
 
     var Service = {};
@@ -29,15 +29,26 @@ Tic.factory('WebSocketFactory', function ($rootScope, UserInfoService) {
         });
     };
 
-     // Need to get the username to join the lobby
-    UserInfoService.getUsername().then(function (username) {
+    //Initialization
+    Service.init = function () {
 
-        // Join the lobby
-        Service.emit('join', username);
+        var deferred = $q.defer();
 
-    }, function (err) {
-        alert('Enable to join the lobby');
-    });
+        // Need to get the username to join the lobby
+        UserInfoService.getUsername().then(function (username) {
+
+            // Join the lobby
+            Service.emit('join', username);
+            deferred.resolve();
+
+        }, function (err) {
+            console.log(err);
+            deferred.reject(err);
+        });
+
+        return deferred.promise;
+    }
+
 
     return Service;
 });

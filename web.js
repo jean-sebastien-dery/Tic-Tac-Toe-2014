@@ -181,17 +181,20 @@ socket.on('connection', function (client) {
     if (name != "") {
       gameID = null;
       people[client.id] = {username : name, game : gameID};
-      client.emit("update", "Connected to the lobby");
 
+      //Update message
+      client.emit("update", "Connected to the lobby");
       socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
 
+      //  Refresh the people list
       socket.sockets.emit('update-players', people);
+
+      // Send the list of game to the client
       client.emit('game-lists', {games : games});
 
       console.log('username joined the lobby', name);
 
 
-      //clients.push(client);
     }
   });
 

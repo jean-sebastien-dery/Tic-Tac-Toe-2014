@@ -10,8 +10,8 @@ html, body {
   background-image: url("../images/background.png");
   background-repeat: no-repeat;
   background-position: center;
-  -webkit-background-size: cover;
   -moz-background-size: cover;
+  -webkit-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
 }
@@ -27,10 +27,11 @@ div.content-background {
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
+  -webkit-border-radius: 10px;
   -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -khtml-border-radius: 10px;
   border-radius: 10px;
   /* Centers div horizontally */
   float: none;
@@ -127,41 +128,65 @@ div.waitingroom img.avatar {
 div.waitingroom button {
   margin: 1em 0 1.5em 0;
 }
+/* line 139, ../sass/app.scss */
+div.waitingroom div.countdown {
+  font-size: 70px;
+}
 
 /* ------------------------
  * Create Game
  * ------------------------
  */
-/* line 147, ../sass/app.scss */
+/* line 151, ../sass/app.scss */
 div.creategame h2.title {
   padding-bottom: 1em;
 }
-/* line 151, ../sass/app.scss */
+/* line 155, ../sass/app.scss */
 div.creategame div {
   text-align: center;
 }
-/* line 157, ../sass/app.scss */
+/* line 161, ../sass/app.scss */
 div.creategame button {
   margin: 1em 0 1.5em 0;
 }
 
-/* line 165, ../sass/app.scss */
-div.lobby li {
-  list-style-type: none;
-}
-/* line 169, ../sass/app.scss */
+/* ------------------------
+ * Lobby
+ * ------------------------
+ */
+/* line 173, ../sass/app.scss */
 div.lobby div {
   text-align: center;
 }
-/* line 174, ../sass/app.scss */
+/* line 177, ../sass/app.scss */
+div.lobby .table-cell {
+  padding-left: 0;
+  padding-right: 0;
+}
+/* line 182, ../sass/app.scss */
+div.lobby .game {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+/* line 187, ../sass/app.scss */
+div.lobby a:hover {
+  text-decoration: none;
+}
+/* line 191, ../sass/app.scss */
+div.lobby a {
+  font-weight: bold;
+}
+/* line 195, ../sass/app.scss */
 div.lobby .game:hover {
-  background-color: #FBFAF4;
+  background-color: #fffdea;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
 }
-/* line 178, ../sass/app.scss */
-div.lobby p {
-  margin: 0 0 0 0;
-}
-/* line 138, ../sass/app.scss */
-div.waitingroom div.countdown {
-  font-size: 70px;
+/* line 200, ../sass/app.scss */
+div.lobby button {
+  margin-top: 1em;
 }
