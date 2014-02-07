@@ -165,6 +165,12 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     $timeout(function() { controller.counter--; }, 5000);
   }
 
+  this.exitGame = function() {
+    WebSocketFactory.emit('cancel-game', function(){
+      $location.path("/lobby");
+    })
+  }
+
   WebSocketFactory.emit("get-game", {})
   WebSocketFactory.receive("get-game", function(game){
     controller.rounds = game.rounds;
