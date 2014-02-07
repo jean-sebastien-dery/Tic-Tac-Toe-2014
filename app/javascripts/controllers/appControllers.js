@@ -177,7 +177,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   }
 
   this.exitGame = function() {
-    WebSocketFactory.emit('cancel-game', function(){
+    WebSocketFactory.emit("cancel-game", function(){
       $location.path("/lobby");
     })
   }
@@ -224,6 +224,7 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
   this.joinLobby = function () {
     WebSocketFactory.init().then(function () {
       $location.path('/lobby');
+      WebSocketFactory.emit('update-games', {});
     }, function (err) {
       alert('Not able to join the lobby');
     });
