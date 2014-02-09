@@ -94,7 +94,12 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
   WebSocketFactory.init().then(function () {
 
     WebSocketFactory.emit('update-players', {});
-    WebSocketFactory.emit('update-games', {});
+    WebSocketFactory.emit('update-games', {}, function (games) {
+      controller.games.length = 0;
+      $.each(games, function (id, game) {
+        controller.games.push(game);
+      });
+    });
 
   }, function (err) {
     alert('Not able to join the lobby');

@@ -202,8 +202,8 @@ socket.on('connection', function (client) {
     socket.emit('update-players', people);
   });
 
-  client.on('update-games', function () {
-    socket.emit('update-games', games);
+  client.on('update-games', function (data, cb) {
+    cb(games);
   });
 
   client.on('disconnect', function () {
@@ -219,7 +219,7 @@ socket.on('connection', function (client) {
             socket.sockets.in(gameID).emit('game-cancelled');
           }
           delete games[gameID];
-          socket.sockets.emit('update-game', games);
+          socket.sockets.emit('update-games', games);
         }
         // check if disconnector is someone who joined a game
         if(game.players.length > 1 && game.players[1].playerID == client.id){ 
@@ -241,23 +241,31 @@ socket.on('connection', function (client) {
 
   client.on('create-game', function (game, cb) {
 
-    gameManager.parseGame(game, client.id, function (err, game) {
-      if (err) {
-        cb(err);
+    if (people[client.id].game == null) {
+      gameManager.parseGame(game, client.id, function (err, game) {
+        if (err) {
+          cb(err);
 
-      } else {
+        } else {
 
-        // Save the game
-        games[game.id] = game;
-        people[client.id].game = game.id;
-        client.join(game.id);
-        // Broadcast new game
-        //emit to everyone
-        socket.sockets.emit('update-games',games);
+          // Save the game
+          games[game.id]         = game;
+          people[client.id].game = game.id;
+          client.join(game.id);
 
-        cb(null, game);
-      }
-    })
+          console.log('games: ', games);
+
+          // Broadcast new game
+          socket.sockets.emit('update-games', games);
+
+          cb(null, game);
+        }
+      });
+
+    } else {
+      cb('Player is already associated to a game');
+    }
+
 
   });
 
@@ -276,7 +284,7 @@ socket.on('connection', function (client) {
     socket.sockets.in(game.id).emit('join-game', games[game.id]);
 
     cb(null);
-  })
+  });
 
   client.on('cancel-game', function(){
      var gameID = people[client.id].game;
