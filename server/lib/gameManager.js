@@ -45,4 +45,3 @@ exports.parseGame = function (game, clientID, cb) {
 	cb(err, parsedGame);
 
 }
-

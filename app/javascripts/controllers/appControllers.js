@@ -182,7 +182,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   }
 
   this.exitGame = function() {
-    WebSocketFactory.emit("cancel-game", function(){
+    WebSocketFactory.emit("cancel-game", {}, function(){
       $location.path("/lobby");
     })
   }

@@ -206,7 +206,9 @@ socket.on('connection', function (client) {
     cb(games);
   });
 
-  client.on('disconnect', function () {
+
+  function cancelGame (client) {
+
     if (people[client.id]) {
 
       // Handle cancelling during waiting room scenario 
@@ -228,6 +230,18 @@ socket.on('connection', function (client) {
           game.waiting = true;
         }
       }
+    }
+  }
+
+  client.on('cancel-game', function (data, cb) {
+    cancelGame(client);
+    cb();
+  });
+
+  client.on('disconnect', function () {
+    if (people[client.id]) {
+
+      cancelGame(client);
 
       // Handle the lobby scenario
       delete people[client.id];
@@ -286,26 +300,7 @@ socket.on('connection', function (client) {
     cb(null);
   });
 
-  client.on('cancel-game', function(){
-     var gameID = people[client.id].game;
 
-      if(gameID != null){ // check if disconnector is waiting for a game
-        var game = games[gameID];
-        if(game.players[0].playerID == client.id){ // disconnector is creator
-          if(game.players.length > 1){ //check if there are multiple players in game
-            socket.sockets.in(gameID).emit('game-cancelled');
-          }
-          delete games[gameID];
-          socket.sockets.emit('update-game', games);
-        }
-        // check if disconnector is someone who joined a game
-        if(game.players.length > 1 && game.players[1].playerID == client.id){ 
-          game.players.slice(1,1);
-          socket.sockets.in(gameID).emit('joiner-left');
-          game.waiting = true;
-        }
-      }
-  });
 
 });
 
