@@ -222,9 +222,9 @@ socket.on('connection', function (client) {
           socket.sockets.emit('update-games', games);
         }
         // check if disconnector is someone who joined a game
-        if(game.players.length > 1 && game.players[1].playerID == client.id){ 
-          game.players.slice(1,1);
-          socket.sockets.in(gameID).emit('joiner-left');
+        if(game.players.length > 1){ 
+          game.players.splice(1,1);
+          socket.sockets.in(gameID).emit('joiner-left', game);
           game.waiting = true;
         }
       }

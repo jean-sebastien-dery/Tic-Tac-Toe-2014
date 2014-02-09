@@ -187,16 +187,20 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     })
   }
 
-  WebSocketFactory.emit("get-game", {})
-  WebSocketFactory.receive("get-game", function(game){
-    controller.rounds = game.rounds;
-    controller.timer= game.timer;
+  function refreshGame(game) {
+    controller.rounds  = game.rounds;
+    controller.timer   = game.timer;
     controller.creator = game.creator;
     if(game.players.length==2){
       controller.newPlayer = game.players[1].username;
     } else {
       controller.newPlayer = '';
     }
+  }
+
+  WebSocketFactory.emit("get-game", {});
+  WebSocketFactory.receive("get-game", function(game){
+    refreshGame(game);
   });
 
   WebSocketFactory.receive("join-game", function(game){
@@ -211,9 +215,9 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     $location.path("/lobby");
   });
 
-  WebSocketFactory.receive('joiner-left', function(){
+  WebSocketFactory.receive('joiner-left', function(game){
     alert("Joiner left. Waiting for new joiner.");
-    WebSocketFactory.emit('get-game', {});
+    refreshGame(game);
   });
 
   
