@@ -184,7 +184,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.exitGame = function() {
     WebSocketFactory.emit("cancel-game", {}, function(){
       $location.path("/lobby");
-    })
+    });
   }
 
   function refreshGame(game) {
@@ -211,12 +211,12 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   });
 
   WebSocketFactory.receive('game-cancelled', function(){
-    alert("Game creator has left the game. You will return to lobby.");
+    //alert("Game creator has left the game. You will return to lobby.");
     $location.path("/lobby");
   });
 
   WebSocketFactory.receive('joiner-left', function(game){
-    alert("Joiner left. Waiting for new joiner.");
+    //alert("Joiner left. Waiting for new joiner.");
     refreshGame(game);
   });
 
