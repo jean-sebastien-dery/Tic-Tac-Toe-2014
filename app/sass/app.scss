@@ -14,11 +14,22 @@ html, body {
 	background-image: url('../images/background.png'); 
 	background-repeat: no-repeat;
 	background-position: center;
+	overflow: hidden;
 	@include background-size(cover);
 }
 
+div.top-padding {
+	height: 10%;
+	min-height: 10%;
+}
+
 div.main-container {
-	width: 100%;
+	height: 90%;
+	min-height: 90%;
+}
+
+div.content {
+	height: 100%;
 }
 
 div.content-background {
@@ -38,10 +49,7 @@ div.content-container {
 }
 
 div.title {
-	width: 100%;
-	padding-top: 6%;
 	
-
 	img {
 		/* Centers image horizontally */
 		display: block; 
@@ -202,3 +210,27 @@ div.lobby {
 	}
 }
 
+/* ------------------------
+ * Game
+ * ------------------------
+ */
+
+div.game {
+	min-height: 100%;
+
+	div.square {
+		text-align: center;
+		height: 33%;
+		width: 33%;
+	}
+
+	div.vertical-borders {
+		border-left:3px solid #000;
+    	border-right:3px solid #000;
+	}
+
+	div.horizontal-borders {
+    	border-top:3px solid #000;
+    	border-bottom:3px solid #000;
+	}
+}
