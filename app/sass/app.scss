@@ -14,7 +14,6 @@ html, body {
 	background-image: url('../images/background.png'); 
 	background-repeat: no-repeat;
 	background-position: center;
-	overflow: hidden;
 	@include background-size(cover);
 }
 
@@ -46,6 +45,10 @@ div.content-background {
 
 div.content-container {
 	margin: 1em;
+}
+
+img.avatar {
+	border: 1px solid #000000;
 }
 
 div.title {
@@ -136,10 +139,6 @@ div.waitingroom {
 		text-align: center;
 	}
 
-	img.avatar {
-		border: 1px solid #000000;
-	}
-
 	button {
 		margin: 1em 0 1.5em 0;
 	}
@@ -216,20 +215,44 @@ div.lobby {
  */
 
 div.game {
-	min-height: 100%;
 
-	div.square {
+	div {
 		text-align: center;
-		height: 33%;
-		width: 33%;
 	}
 
-	div.vertical-borders {
+	div.top {
+		padding-bottom: 2em;
+	}
+
+	div.bottom {
+		padding-top: 1em;
+	}
+
+	table {
+		width: 100%;
+		border: 0;
+	}
+
+	td.square {
+		text-align: center;
+		height: 100px;
+		width: 100px;
+		padding: 0;
+
+		a {
+			display: block; 
+			text-decoration: none; 
+			width: 100%; 
+			height: 100%;
+		}
+	}
+
+	td.vertical-borders {
 		border-left:3px solid #000;
     	border-right:3px solid #000;
 	}
 
-	div.horizontal-borders {
+	td.horizontal-borders {
     	border-top:3px solid #000;
     	border-bottom:3px solid #000;
 	}
