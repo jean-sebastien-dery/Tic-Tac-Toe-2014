@@ -36,6 +36,11 @@ App.config(['$routeProvider',
         controller    : 'MainMenuController',
         controllerAs  : 'main'
       }).
+      when('/game', {
+        templateUrl   : 'tictac-partials/game',
+        controller    : 'GameController',
+        controllerAs  : 'game'
+      }).
       when('/creategame', {
         templateUrl   : 'tictac-partials/creategame',
         controller    : 'CreateGameController',
@@ -231,6 +236,21 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
   UserInfoService.validateLogin();
 
   this.joinLobby = function () {
+    WebSocketFactory.init().then(function () {
+      $location.path('/lobby');
+      WebSocketFactory.emit('update-games', {});
+    }, function (err) {
+      alert('Not able to join the lobby');
+    });
+  }
+
+}]);
+
+
+Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
+  UserInfoService.validateLogin();
+
+  this.goLobby = function () {
     WebSocketFactory.init().then(function () {
       $location.path('/lobby');
       WebSocketFactory.emit('update-games', {});

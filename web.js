@@ -56,6 +56,9 @@ function ensureAuthenticated (req, res, next) {
     } else if (req.params.name == 'waitingroom') {
       return res.render('views/waitingroom');
 
+    } else if (req.params.name == 'game') {
+      return res.render('views/game');
+
     } else if (req.params.name == 'register') {
       return res.render('views/register');
     }

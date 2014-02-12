@@ -17,11 +17,23 @@ html, body {
 }
 
 /* line 20, ../sass/app.scss */
-div.main-container {
-  width: 100%;
+div.top-padding {
+  height: 10%;
+  min-height: 10%;
 }
 
-/* line 24, ../sass/app.scss */
+/* line 25, ../sass/app.scss */
+div.main-container {
+  height: 90%;
+  min-height: 90%;
+}
+
+/* line 30, ../sass/app.scss */
+div.content {
+  height: 100%;
+}
+
+/* line 34, ../sass/app.scss */
 div.content-background {
   background: white;
   border-style: solid;
@@ -38,23 +50,23 @@ div.content-background {
   margin: 0 auto;
 }
 
-/* line 36, ../sass/app.scss */
+/* line 46, ../sass/app.scss */
 div.content-container {
   margin: 1em;
 }
 
-/* line 40, ../sass/app.scss */
-div.title {
-  width: 100%;
-  padding-top: 6%;
+/* line 50, ../sass/app.scss */
+img.avatar {
+  border: 1px solid #000000;
 }
-/* line 45, ../sass/app.scss */
+
+/* line 56, ../sass/app.scss */
 div.title img {
   /* Centers image horizontally */
   display: block;
   margin: 0 auto;
 }
-/* line 51, ../sass/app.scss */
+/* line 62, ../sass/app.scss */
 div.title h1 {
   font-size: 5em;
   font-family: "Verdana";
@@ -65,36 +77,36 @@ div.title h1 {
  * Home page
  * ------------------------
  */
-/* line 65, ../sass/app.scss */
+/* line 76, ../sass/app.scss */
 div.home .options {
   padding-top: 2.8em;
 }
-/* line 68, ../sass/app.scss */
+/* line 79, ../sass/app.scss */
 div.home .options > .label {
   padding-right: 0.2em;
   font-size: 1em;
   color: #ccc;
 }
-/* line 75, ../sass/app.scss */
+/* line 86, ../sass/app.scss */
 div.home div.login-form {
   /* Centers div horizontally */
   float: none;
   margin: 0 auto;
 }
-/* line 83, ../sass/app.scss */
+/* line 94, ../sass/app.scss */
 div.home div.form-group {
   padding: 0 0 1em 0;
 }
-/* line 88, ../sass/app.scss */
+/* line 99, ../sass/app.scss */
 div.home div.quick-game {
   text-align: center;
   padding-bottom: 1em;
 }
-/* line 91, ../sass/app.scss */
+/* line 102, ../sass/app.scss */
 div.home div.quick-game a {
   font-weight: bold;
 }
-/* line 98, ../sass/app.scss */
+/* line 109, ../sass/app.scss */
 div.home button {
   margin: 0 0.5em 0 0;
 }
@@ -103,7 +115,7 @@ div.home button {
  * Registration page
  * ------------------------
  */
-/* line 110, ../sass/app.scss */
+/* line 121, ../sass/app.scss */
 div.register a {
   padding-left: 1em;
 }
@@ -112,23 +124,19 @@ div.register a {
  * Waiting Room
  * ------------------------
  */
-/* line 122, ../sass/app.scss */
+/* line 133, ../sass/app.scss */
 div.waitingroom h2.title {
   padding-bottom: 1em;
 }
-/* line 126, ../sass/app.scss */
+/* line 137, ../sass/app.scss */
 div.waitingroom div {
   text-align: center;
 }
-/* line 131, ../sass/app.scss */
-div.waitingroom img.avatar {
-  border: 1px solid #000000;
-}
-/* line 135, ../sass/app.scss */
+/* line 142, ../sass/app.scss */
 div.waitingroom button {
   margin: 1em 0 1.5em 0;
 }
-/* line 139, ../sass/app.scss */
+/* line 146, ../sass/app.scss */
 div.waitingroom div.countdown {
   font-size: 70px;
 }
@@ -137,15 +145,15 @@ div.waitingroom div.countdown {
  * Create Game
  * ------------------------
  */
-/* line 151, ../sass/app.scss */
+/* line 158, ../sass/app.scss */
 div.creategame h2.title {
   padding-bottom: 1em;
 }
-/* line 155, ../sass/app.scss */
+/* line 162, ../sass/app.scss */
 div.creategame div {
   text-align: center;
 }
-/* line 161, ../sass/app.scss */
+/* line 168, ../sass/app.scss */
 div.creategame button {
   margin: 1em 0 1.5em 0;
 }
@@ -154,29 +162,29 @@ div.creategame button {
  * Lobby
  * ------------------------
  */
-/* line 173, ../sass/app.scss */
+/* line 180, ../sass/app.scss */
 div.lobby div {
   text-align: center;
 }
-/* line 177, ../sass/app.scss */
+/* line 184, ../sass/app.scss */
 div.lobby .table-cell {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 182, ../sass/app.scss */
+/* line 189, ../sass/app.scss */
 div.lobby .game {
   padding-top: 3px;
   padding-bottom: 3px;
 }
-/* line 187, ../sass/app.scss */
+/* line 194, ../sass/app.scss */
 div.lobby a:hover {
   text-decoration: none;
 }
-/* line 191, ../sass/app.scss */
+/* line 198, ../sass/app.scss */
 div.lobby a {
   font-weight: bold;
 }
-/* line 195, ../sass/app.scss */
+/* line 202, ../sass/app.scss */
 div.lobby .game:hover {
   background-color: #fffdea;
   -moz-border-radius: 3px;
@@ -186,7 +194,53 @@ div.lobby .game:hover {
   -khtml-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 200, ../sass/app.scss */
+/* line 207, ../sass/app.scss */
 div.lobby button {
   margin-top: 1em;
+}
+
+/* ------------------------
+ * Game
+ * ------------------------
+ */
+/* line 219, ../sass/app.scss */
+div.game div {
+  text-align: center;
+}
+/* line 223, ../sass/app.scss */
+div.game div.top {
+  padding-bottom: 2em;
+}
+/* line 227, ../sass/app.scss */
+div.game div.bottom {
+  padding-top: 1em;
+}
+/* line 231, ../sass/app.scss */
+div.game table {
+  width: 100%;
+  border: 0;
+}
+/* line 236, ../sass/app.scss */
+div.game td.square {
+  text-align: center;
+  height: 100px;
+  width: 100px;
+  padding: 0;
+}
+/* line 242, ../sass/app.scss */
+div.game td.square a {
+  display: block;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+}
+/* line 250, ../sass/app.scss */
+div.game td.vertical-borders {
+  border-left: 3px solid #000;
+  border-right: 3px solid #000;
+}
+/* line 255, ../sass/app.scss */
+div.game td.horizontal-borders {
+  border-top: 3px solid #000;
+  border-bottom: 3px solid #000;
 }

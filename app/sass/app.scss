@@ -17,8 +17,18 @@ html, body {
 	@include background-size(cover);
 }
 
+div.top-padding {
+	height: 10%;
+	min-height: 10%;
+}
+
 div.main-container {
-	width: 100%;
+	height: 90%;
+	min-height: 90%;
+}
+
+div.content {
+	height: 100%;
 }
 
 div.content-background {
@@ -37,11 +47,12 @@ div.content-container {
 	margin: 1em;
 }
 
-div.title {
-	width: 100%;
-	padding-top: 6%;
-	
+img.avatar {
+	border: 1px solid #000000;
+}
 
+div.title {
+	
 	img {
 		/* Centers image horizontally */
 		display: block; 
@@ -128,10 +139,6 @@ div.waitingroom {
 		text-align: center;
 	}
 
-	img.avatar {
-		border: 1px solid #000000;
-	}
-
 	button {
 		margin: 1em 0 1.5em 0;
 	}
@@ -202,3 +209,51 @@ div.lobby {
 	}
 }
 
+/* ------------------------
+ * Game
+ * ------------------------
+ */
+
+div.game {
+
+	div {
+		text-align: center;
+	}
+
+	div.top {
+		padding-bottom: 2em;
+	}
+
+	div.bottom {
+		padding-top: 1em;
+	}
+
+	table {
+		width: 100%;
+		border: 0;
+	}
+
+	td.square {
+		text-align: center;
+		height: 100px;
+		width: 100px;
+		padding: 0;
+
+		a {
+			display: block; 
+			text-decoration: none; 
+			width: 100%; 
+			height: 100%;
+		}
+	}
+
+	td.vertical-borders {
+		border-left:3px solid #000;
+    	border-right:3px solid #000;
+	}
+
+	td.horizontal-borders {
+    	border-top:3px solid #000;
+    	border-bottom:3px solid #000;
+	}
+}
