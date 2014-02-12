@@ -41,6 +41,11 @@ App.config(['$routeProvider',
         controller    : 'GameController',
         controllerAs  : 'game'
       }).
+      when('/logout', {
+        templateUrl   : 'tictac-partials/home',
+        controller    : 'LogoutController',
+        controllerAs  : 'logout'
+      }).
       when('/creategame', {
         templateUrl   : 'tictac-partials/creategame',
         controller    : 'CreateGameController',
@@ -155,6 +160,18 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
 }]);
 
 Tic.controller('SPController', ['UserInfoService', function (UserInfoService) {
+
+}]);
+
+Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', function (WebSocketFactory, $http, $location) {
+
+  WebSocketFactory.emit('user-logout', {}, function () {
+    $http.get('/api/v1/logout').success(function() {
+      $location.path('/home');
+    }).error(function () {
+      alert('not able to logout');
+    });
+  });
 
 }]);
 

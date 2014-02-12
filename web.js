@@ -148,7 +148,7 @@ app.post('/api/v1/getAllGames', function (req, res) {
     userManager.getAllGames(req, res);
 });
 
-app.get('/logout', function (req, res) {
+app.get('/api/v1/logout', function (req, res) {
   req.logout();
   res.redirect('#/login');
 });
@@ -239,6 +239,18 @@ socket.on('connection', function (client) {
   client.on('cancel-game', function (data, cb) {
     cancelGame(client);
     cb();
+  });
+
+  client.on('user-logout', function (data, cb) {
+
+      cancelGame(client);
+
+      // Handle the lobby scenario
+      delete people[client.id];
+      socket.sockets.emit('update-players', people);
+
+      cb(null);
+
   });
 
   client.on('disconnect', function () {
