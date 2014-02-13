@@ -267,12 +267,9 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
 Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
   UserInfoService.validateLogin();
 
-  this.goLobby = function () {
-    WebSocketFactory.init().then(function () {
-      $location.path('/lobby');
-      WebSocketFactory.emit('update-games', {});
-    }, function (err) {
-      alert('Not able to join the lobby');
+  this.exitGame = function() {
+    WebSocketFactory.emit("cancel-game", {}, function(){
+      $location.path("/lobby");
     });
   }
 
