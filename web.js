@@ -241,12 +241,7 @@ socket.on('connection', function (client) {
     cb();
   });
 
-  client.on("start-game", function (data,cb) {
-      var gameID = people[client.id].game;
-      socket.sockets.in(gameID).emit('goto-game');
-      delete games[gameID];
-      socket.sockets.emit('update-games', games);
-  });
+
 
   client.on('user-logout', function (data, cb) {
 
@@ -312,7 +307,7 @@ socket.on('connection', function (client) {
 
   });
 
-  client.on('join-game', function(game, cb){
+  client.on('join-game', function (game,cb){
     people[client.id].game = game.id;
     client.join(game.id);
     games[game.id].players.push({clientID: client.id, username: people[client.id].username});
@@ -322,9 +317,11 @@ socket.on('connection', function (client) {
     cb(null);
   });
 
-  client.on('start-game', function(game){
-
-
+  client.on("start-game", function (data,cb) {
+      var gameID = people[client.id].game;
+      games[gameID].waiting = false;
+      socket.sockets.emit('update-games', games);
+      cb();
   });
 
 });

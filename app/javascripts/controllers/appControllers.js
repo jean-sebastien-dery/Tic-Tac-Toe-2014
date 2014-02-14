@@ -187,7 +187,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.creator = "unknown";
   this.newPlayer = "another unknown";
 
-  this.startGame = function () {
+  function startGame() {
     this.gameStarted = true;
     this.counter = 5;
 
@@ -197,8 +197,10 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     $timeout(function() { controller.counter--; }, 2000);
     $timeout(function() { controller.counter--; }, 3000);
     $timeout(function() { controller.counter--; }, 4000);
-    $timeout(function() { controller.counter--; }, 5000);
-      WebSocketFactory.emit("start-game", {});
+    $timeout(function() { controller.counter--; 
+       WebSocketFactory.emit("start-game", {}, function(){
+          $location.path('/game');
+       } ); }, 5000);
   }
 
   this.exitGame = function() {
@@ -230,7 +232,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   WebSocketFactory.receive("join-game", function(game){
     
     controller.newPlayer=game.players[1].username;
-
+    startGame();
 
   });
 
