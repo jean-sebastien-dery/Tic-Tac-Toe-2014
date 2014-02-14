@@ -241,6 +241,13 @@ socket.on('connection', function (client) {
     cb();
   });
 
+  client.on("start-game", function (data,cb) {
+      var gameID = people[client.id].game;
+      socket.sockets.in(gameID).emit('goto-game');
+      delete games[gameID];
+      socket.sockets.emit('update-games', games);
+  });
+
   client.on('user-logout', function (data, cb) {
 
       cancelGame(client);
@@ -315,7 +322,10 @@ socket.on('connection', function (client) {
     cb(null);
   });
 
+  client.on('start-game', function(game){
 
+
+  });
 
 });
 

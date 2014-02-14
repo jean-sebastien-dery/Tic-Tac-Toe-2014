@@ -193,14 +193,12 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
 
     /* This is probably not the best way to do it but it works.
        Feel free to change it if you want! */
-    $timeout(function() { 
-      controller.counter--; }, 1000);
+    $timeout(function() { controller.counter--; }, 1000);
     $timeout(function() { controller.counter--; }, 2000);
     $timeout(function() { controller.counter--; }, 3000);
-    $timeout(function() { 
-      controller.counter--; 
-    }, 4000);
+    $timeout(function() { controller.counter--; }, 4000);
     $timeout(function() { controller.counter--; }, 5000);
+      WebSocketFactory.emit("start-game", {});
   }
 
   this.exitGame = function() {
@@ -223,6 +221,10 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   WebSocketFactory.emit("get-game", {});
   WebSocketFactory.receive("get-game", function(game){
     refreshGame(game);
+  });
+
+  WebSocketFactory.receive('goto-game', function(){
+    $location.path("/game");
   });
 
   WebSocketFactory.receive("join-game", function(game){
