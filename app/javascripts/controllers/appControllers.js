@@ -280,12 +280,17 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
   this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
   this.token = 1;
   this.settings = {};
-  this.load = false; 
 
-  // WebSocketFactory.emit('load-game', function(game) {
-  //   controller.token = game.userToken;
-  //   controller.settings = game;
-  // });
+  // Change load to false when you dev environment
+  this.load = true; 
+
+  // Comment this out if you want to avoid matching to player when you develop!
+  WebSocketFactory.emit('load-game', function(game) {
+    controller.token = game.userToken;
+    controller.settings = game;
+  });
+
+  // Until here
 
   WebSocketFactory.receive('players-ready', function () {
     controller.load = false;
