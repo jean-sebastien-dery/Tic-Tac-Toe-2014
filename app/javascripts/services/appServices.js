@@ -73,10 +73,10 @@ Tic.factory('UserInfoService', function ($http, $q, $location) {
         if (user.username != undefined && user.username != "") {
             deferred.resolve(user.username);
         } else {
-            $http.get('/api/v1/whoAmI/').then(function (me) {
+            $http.get('/api/v1/whoAmI/').success(function (me) {
                 user.username = me.data;
                 deferred.resolve(user.username);
-            }, function (err) {
+            }).error(function (err) {
                 console.log(err);
                 deferred.reject(err);
             });

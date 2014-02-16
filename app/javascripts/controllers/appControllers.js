@@ -84,6 +84,8 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
       // Not able to login
       alert('error in login');
     });
+
+    return deferred.promise;
   }
 
   this.register = function () {
