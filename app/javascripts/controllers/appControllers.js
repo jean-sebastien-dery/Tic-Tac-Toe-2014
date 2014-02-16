@@ -271,13 +271,38 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
 
 
 Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
+  var controller = this;
+
+  // 0 when nothing in the grid
+  // 1 when X in the grid
+  // 2 when O in the grid
+  this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  this.token = 0;
+  this.settings = {};
+  this.load = true; 
+
+  WebSocketFactory.emit('load-game', function(game) {
+    controller.token = game.userToken;
+    controller.settings = game;
+  });
+
+  WebSocketFactory.receive('players-ready', function () {
+    controller.load = false;
+  });
+  
+
+  this.placeToken = function (x, y) {
+    //grid[x][y] = 
+  };
 
   this.exitGame = function() {
     WebSocketFactory.emit("cancel-game", {}, function(){
       $location.path("/lobby");
     });
-  }
+  };
+
+
 
 }]);
 

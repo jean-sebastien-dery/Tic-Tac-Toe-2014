@@ -312,9 +312,10 @@ socket.on('connection', function (client) {
     client.join(game.id);
     games[game.id].players.push({clientID: client.id, username: people[client.id].username});
 
+    cb(null);
+
     socket.sockets.in(game.id).emit('join-game', games[game.id]);
 
-    cb(null);
   });
 
   client.on("start-game", function (data,cb) {
@@ -322,6 +323,36 @@ socket.on('connection', function (client) {
       games[gameID].waiting = false;
       socket.sockets.emit('update-games', games);
       cb();
+  });
+
+  client.on("load-game", function (data, cb) {
+    var gameID = people[client.id].game;
+    var game   = games[gameID];
+
+    // Select good token and set player ready
+    if(game.creator == people[client.id].username) {
+      game.userToken = 2;
+      game.players[0].ready = true;
+    } else {
+      game.userToken = 1;
+      game.players[1].ready = true;
+    }
+
+    cb(game);
+
+    // Check if both player are ready
+    var ready = true;
+    for (var i = 0, game; player = game.players[i]; i++) {
+      if (!player.ready) {
+        ready = false;
+      }
+    }
+
+    if (ready) {
+      socket.sockets.in(game.id).emit('players-ready',{});
+    }
+
+
   });
 
 });

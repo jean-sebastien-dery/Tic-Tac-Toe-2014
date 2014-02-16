@@ -1,6 +1,18 @@
 <div class="game">
 	<div class="container">
-		<div class="row" style="height:100%">
+		<div id="processing-modal" role="dialog" aria-hidden="true" data-show="true" ng-show="game.load">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-body">
+		                <div class="text-center">
+		                    <img src="http://www.travislayne.com/images/loading.gif" class="icon" />
+		                    <h4>Processing... </h4>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+		<div class="row" style="height:100%" ng-hide="game.load">
 			<div class="col-xs-11 col-sm-10 col-md-8 content-background">
 				<div class="content-container">
 					<div class="row top">
@@ -10,8 +22,8 @@
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4">
 							<font size="4em"><b>Player 1's turn</b></font><br>
-							00:00 remaining<br><br>
-							Round 1/2<br>
+							00:{{ game.settings.timer}}0 remaining<br><br>
+							Round 1/{{ game.settings.rounds}}<br>
 							Previous round winner: None
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4">
