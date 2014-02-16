@@ -27,7 +27,7 @@
 	                                <b>Join</b>
 	                            </div>
 		                    </div>
-		                    <div class="row game" ng-repeat="game in lobby.games">
+		                    <div class="row game" ng-repeat="game in lobby.games" ng-show="game.waiting">
 								<div class="col-xs-3 col-sm-3 col-md-3 table-cell">
 									{{ game.creator }}
 								</div>

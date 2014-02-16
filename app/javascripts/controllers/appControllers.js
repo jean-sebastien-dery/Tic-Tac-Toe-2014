@@ -189,20 +189,20 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.creator = "unknown";
   this.newPlayer = "another unknown";
 
-  this.startGame = function () {
+  function startGame() {
     this.gameStarted = true;
     this.counter = 5;
 
     /* This is probably not the best way to do it but it works.
        Feel free to change it if you want! */
-    $timeout(function() { 
-      controller.counter--; }, 1000);
+    $timeout(function() { controller.counter--; }, 1000);
     $timeout(function() { controller.counter--; }, 2000);
     $timeout(function() { controller.counter--; }, 3000);
-    $timeout(function() { 
-      controller.counter--; 
-    }, 4000);
-    $timeout(function() { controller.counter--; }, 5000);
+    $timeout(function() { controller.counter--; }, 4000);
+    $timeout(function() { controller.counter--; 
+       WebSocketFactory.emit("start-game", {}, function(){
+          $location.path('/game');
+       } ); }, 5000);
   }
 
   this.exitGame = function() {
@@ -227,10 +227,14 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     refreshGame(game);
   });
 
+  WebSocketFactory.receive('goto-game', function(){
+    $location.path("/game");
+  });
+
   WebSocketFactory.receive("join-game", function(game){
     
     controller.newPlayer=game.players[1].username;
-
+    startGame();
 
   });
 
@@ -269,12 +273,9 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
 Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
   UserInfoService.validateLogin();
 
-  this.goLobby = function () {
-    WebSocketFactory.init().then(function () {
-      $location.path('/lobby');
-      WebSocketFactory.emit('update-games', {});
-    }, function (err) {
-      alert('Not able to join the lobby');
+  this.exitGame = function() {
+    WebSocketFactory.emit("cancel-game", {}, function(){
+      $location.path("/lobby");
     });
   }
 
