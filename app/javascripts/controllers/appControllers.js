@@ -278,14 +278,14 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
   // 1 when X in the grid
   // 2 when O in the grid
   this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-  this.token = 0;
+  this.token = 1;
   this.settings = {};
-  this.load = true; 
+  this.load = false; 
 
-  WebSocketFactory.emit('load-game', function(game) {
-    controller.token = game.userToken;
-    controller.settings = game;
-  });
+  // WebSocketFactory.emit('load-game', function(game) {
+  //   controller.token = game.userToken;
+  //   controller.settings = game;
+  // });
 
   WebSocketFactory.receive('players-ready', function () {
     controller.load = false;
@@ -293,7 +293,20 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
   
 
   this.placeToken = function (x, y) {
-    //grid[x][y] = 
+    if (controller.grid[x][y] != 0) {
+
+      // The spot is already taken
+      alert("You can't place your token here");
+    } else {
+
+      // The spot is free
+
+      controller.grid[x][y] = controller.token;
+
+      // for testing
+      controller.token = (controller.token == 1 ? 2 : 1);
+    }
+
   };
 
   this.exitGame = function() {

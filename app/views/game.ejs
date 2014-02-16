@@ -36,36 +36,36 @@
 							<!-- TODO: Display appropriate images in each square -->
 							<table>
 								<tr>
-									<td class="square" valign="middle">
-										<a href="" ng-click="">(0,0)</a>
+									<td class="square" valign="middle" ng-click="game.placeToken(0,0)">
+										<img src="../images/{{game.grid[0][0]}}-token.png" class="img-responsive center-block" alt="Responsive image" >
 									</td>
-									<td class="square vertical-borders">
-										<a href="" ng-click="">(0,1)</a>
+									<td class="square vertical-borders" ng-click="game.placeToken(0,1)">
+										<img src="../images/{{game.grid[0][1]}}-token.png" class="img-responsive center-block" alt="Responsive image">
 									</td>
-									<td class="square">
-										<a href="" ng-click="">(0,2)</a>
-									</td>
-								</tr>
-								<tr>
-									<td class="square horizontal-borders">
-										<a href="" ng-click="">(1,0)</a>
-									</td>
-									<td class="square horizontal-borders vertical-borders">
-										<a href="" ng-click="">(1,1)</a>
-									</td>
-									<td class="square horizontal-borders">
-										<a href="" ng-click="">(1,2)</a>
+									<td class="square" ng-click="game.placeToken(0,2)">
+										<img src="../images/{{game.grid[0][2]}}-token.png" class="img-responsive center-block" alt="Responsive image">
 									</td>
 								</tr>
 								<tr>
-									<td class="square">
-										<a href="" ng-click="">(2,0)</a>
+									<td class="square horizontal-borders" ng-click="game.placeToken(1,0)">
+										<img src="../images/{{game.grid[1][0]}}-token.png" class="img-responsive center-block" alt="Responsive image">
 									</td>
-									<td class="square vertical-borders">
-										<a href="" ng-click="">(2,1)</a>
+									<td class="square horizontal-borders vertical-borders" ng-click="game.placeToken(1,1)">
+										<img src="../images/{{game.grid[1][1]}}-token.png" class="img-responsive center-block" alt="Responsive image">
 									</td>
-									<td class="square">
-										<a href="" ng-click="">(2,2)</a>
+									<td class="square horizontal-borders" ng-click="game.placeToken(1,2)">
+										<img src="../images/{{game.grid[1][2]}}-token.png" class="img-responsive center-block" alt="Responsive image">
+									</td>
+								</tr>
+								<tr>
+									<td class="square" ng-click="game.placeToken(2,0)">
+										<img src="../images/{{game.grid[2][0]}}-token.png" class="img-responsive center-block" alt="Responsive image">
+									</td>
+									<td class="square vertical-borders" ng-click="game.placeToken(2,1)">
+										<img src="../images/{{game.grid[2][1]}}-token.png" class="img-responsive center-block" alt="Responsive image">
+									</td>
+									<td class="square" ng-click="game.placeToken(2,2)">
+										<img src="../images/{{game.grid[2][2]}}-token.png" class="img-responsive center-block" alt="Responsive image">
 									</td>
 								</tr>
 							</table>
