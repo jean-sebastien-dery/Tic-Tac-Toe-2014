@@ -84,6 +84,8 @@ Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService',
       // Not able to login
       alert('error in login');
     });
+
+    return deferred.promise;
   }
 
   this.register = function () {
@@ -187,20 +189,20 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.creator = "unknown";
   this.newPlayer = "another unknown";
 
-  this.startGame = function () {
+  function startGame() {
     this.gameStarted = true;
     this.counter = 5;
 
     /* This is probably not the best way to do it but it works.
        Feel free to change it if you want! */
-    $timeout(function() { 
-      controller.counter--; }, 1000);
+    $timeout(function() { controller.counter--; }, 1000);
     $timeout(function() { controller.counter--; }, 2000);
     $timeout(function() { controller.counter--; }, 3000);
-    $timeout(function() { 
-      controller.counter--; 
-    }, 4000);
-    $timeout(function() { controller.counter--; }, 5000);
+    $timeout(function() { controller.counter--; }, 4000);
+    $timeout(function() { controller.counter--; 
+       WebSocketFactory.emit("start-game", {}, function(){
+          $location.path('/game');
+       } ); }, 5000);
   }
 
   this.exitGame = function() {
@@ -225,10 +227,14 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     refreshGame(game);
   });
 
+  WebSocketFactory.receive('goto-game', function(){
+    $location.path("/game");
+  });
+
   WebSocketFactory.receive("join-game", function(game){
     
     controller.newPlayer=game.players[1].username;
-
+    startGame();
 
   });
 
@@ -265,16 +271,56 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
 
 
 Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
-  UserInfoService.validateLogin();
+  //UserInfoService.validateLogin();
+  var controller = this;
 
-  this.goLobby = function () {
-    WebSocketFactory.init().then(function () {
-      $location.path('/lobby');
-      WebSocketFactory.emit('update-games', {});
-    }, function (err) {
-      alert('Not able to join the lobby');
+  // 0 when nothing in the grid
+  // 1 when X in the grid
+  // 2 when O in the grid
+  this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  this.token = 1;
+  this.settings = {};
+
+  // Change load to false when you dev environment
+  this.load = true; 
+
+  // Comment this out if you want to avoid matching to player when you develop!
+  WebSocketFactory.emit('load-game', function(game) {
+    controller.token = game.userToken;
+    controller.settings = game;
+  });
+
+  // Until here
+
+  WebSocketFactory.receive('players-ready', function () {
+    controller.load = false;
+  });
+  
+
+  this.placeToken = function (x, y) {
+    if (controller.grid[x][y] != 0) {
+
+      // The spot is already taken
+      alert("You can't place your token here");
+    } else {
+
+      // The spot is free
+
+      controller.grid[x][y] = controller.token;
+
+      // for testing
+      controller.token = (controller.token == 1 ? 2 : 1);
+    }
+
+  };
+
+  this.exitGame = function() {
+    WebSocketFactory.emit("cancel-game", {}, function(){
+      $location.path("/lobby");
     });
-  }
+  };
+
+
 
 }]);
 
