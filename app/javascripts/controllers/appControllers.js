@@ -269,60 +269,86 @@ Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocket
 
 }]);
 
+Tic.controller('MainController', ['UserInfoService', function (UserInfoService) {
+    this.toggleFullScreen = function () {
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+    }   
+}])
 
 Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
-  //UserInfoService.validateLogin();
-  var controller = this;
+    //UserInfoService.validateLogin();
+    var controller = this;
 
-  // 0 when nothing in the grid
-  // 1 when X in the grid
-  // 2 when O in the grid
-  this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-  this.token = 1;
-  this.settings = {};
+    // 0 when nothing in the grid
+    // 1 when X in the grid
+    // 2 when O in the grid
+    this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+    this.token = 1;
+    this.settings = {};
 
-  // Change load to false when you dev environment
-  this.load = true; 
+    // Change load to false when you dev environment
+    this.load = true;
 
-  // Comment this out if you want to avoid matching to player when you develop!
-  WebSocketFactory.emit('load-game', function(game) {
-    controller.token = game.userToken;
-    controller.settings = game;
-  });
-
-  // Until here
-
-  WebSocketFactory.receive('players-ready', function () {
-    controller.load = false;
-  });
-  
-
-  this.placeToken = function (x, y) {
-    if (controller.grid[x][y] != 0) {
-
-      // The spot is already taken
-      alert("You can't place your token here");
-    } else {
-
-      // The spot is free
-
-      controller.grid[x][y] = controller.token;
-
-      // for testing
-      controller.token = (controller.token == 1 ? 2 : 1);
-    }
-
-  };
-
-  this.exitGame = function() {
-    WebSocketFactory.emit("cancel-game", {}, function(){
-      $location.path("/lobby");
+    // Comment this out if you want to avoid matching to player when you develop!
+    WebSocketFactory.emit('load-game', function (game) {
+        controller.token = game.userToken;
+        controller.settings = game;
     });
-  };
+
+    // Until here
+
+    WebSocketFactory.receive('players-ready', function () {
+        controller.load = false;
+    });
+
+    
+
+    this.placeToken = function (x, y) {
+        if (controller.grid[x][y] != 0) {
+
+            // The spot is already taken
+            alert("You can't place your token here");
+        } else {
+
+            // The spot is free
+
+            controller.grid[x][y] = controller.token;
+
+            // for testing
+            controller.token = (controller.token == 1 ? 2 : 1);
+        }
+
+    };
+
+    this.exitGame = function () {
+        WebSocketFactory.emit("cancel-game", {}, function () {
+            $location.path("/lobby");
+        });
+    };
 
 
 
-}]);
+} ]);
 
 Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserInfoService', function ($location, WebSocketFactory, UserInfoService) {
   UserInfoService.validateLogin();
