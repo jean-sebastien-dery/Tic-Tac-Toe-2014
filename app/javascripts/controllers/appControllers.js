@@ -182,6 +182,12 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 
 }]);
 
+Tic.controller('AvatarMenuController', ['WebSocketFactory', '$http', '$location', function (WebSocketFactory, $http, $location) {
+
+  
+
+}]);
+
 Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'WebSocketFactory', function ( $timeout, $location, UserInfoService, WebSocketFactory) {
   var controller = this;
   UserInfoService.validateLogin();

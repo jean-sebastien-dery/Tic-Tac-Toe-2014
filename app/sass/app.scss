@@ -149,6 +149,22 @@ div.waitingroom {
 }
 
 /* ------------------------
+ * Avatar Menu
+ * ------------------------
+ */
+div.avatarmenu {
+	div.row-spacing {
+		padding: 1em 0 1em 0;
+	}
+	img {
+		border-style: solid;
+		border-color: #000000;
+		border-width: 1px;
+		@include border-radius(3px)
+	}
+}
+
+/* ------------------------
  * Create Game
  * ------------------------
  */
