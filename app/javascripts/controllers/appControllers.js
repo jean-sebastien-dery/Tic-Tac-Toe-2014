@@ -33,7 +33,7 @@ App.config(['$routeProvider',
       }).
       when('/mainmenu', {
         templateUrl   : 'tictac-partials/mainmenu',
-        controller    : 'MainMenuController',
+        controller    : 'MainMenuControllerFma',
         controllerAs  : 'main'
       }).
       when('/game', {
@@ -50,6 +50,11 @@ App.config(['$routeProvider',
         templateUrl   : 'tictac-partials/creategame',
         controller    : 'CreateGameController',
         controllerAs  : 'createGame'
+      }).
+      when('/avatarmenu', {
+        templateUrl   : 'tictac-partials/avatarmenu',
+        controller    : 'AvatarMenuController',
+        controllerAs  : 'avatarMenu'
       }).
       otherwise({
         redirectTo: '/home'

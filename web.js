@@ -356,6 +356,3 @@ socket.on('connection', function (client) {
   });
 
 });
-
-
-
