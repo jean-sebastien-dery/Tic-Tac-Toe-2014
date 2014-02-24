@@ -33,7 +33,7 @@ App.config(['$routeProvider',
       }).
       when('/mainmenu', {
         templateUrl   : 'tictac-partials/mainmenu',
-        controller    : 'MainMenuController',
+        controller    : 'MainMenuControllerFma',
         controllerAs  : 'main'
       }).
       when('/game', {
@@ -50,6 +50,11 @@ App.config(['$routeProvider',
         templateUrl   : 'tictac-partials/creategame',
         controller    : 'CreateGameController',
         controllerAs  : 'createGame'
+      }).
+      when('/avatarmenu', {
+        templateUrl   : 'tictac-partials/avatarmenu',
+        controller    : 'AvatarMenuController',
+        controllerAs  : 'avatarMenu'
       }).
       otherwise({
         redirectTo: '/home'
@@ -174,6 +179,12 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
       alert('not able to logout');
     });
   });
+
+}]);
+
+Tic.controller('AvatarMenuController', ['WebSocketFactory', '$http', '$location', function (WebSocketFactory, $http, $location) {
+
+  
 
 }]);
 

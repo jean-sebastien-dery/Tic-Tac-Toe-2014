@@ -61,6 +61,9 @@ function ensureAuthenticated (req, res, next) {
 
     } else if (req.params.name == 'register') {
       return res.render('views/register');
+
+    } else if (req.params.name == 'avatarmenu') {
+      return res.render('views/avatarmenu');
     }
 
     if (req.isAuthenticated()) { 
@@ -356,6 +359,3 @@ socket.on('connection', function (client) {
   });
 
 });
-
-
-
