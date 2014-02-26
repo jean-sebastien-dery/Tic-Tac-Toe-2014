@@ -29,7 +29,7 @@ describe('game system', function() {
 
   it('should create a game with best 4 out of 7 rounds and 5 seconds per turn', function() {
 
-        browser.get('#/register');
+    browser.get('#/register');
 
     // Register first player (player1)
 
@@ -104,7 +104,32 @@ describe('game system', function() {
     
     element(by.css('[ng-click="lobby.joinGame(game)"]')).click();
 
-    expect(browser.getCurrentUrl()).toContain('#/waitingroom');
+    browser.sleep(5000); // Wait for countdown
+
+    expect(browser.getCurrentUrl()).toContain('#/game');
+    
+  }, timeout);
+
+  it('should place an O at (0, 0)', function() {
+    
+    element(by.id('0-0')).click();
+    expect(element(by.id('0-0')).getAttribute('src')).toContain('1-token.png');
+    
+  }, timeout);
+
+  it('should place an X at (1, 1)', function() {
+    
+    element(by.id('1-1')).click();
+    expect(element(by.id('1-1')).getAttribute('src')).toContain('2-token.png');
+    
+  }, timeout);
+
+  it('should go back to lobby', function() {
+    
+    var quitBtn = element(by.name('quitgame'));
+    quitBtn.click();
+
+    expect(browser.getCurrentUrl()).toContain('#/lobby');
     
   }, timeout);
 

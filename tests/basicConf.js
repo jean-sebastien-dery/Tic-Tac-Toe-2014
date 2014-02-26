@@ -4,7 +4,9 @@ exports.config = {
 
   // Spec patterns are relative to this directory.
   specs: [
-  	'basic/*_tests.js'
+    // Order is important
+  	//'basic/login_tests.js',
+    'basic/game_tests.js'
   ],
 
   capabilities: {
