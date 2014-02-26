@@ -4,16 +4,11 @@ exports.config = {
 
   // Spec patterns are relative to this directory.
   specs: [
-    // Order is important
-  	//'basic/login_tests.js',
-    'basic/game_tests.js'
+    'basic/*_tests.js'
   ],
 
   capabilities: {
-    'browserName': 'chrome',
-    'chromeOptions': { 
-      'args': ['incognito'] 
-    }
+    'browserName': 'chrome'
   },
 
 

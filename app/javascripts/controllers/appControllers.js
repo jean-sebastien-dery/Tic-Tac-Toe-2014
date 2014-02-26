@@ -199,12 +199,12 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.timer= 0;
   this.creator = '';
   this.newPlayer = '';
-  this.spinLock = false;
+  this.lock = false; // Allows two players to play on the same computer (different windows)
 
   function startGame() {
     
-    if (controller.spinLock == false) {
-      controller.spinLock = true;
+    if (controller.lock == false) {
+      controller.lock = true;
       /* This is probably not the best way to do it but it works.
          Feel free to change it if you want! */
       $timeout(function() { controller.counter--; }, 1000);
