@@ -197,26 +197,33 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.counter = 5;
   this.rounds = 0;
   this.timer= 0;
-  this.creator = "unknown";
-  this.newPlayer = "another unknown";
+  this.creator = '';
+  this.newPlayer = '';
+  this.spinLock = false;
 
   function startGame() {
-    this.gameStarted = true;
-    this.counter = 5;
+    
+    if (controller.spinLock == false) {
+      controller.spinLock = true;
+      /* This is probably not the best way to do it but it works.
+         Feel free to change it if you want! */
+      $timeout(function() { controller.counter--; }, 1000);
+      $timeout(function() { controller.counter--; }, 2000);
+      $timeout(function() { controller.counter--; }, 3000);
+      $timeout(function() { controller.counter--; }, 4000);
+      $timeout(function() { controller.counter--; 
+                            WebSocketFactory.emit("start-game");
+                            $location.path("/game"); 
+                                                  }, 5000);
+    }
+    else {
+      $timeout(function() { $location.path("/game"); }, 5000);
+    }
 
-    /* This is probably not the best way to do it but it works.
-       Feel free to change it if you want! */
-    $timeout(function() { controller.counter--; }, 1000);
-    $timeout(function() { controller.counter--; }, 2000);
-    $timeout(function() { controller.counter--; }, 3000);
-    $timeout(function() { controller.counter--; }, 4000);
-    $timeout(function() { controller.counter--; 
-       WebSocketFactory.emit("start-game", {}, function(){
-          $location.path('/game');
-       } ); }, 5000);
   }
 
   this.exitGame = function() {
+    controller.gameStarted = false;
     WebSocketFactory.emit("cancel-game", {}, function(){
       $location.path("/lobby");
     });
@@ -227,13 +234,17 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     controller.timer   = game.timer;
     controller.creator = game.creator;
     if(game.players.length==2){
+      controller.gameStarted = true;
       controller.newPlayer = game.players[1].username;
+      startGame();
     } else {
+      controller.gameStarted = false;
       controller.newPlayer = '';
     }
   }
 
   WebSocketFactory.emit("get-game", {});
+
   WebSocketFactory.receive("get-game", function(game){
     refreshGame(game);
   });
@@ -245,8 +256,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   WebSocketFactory.receive("join-game", function(game){
     
     controller.newPlayer=game.players[1].username;
-    startGame();
-
+    refreshGame(game);
   });
 
   WebSocketFactory.receive('game-cancelled', function(){
