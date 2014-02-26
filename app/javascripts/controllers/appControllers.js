@@ -67,7 +67,7 @@ var timeout;
 Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService', function ($http, $q, $location, UserInfoService) {
   var controller = this;
 
-  this.user = {
+  controller.user = {
     username : "",
     password : "",
     confirmedPassword : ""
@@ -365,8 +365,8 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
   UserInfoService.validateLogin();
   var controller = this;
 
-  this.time   = 0;
-  this.rounds = 0;
+  this.time   = 2;
+  this.rounds = 3;
 
   this.setTimer = function (time) {
     controller.time = time;
@@ -391,7 +391,7 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
       // Join the lobby
       WebSocketFactory.emit('create-game', game, function (err, game) {
         if (err) {
-          alert('not able to create the game');
+          alert(err);
         } else {
           $location.path('/waitingroom');
         }

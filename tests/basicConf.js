@@ -4,12 +4,16 @@ exports.config = {
 
   // Spec patterns are relative to this directory.
   specs: [
-    'basic/*_tests.js'
+  	'basic/*_tests.js'
   ],
 
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'chrome',
+    'chromeOptions': { 
+      'args': ['incognito'] 
+    }
   },
+
 
   baseUrl: 'http://localhost:5000',
 
