@@ -375,6 +375,10 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
   this.setRounds = function (rounds) {
     controller.rounds = rounds;
   }
+
+  this.cancel = function () {
+    $location.path("/lobby");
+  }
   
   this.create = function () {
 
