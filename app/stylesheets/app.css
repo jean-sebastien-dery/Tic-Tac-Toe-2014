@@ -160,6 +160,7 @@ div.avatarmenu div.row-spacing {
   padding: 1em 0 1em 0;
 }
 /* line 169, ../sass/app.scss */
+/* All images in the avatarmenu controller will have this setting. */
 div.avatarmenu img {
   border-style: solid;
   border-color: #000000;
