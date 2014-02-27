@@ -272,8 +272,10 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   
 }]);
 
-Tic.controller('RegisterController', ['UserInfoService', function (UserInfoService) {
-
+Tic.controller('RegisterController', ['$location', 'UserInfoService', function ($location, UserInfoService) {
+  this.cancel = function () {
+    $location.path("/home");
+  }
 }]);
 
 Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {

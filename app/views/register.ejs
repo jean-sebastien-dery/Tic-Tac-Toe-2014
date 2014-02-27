@@ -1,23 +1,30 @@
 <div class="register">
 	<div class="container">
 		<div class="row">
-			<div class="col-md-offset-4 col-md-3">
-				<h2>Register</h2>
-				<form method="post" class="form-horizontal" role="form" name="registerForm" action="/api/v1/register"> 
-					<div class="form-group" ng-class="{'has-error': registerForm.username.$error.required || registerForm.username.$error.minlength || registerForm.username.$error.maxlength}">
-						<input type="text" class="form-control" ng-model="home.user.username" placeholder="Username" name="username" ng-minlength="5" ng-maxlength="20" required>
-						<span  ng-show="!registerForm.username.$error.required && (registerForm.username.$error.minlength || registerForm.username.$error.maxlength) && registerForm.username.$dirty">Username must be between 5 and 20 characters.</span>
-					</div>
-					<div class="form-group">
-						<input type="password" class="form-control" ng-model="home.user.password" name="password" placeholder="Password">
-					</div>
-					<div class="form-group">
-						<input type="password" class="form-control" ng-model="home.user.confirmedPassword" name="pw2" ttt-confirm="home.user.password" placeholder="Confirm Password">
-						<span ng-show='registerForm.pw2.$error.equal'>Password must match</span>
-					</div>
-					<button type="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid" name="register">Register</button>
-					<a href="#/home">cancel</a>
-				</form>
+			<div class="col-xs-8 col-sm-5 col-md-4 registration-form content-background">
+				<div class="content-container">
+					<form method="post" class="form-horizontal" role="form" name="registerForm" action="/api/v1/register"> 
+						<h2>Register</h2>
+						<div class="form-group" ng-class="{'has-error': registerForm.username.$error.required || registerForm.username.$error.minlength || registerForm.username.$error.maxlength}">
+							<label>Username</label>
+							<input type="text" class="form-control" ng-model="home.user.username" placeholder="Username" name="username" ng-minlength="5" ng-maxlength="20" required>
+							<span  ng-show="!registerForm.username.$error.required && (registerForm.username.$error.minlength || registerForm.username.$error.maxlength) && registerForm.username.$dirty">Username must be between 5 and 20 characters.</span>
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<input type="password" class="form-control" ng-model="home.user.password" name="password" placeholder="Password">
+						</div>
+						<div class="form-group">
+							<label>Confirm Password</label>
+							<input type="password" class="form-control" ng-model="home.user.confirmedPassword" name="pw2" ttt-confirm="home.user.password" placeholder="Confirm Password">
+							<span ng-show='registerForm.pw2.$error.equal'>Password must match</span>
+						</div>
+						<div class="form-group" align="center">
+							<button type="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid" name="register">Register</button>
+							<button ng-click="register.cancel()" name="cancel" type="button" class="btn btn-default">Cancel</button>
+						</div>
+					</form>	
+				</div>
 			</div>
 		</div>
 	</div>
