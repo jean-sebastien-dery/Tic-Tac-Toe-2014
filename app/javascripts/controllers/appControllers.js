@@ -192,7 +192,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
 
       // Sends the POST message that sets the 'useDefault' variable to 'true'.
       // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
-      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : "true"}).success(function () {
+      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : "false"}).success(function () {
 
       // There is nothing else to do here if the request is successfull.
 
@@ -218,7 +218,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
 
       // Sends the POST message that sets the 'useDefault' variable to 'true'.
       // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
-      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : "false"}).success(function () {
+      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : "true"}).success(function () {
 
       // There is nothing else to do here if the request is successfull.
 
