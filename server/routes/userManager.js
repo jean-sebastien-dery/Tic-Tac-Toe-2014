@@ -1,3 +1,6 @@
+// Useful Documentation:
+// Resource on how to use the GET and POST parsing: http://expressjs.com/api.html
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -95,15 +98,22 @@ exports.logUser = function (profile, done) {
 
 // This function will set the user's avatar to default.
 exports.setDefaultAvatar = function(req, res) {
+
+	// Fetches the value of these two parameters that will be used later.
+	var currentUser = req.param('username');
+	var defaultAvatarValue = req.param('defaultAvatar');
+
+	console.log("User '" + currentUser + "' will have its 'defaultAvatar' variable set to '" + defaultAvatarValue + "'.");
+
 	// Searches for the user in the database, 'user' will be the found user.
-	User.findOne({'username' : username }, function (err, user) {
+	User.findOne({'username' : currentUser }, function (err, user) {
 		// If there is an error, include the error in the response.
 		if (err) {
 			res(err);
 		} else {
-			// If the user is present we change the 'defaultAvatar' variable to 'true'.
+			// If the user is present we change the 'defaultAvatar' variable to passed in the post request.
 
-			user.defaultAvatar = false;
+			user.defaultAvatar = defaultAvatarValue;
 
 			// This will save the user object in the database.
 			user.save(function (errsave) {
@@ -114,8 +124,8 @@ exports.setDefaultAvatar = function(req, res) {
 				}
 			});
 
-			// We don't really care about the response sent to the client.
-			res(null, user);
+			// Sends the OK 200 to the client.
+			res.send(200);
 		}
 	});
 };
