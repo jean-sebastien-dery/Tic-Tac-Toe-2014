@@ -8,6 +8,7 @@ var userSchema = new Schema({
 		password 	: {type:String},
 		gameWon		: {type:Number},
 		gameLose	: {type:Number},
+		defaultAvatar : {type:Boolean},
 });
 
 //username of the player who created this game
@@ -98,6 +99,7 @@ exports.logUser = function (profile, done) {
 exports.registerUser = function (req, res) {
 	var user = new User(req.body);
 
+	// This will save the user object in the database.
 	user.save(function (err) {
 		if (err){
 			res.send(500, err);

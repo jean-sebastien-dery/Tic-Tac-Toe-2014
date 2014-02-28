@@ -3,6 +3,8 @@
 		<div class="row">
 			<div class="col-xs-8 col-sm-5 col-md-4 registration-form content-background">
 				<div class="content-container">
+					<!-- This form defines the type of HTTP request that will be made along with the function in web.js that will
+					be called (which is "/api/v1/register" in this case.) -->
 					<form method="post" class="form-horizontal" role="form" name="registerForm" action="/api/v1/register"> 
 						<h2>Register</h2>
 						<div class="form-group" ng-class="{'has-error': registerForm.username.$error.required || registerForm.username.$error.minlength || registerForm.username.$error.maxlength}">
@@ -23,6 +25,8 @@
 							<button type="submit" class="btn btn-primary" ng-disabled="!registerForm.$valid" name="register">Register</button>
 							<button ng-click="register.cancel()" name="cancel" type="button" class="btn btn-default">Cancel</button>
 						</div>
+						<!-- Sets the defaultAvatar variable in for the user as to be equal to true. -->
+						<input type='hidden' name='defaultAvatar' value='true' /> 
 					</form>	
 				</div>
 			</div>
