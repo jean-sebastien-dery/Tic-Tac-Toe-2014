@@ -49,9 +49,6 @@ exports.FindGameByUsername = function (username, cb){
 
 };
 
-
-
-
 exports.findById = function (id, done) {
 	User.findById(id, function(err, user){
 		if(!err) done(null, user);
@@ -93,6 +90,33 @@ exports.logUser = function (profile, done) {
 				};
 			});
 	    };
+	});
+};
+
+// This function will set the user's avatar to default.
+exports.setDefaultAvatar = function(req, res) {
+	// Searches for the user in the database, 'user' will be the found user.
+	User.findOne({'username' : username }, function (err, user) {
+		// If there is an error, include the error in the response.
+		if (err) {
+			res(err);
+		} else {
+			// If the user is present we change the 'defaultAvatar' variable to 'true'.
+
+			user.defaultAvatar = false;
+
+			// This will save the user object in the database.
+			user.save(function (errsave) {
+				if (errsave){
+					// If there was an error saving the user, sent back response
+					// code 500 to the client (Internal Server error).
+					res.send(500, errsave);
+				}
+			});
+
+			// We don't really care about the response sent to the client.
+			res(null, user);
+		}
 	});
 };
 

@@ -135,6 +135,10 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
   }
 });
 
+app.post('/api/v1/setDefaultAvatar', function (req, res) {
+    userManager.setDefaultAvatar(req, res);
+});
+
 app.post('/api/v1/register', function (req, res) {
     userManager.registerUser(req, res);
 });
