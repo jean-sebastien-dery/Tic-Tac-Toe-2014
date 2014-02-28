@@ -381,6 +381,12 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
     this.token = 1;
     this.settings = {};
+    this.starter = ''
+    this.timer= 0;
+    this.round = 0;
+    this.creator = '';
+    this.newPlayer = '';
+    this.lock = false;
 
     // Change load to false when you dev environment
     this.load = true;
@@ -421,6 +427,25 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             $location.path("/lobby");
         });
     };
+
+    function refreshGame(game) {
+      controller.rounds  = game.rounds;
+      controller.timer   = game.timer;
+      controller.creator = game.creator;
+      controller.starter = game.players[Math.round(Math.random())].username;
+      if(game.players.length==2){
+        controller.newPlayer = game.players[1].username;
+        
+      } else {
+        controller.newPlayer = '';
+      }
+    }
+
+    WebSocketFactory.emit("get-game", {});
+
+    WebSocketFactory.receive("get-game", function(game){
+    refreshGame(game);
+  });
 
 
 

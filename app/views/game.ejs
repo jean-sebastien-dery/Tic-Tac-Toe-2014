@@ -18,17 +18,18 @@
 					<div class="row top">
 						<div class="col-xs-4 col-sm-4 col-md-4" id="creator">
 							<img src="images/test-avatar.png" class="avatar"></img><br>
-							<b>Creator</b>
+							<b>{{game.creator}}</b>
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="gameinfo">
 							<font size="4em"><b>PlayerX's turn</b></font><br>
-							00:{{ game.settings.timer}} remaining<br><br>
-							Round 1/{{ game.settings.rounds}}<br>
-							Previous round winner: None
+							00:{{ game.timer}} remaining<br><br>
+							Round 1/{{ game.rounds}}<br>
+							Previous round winner: None <br>
+							Who start the first move: {{game.starter}}
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="otherplayer">
 							<img src="images/unknown-player-avatar.png" class="avatar"></img><br>
-							<b>Other Player</b>
+							<b>{{game.newPlayer}}</b>
 						</div>
 					</div>
 					<div class="row">
