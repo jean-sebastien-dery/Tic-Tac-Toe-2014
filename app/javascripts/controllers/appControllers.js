@@ -330,6 +330,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.settings = {};
 
     this.timer= 0;
+    this.round = 0;
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
@@ -375,6 +376,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     };
 
     function refreshGame(game) {
+      controller.rounds  = game.rounds;
+      controller.timer   = game.timer;
       controller.creator = game.creator;
       if(game.players.length==2){
         controller.newPlayer = game.players[1].username;
