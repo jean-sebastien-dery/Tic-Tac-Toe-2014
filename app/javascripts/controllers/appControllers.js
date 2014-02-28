@@ -148,7 +148,7 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
 
     WebSocketFactory.emit('join-game', game, function(err){
       if (err){
-        alert("cannot join this game");
+        alert("cannot join this game");f
       }
       else{
         $location.path("/waitingroom");
@@ -184,7 +184,28 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 
 Tic.controller('AvatarMenuController', ['WebSocketFactory', '$http', '$location', function (WebSocketFactory, $http, $location) {
 
-  
+  // Handles the action of pressing on the 'Upload news' button.
+  this.uploadNew = function() {
+    $location.path('/mainmenu');
+  }
+
+  // Handles the action of pressing on the 'Use default' button.
+  this.useDefault = function () {
+      // Sends the POST message that sets the 'useDefault' variable to 'true'.
+      $http.post('/api/v1/setDefaultAvatar', {"useDefault" : "true"}).success(function () {
+
+    }).error(function () {
+
+      $location.path('/');
+      // Not able to login
+      alert('An error occured while setting up the default avatar.');
+    });
+  }
+
+  // Handles the action of pressing on the 'Back' button.
+  this.back = function() {
+    $location.path('/mainmenu');
+  }
 
 }]);
 
