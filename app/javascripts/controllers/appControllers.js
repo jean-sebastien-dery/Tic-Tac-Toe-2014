@@ -329,6 +329,11 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.token = 1;
     this.settings = {};
 
+    this.timer= 0;
+    this.creator = '';
+    this.newPlayer = '';
+    this.lock = false;
+
     // Change load to false when you dev environment
     this.load = true;
 
@@ -368,6 +373,22 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             $location.path("/lobby");
         });
     };
+
+    function refreshGame(game) {
+      controller.creator = game.creator;
+      if(game.players.length==2){
+        controller.newPlayer = game.players[1].username;
+        startGame();
+      } else {
+        controller.newPlayer = '';
+      }
+    }
+
+    WebSocketFactory.emit("get-game", {});
+
+    WebSocketFactory.receive("get-game", function(game){
+    refreshGame(game);
+  });
 
 
 
