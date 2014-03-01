@@ -183,42 +183,30 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 }]);
 
 Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$http', '$location', function (UserInfoService, WebSocketFactory, $http, $location) {
+  var controller = this;
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
-    // The first thing to do is to get the username of the current user.
-    UserInfoService.getUsername().then(function (username) {
-      // Then, as soon as we have the username we can send the POST request.
-
-      // Sends the POST message that sets the 'useDefault' variable to 'true'.
-      // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
-      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : "false"}).success(function () {
-
-      // There is nothing else to do here if the request is successfull.
-
-      }).error(function () {
-        $location.path('/');
-        // Not able to login
-        alert('An error occured while setting up the default avatar.');
-      });
-
-    }, function (err) { // Handles any error that could occur while identifying the current user.
-      alert('Enable to get the username of the current user.');
-    });
+    controller.changeDefaultAvatarSetting('false');
   }
 
   // Handles the action of pressing on the 'Use default' button.
   // So here the server should get notified that the attribute 'defaultAvatar' in the database
   // will be changed to 'true' for the current user.
   this.useDefault = function () {
+    controller.changeDefaultAvatarSetting('true');
+  }
 
+  // Changes the 'defaultAvatar' variable of the user in the database (it is either 'true' or 'false').
+  this.changeDefaultAvatarSetting = function(valueOfVariable) {
+    console.log("function changeDefaultAvatarSetting was called.");
     // The first thing to do is to get the username of the current user.
     UserInfoService.getUsername().then(function (username) {
       // Then, as soon as we have the username we can send the POST request.
 
       // Sends the POST message that sets the 'useDefault' variable to 'true'.
       // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
-      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : "true"}).success(function () {
+      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : valueOfVariable}).success(function () {
 
       // There is nothing else to do here if the request is successfull.
 
