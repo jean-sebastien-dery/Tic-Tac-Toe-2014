@@ -103,6 +103,12 @@ exports.setDefaultAvatar = function(req, res) {
 	var currentUser = req.param('username');
 	var defaultAvatarValue = req.param('defaultAvatar');
 
+	// Checks if both variables have an assigned value.
+	if(typeof currentUser === 'undefined' || typeof defaultAvatarValue === 'undefined'){
+		res.send(500);
+		throw { name: 'FatalError', message: "The 'username' or 'defaultAvatar' is undefined." };
+ 	};
+
 	console.log("User '" + currentUser + "' will have its 'defaultAvatar' variable set to '" + defaultAvatarValue + "'.");
 
 	// Searches for the user in the database, 'user' will be the found user.

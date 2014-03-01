@@ -187,6 +187,22 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
+    // Uploads the picture to the server.
+    console.log("Will let the user select the image in its file system.");
+
+    /*var reader = new FileReader();
+    reader.onload = function(event) {
+        var contents = event.target.result;
+        console.log("File contents: " + contents);
+    };
+
+    reader.onerror = function(event) {
+        console.error("File could not be read! Code " + event.target.error.code);
+    };
+
+    reader.readAsText(file);*/
+
+    // Modifies the attribute in the server.
     controller.changeDefaultAvatarSetting('false');
   }
 
