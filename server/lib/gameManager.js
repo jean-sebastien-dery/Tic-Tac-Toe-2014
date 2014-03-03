@@ -8,6 +8,7 @@ function Game (rounds, timer, creatorName, creatorID) {
 	this.waiting = true;
 	this.players = [];
 	this.players.push({playerID:creatorID, username:creatorName});
+	this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 }
 
 exports.joinGame = function (player) {

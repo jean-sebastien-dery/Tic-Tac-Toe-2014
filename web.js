@@ -277,6 +277,12 @@ socket.on('connection', function (client) {
     }
   });
 
+  client.on('update-grid', function (grid, cb) {
+    var game = games[people[client.id].game];
+    game.grid = grid;
+    cb(null, game);
+  });
+
   client.on('create-game', function (game, cb) {
 
     if (people[client.id].game == null) {
