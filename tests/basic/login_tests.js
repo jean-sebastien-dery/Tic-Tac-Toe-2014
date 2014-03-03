@@ -31,7 +31,7 @@ describe('login system', function() {
 
   it('should register if all information is confirmed', function() {
     element(by.name("register")).click();
-    
+
     sendkeysToModel('home.user.username','test');
     sendkeysToModel('home.user.password', 'test12');
     sendkeysToModel('home.user.confirmedPassword', 'test12');

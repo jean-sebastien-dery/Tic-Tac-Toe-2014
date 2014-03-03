@@ -67,7 +67,7 @@ var timeout;
 Tic.controller('HomeController', ['$http', '$q', '$location', 'UserInfoService', function ($http, $q, $location, UserInfoService) {
   var controller = this;
 
-  this.user = {
+  controller.user = {
     username : "",
     password : "",
     confirmedPassword : ""
@@ -148,7 +148,7 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
 
     WebSocketFactory.emit('join-game', game, function(err){
       if (err){
-        alert("cannot join this game");
+        alert("cannot join this game");f
       }
       else{
         $location.path("/waitingroom");
@@ -182,9 +182,66 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 
 }]);
 
-Tic.controller('AvatarMenuController', ['WebSocketFactory', '$http', '$location', function (WebSocketFactory, $http, $location) {
+Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$http', '$location', function (UserInfoService, WebSocketFactory, $http, $location) {
+  var controller = this;
 
-  
+  // Handles the action of pressing on the 'Upload news' button.
+  this.uploadNew = function() {
+    // Uploads the picture to the server.
+    console.log("Will let the user select the image in its file system.");
+
+    /*var reader = new FileReader();
+    reader.onload = function(event) {
+        var contents = event.target.result;
+        console.log("File contents: " + contents);
+    };
+
+    reader.onerror = function(event) {
+        console.error("File could not be read! Code " + event.target.error.code);
+    };
+
+    reader.readAsText(file);*/
+
+    // Modifies the attribute in the server.
+    controller.changeDefaultAvatarSetting('false');
+  }
+
+  // Handles the action of pressing on the 'Use default' button.
+  // So here the server should get notified that the attribute 'defaultAvatar' in the database
+  // will be changed to 'true' for the current user.
+  this.useDefault = function () {
+    controller.changeDefaultAvatarSetting('true');
+  }
+
+  // Changes the 'defaultAvatar' variable of the user in the database (it is either 'true' or 'false').
+  this.changeDefaultAvatarSetting = function(valueOfVariable) {
+    console.log("function changeDefaultAvatarSetting was called.");
+    // The first thing to do is to get the username of the current user.
+    UserInfoService.getUsername().then(function (username) {
+      // Then, as soon as we have the username we can send the POST request.
+
+      // Sends the POST message that sets the 'useDefault' variable to 'true'.
+      // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
+      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : valueOfVariable}).success(function () {
+
+      // There is nothing else to do here if the request is successfull.
+
+      }).error(function () {
+        $location.path('/');
+        // Not able to login
+        alert('An error occured while setting up the default avatar.');
+      });
+
+    }, function (err) { // Handles any error that could occur while identifying the current user.
+      alert('Enable to get the username of the current user.');
+    });
+  }
+
+  // Handles the action of pressing on the 'Back' button.
+  // The only thing that needs to be done is going back to the 'mainmenu'.
+  this.back = function() {
+    $location.path('/mainmenu');
+  }
 
 }]);
 
@@ -197,26 +254,33 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.counter = 5;
   this.rounds = 0;
   this.timer= 0;
-  this.creator = "unknown";
-  this.newPlayer = "another unknown";
+  this.creator = '';
+  this.newPlayer = '';
+  this.lock = false; // Allows two players to play on the same computer (different windows)
 
   function startGame() {
-    this.gameStarted = true;
-    this.counter = 5;
+    
+    if (controller.lock == false) {
+      controller.lock = true;
+      /* This is probably not the best way to do it but it works.
+         Feel free to change it if you want! */
+      $timeout(function() { controller.counter--; }, 1000);
+      $timeout(function() { controller.counter--; }, 2000);
+      $timeout(function() { controller.counter--; }, 3000);
+      $timeout(function() { controller.counter--; }, 4000);
+      $timeout(function() { controller.counter--; 
+                            WebSocketFactory.emit("start-game");
+                            $location.path("/game"); 
+                                                  }, 5000);
+    }
+    else {
+      $timeout(function() { $location.path("/game"); }, 5000);
+    }
 
-    /* This is probably not the best way to do it but it works.
-       Feel free to change it if you want! */
-    $timeout(function() { controller.counter--; }, 1000);
-    $timeout(function() { controller.counter--; }, 2000);
-    $timeout(function() { controller.counter--; }, 3000);
-    $timeout(function() { controller.counter--; }, 4000);
-    $timeout(function() { controller.counter--; 
-       WebSocketFactory.emit("start-game", {}, function(){
-          $location.path('/game');
-       } ); }, 5000);
   }
 
   this.exitGame = function() {
+    controller.gameStarted = false;
     WebSocketFactory.emit("cancel-game", {}, function(){
       $location.path("/lobby");
     });
@@ -227,13 +291,17 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     controller.timer   = game.timer;
     controller.creator = game.creator;
     if(game.players.length==2){
+      controller.gameStarted = true;
       controller.newPlayer = game.players[1].username;
+      startGame();
     } else {
+      controller.gameStarted = false;
       controller.newPlayer = '';
     }
   }
 
   WebSocketFactory.emit("get-game", {});
+
   WebSocketFactory.receive("get-game", function(game){
     refreshGame(game);
   });
@@ -245,8 +313,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   WebSocketFactory.receive("join-game", function(game){
     
     controller.newPlayer=game.players[1].username;
-    startGame();
-
+    refreshGame(game);
   });
 
   WebSocketFactory.receive('game-cancelled', function(){
@@ -262,8 +329,10 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   
 }]);
 
-Tic.controller('RegisterController', ['UserInfoService', function (UserInfoService) {
-
+Tic.controller('RegisterController', ['$location', 'UserInfoService', function ($location, UserInfoService) {
+  this.cancel = function () {
+    $location.path("/home");
+  }
 }]);
 
 Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
@@ -316,6 +385,12 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
     this.token = 1;
     this.settings = {};
+    this.starter = ''
+    this.timer= 0;
+    this.round = 0;
+    this.creator = '';
+    this.newPlayer = '';
+    this.lock = false;
 
     // Change load to false when you dev environment
     this.load = true;
@@ -357,6 +432,25 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         });
     };
 
+    function refreshGame(game) {
+      controller.rounds  = game.rounds;
+      controller.timer   = game.timer;
+      controller.creator = game.creator;
+      controller.starter = game.players[Math.round(Math.random())].username;
+      if(game.players.length==2){
+        controller.newPlayer = game.players[1].username;
+        
+      } else {
+        controller.newPlayer = '';
+      }
+    }
+
+    WebSocketFactory.emit("get-game", {});
+
+    WebSocketFactory.receive("get-game", function(game){
+    refreshGame(game);
+  });
+
 
 
 } ]);
@@ -365,8 +459,8 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
   UserInfoService.validateLogin();
   var controller = this;
 
-  this.time   = 0;
-  this.rounds = 0;
+  this.time   = 2;
+  this.rounds = 3;
 
   this.setTimer = function (time) {
     controller.time = time;
@@ -374,6 +468,10 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
 
   this.setRounds = function (rounds) {
     controller.rounds = rounds;
+  }
+
+  this.cancel = function () {
+    $location.path("/lobby");
   }
   
   this.create = function () {
@@ -391,7 +489,7 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
       // Join the lobby
       WebSocketFactory.emit('create-game', game, function (err, game) {
         if (err) {
-          alert('not able to create the game');
+          alert(err);
         } else {
           $location.path('/waitingroom');
         }

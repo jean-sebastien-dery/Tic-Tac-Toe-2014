@@ -11,6 +11,7 @@ exports.config = {
     'browserName': 'chrome'
   },
 
+
   baseUrl: 'http://localhost:5000',
 
   params: {

@@ -118,8 +118,18 @@ div.home {
 
 div.register {
 
-	a {
-		padding-left: 1em;
+	h2 {
+		text-align: center;
+	}
+
+	div.registration-form {
+		/* Centers div horizontally */
+		float: none;
+		margin: 0 auto;
+	}
+
+	button {
+		margin: 1em 0.5em 0 0;
 	}
 }
 

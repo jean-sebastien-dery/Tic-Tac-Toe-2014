@@ -1,3 +1,6 @@
+// Useful Documentation:
+// Resource on how to use the GET and POST parsing: http://expressjs.com/api.html
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
@@ -8,6 +11,7 @@ var userSchema = new Schema({
 		password 	: {type:String},
 		gameWon		: {type:Number},
 		gameLose	: {type:Number},
+		defaultAvatar : {type:Boolean},
 });
 
 //username of the player who created this game
@@ -47,9 +51,6 @@ exports.FindGameByUsername = function (username, cb){
 	});
 
 };
-
-
-
 
 exports.findById = function (id, done) {
 	User.findById(id, function(err, user){
@@ -95,9 +96,50 @@ exports.logUser = function (profile, done) {
 	});
 };
 
+// This function will set the user's avatar to default.
+exports.setDefaultAvatar = function(req, res) {
+
+	// Fetches the value of these two parameters that will be used later.
+	var currentUser = req.param('username');
+	var defaultAvatarValue = req.param('defaultAvatar');
+
+	// Checks if both variables have an assigned value.
+	if(typeof currentUser === 'undefined' || typeof defaultAvatarValue === 'undefined'){
+		res.send(500);
+		throw { name: 'FatalError', message: "The 'username' or 'defaultAvatar' is undefined." };
+ 	};
+
+	console.log("User '" + currentUser + "' will have its 'defaultAvatar' variable set to '" + defaultAvatarValue + "'.");
+
+	// Searches for the user in the database, 'user' will be the found user.
+	User.findOne({'username' : currentUser }, function (err, user) {
+		// If there is an error, include the error in the response.
+		if (err) {
+			res(err);
+		} else {
+			// If the user is present we change the 'defaultAvatar' variable to passed in the post request.
+
+			user.defaultAvatar = defaultAvatarValue;
+
+			// This will save the user object in the database.
+			user.save(function (errsave) {
+				if (errsave){
+					// If there was an error saving the user, sent back response
+					// code 500 to the client (Internal Server error).
+					res.send(500, errsave);
+				}
+			});
+
+			// Sends the OK 200 to the client.
+			res.send(200);
+		}
+	});
+};
+
 exports.registerUser = function (req, res) {
 	var user = new User(req.body);
 
+	// This will save the user object in the database.
 	user.save(function (err) {
 		if (err){
 			res.send(500, err);

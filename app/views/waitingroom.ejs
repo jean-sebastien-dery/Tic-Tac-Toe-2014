@@ -12,7 +12,7 @@
 						<img src="images/test-avatar.png" class="avatar"></img>
 						<p><b>{{waitingroom.creator}}</b></p>
 					</div>
-					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="waitingroom.gameStarted" ng-controller="WRController">
+					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="waitingroom.gameStarted">
 						{{ waitingroom.counter}}
 					</div>
 					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-hide="waitingroom.gameStarted">
@@ -25,7 +25,7 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-12">
-						<p>
+						<p id="gameParameters">
 							<b>Game settings:</b><br>
 							{{waitingroom.rounds}} rounds total / {{waitingroom.timer}} seconds per round
 						</p>
