@@ -290,7 +290,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
     controller.rounds  = game.rounds;
     controller.timer   = game.timer;
     controller.creator = game.creator;
-    if(game.players.length == 2){
+    if(game.players.length==2){
       controller.gameStarted = true;
       controller.newPlayer = game.players[1].username;
       startGame();
@@ -385,7 +385,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
     this.token = 1;
     this.settings = {};
-    this.starter = '';
+    this.starter = ''
     this.timer= 0;
     this.round = 0;
     this.creator = '';
@@ -407,23 +407,23 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         controller.load = false;
     });
 
-    this.placeToken = function (x, y) {
-      UserInfoService.getUsername().then(function (username) {
+    
 
+    this.placeToken = function (x, y) {
         if (controller.grid[x][y] != 0) {
+
             // The spot is already taken
             alert("You can't place your token here");
         } else {
-           grid[x][y] = game.userToken;
-           WebSocketFactory.emit('update-grid', grid, function (err, game) {
-              if (err) {
-                alert(err);
-              } else {
-                // FIXME: to add else statement
-              }
-            });
+
+            // The spot is free
+
+            controller.grid[x][y] = controller.token;
+
+            // for testing
+            controller.token = (controller.token == 1 ? 2 : 1);
         }
-      }
+
     };
 
     this.exitGame = function () {
@@ -496,7 +496,7 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
       });
 
     }, function (err) {
-      alert('Unable to join the lobby');
+      alert('Enable to join the lobby');
     });
   }
 
