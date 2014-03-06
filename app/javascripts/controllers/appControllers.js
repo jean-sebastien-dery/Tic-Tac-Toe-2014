@@ -418,15 +418,24 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         if(data == 1 || data == 2){
             controller.round++;
             controller.turn = data;
-            controller.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+            resetGrid(controller.grid);
             controller.wins[data]++;
         } else if(data == 3) {
             controller.round++;
             controller.turn = Math.ceil(Math.random()*2);
-            controller.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+            resetGrid(controller.grid);
         }
-
     });
+
+    function resetGrid(grid){
+        int i, j;
+        for(i = 0; i < 3; i++){
+          for(j=0, j<3; j++){
+            grid[i][j] = 0;
+          }
+        }
+    }
+
 
     this.placeToken = function (x, y) {
       UserInfoService.getUsername().then(function (username) {
