@@ -8,13 +8,65 @@ function Game (rounds, timer, creatorName, creatorID) {
 	this.waiting = true;
 	this.players = [];
 	this.players.push({playerID:creatorID, username:creatorName});
-	this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 }
 
 Game.prototype.playerMoved = function (grid, cb) {
 	this.grid = grid;
 	cb(null);
+}
 
+Game.prototype.status = function (cb) {
+	var r1 = this.grid[0];
+	var r2 = this.grid[1];
+	var r3 = this.grid[2];
+
+	var c1 = [r1[0], r2[0], r3[0]];
+	var c2 = [r1[1], r2[1], r3[1]];
+	var c3 = [r1[2], r2[2], r3[2]];
+
+	var d1 = [r1[0], r2[1], r3[2]];
+	var d2 = [r1[2], r2[1], r3[0]];
+
+	function checkRow (row) {
+		if (row[0] != 0) {
+			if (row[0] == row[1] && row[0] == row[2] && row[1] == row[2]) {
+				return true;
+			}
+		}
+	}
+
+	function isGridFull () {
+		if (r1[0] != 0 && r1[1] != 0 && r1[2] != 0 &&
+			r2[0] != 0 && r2[1] != 0 && r2[2] != 0 &&
+			r3[0] != 0 && r3[1] != 0 && r3[2] != 0) 
+		{
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	if (checkRow(r1)) {
+		cb(r1[0]);
+	} else if (checkRow(r2)) {
+		cb(r2[0]);
+	} else if (checkRow(r3)) {
+		cb(r3[0]);
+	} else if (checkRow(c1)) {
+		cb(c1[0]);
+	} else if (checkRow(c2)) {
+		cb(c2[0]);
+	} else if (checkRow(c3)) {
+		cb(c3[0]);
+	} else if (checkRow(d1)) {
+		cb(d1[0]);
+	} else if (checkRow(d2)) {
+		cb(d2[0]);
+	}else if (isGridFull()) {
+		cb(3);
+	} else {
+		cb(null);
+	}
 }
 
 exports.joinGame = function (player) {
