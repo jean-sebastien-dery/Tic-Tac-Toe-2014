@@ -391,6 +391,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
+    this.turn = 0;
 
     // Change load to false when you dev environment
     this.load = true;
@@ -407,8 +408,9 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         controller.load = false;
     });
 
-    WebSocketFactory.receive('update-grid', function(grid) {
-        this.grid = grid;
+    WebSocketFactory.receive('update-grid', function(data) {
+        controller.grid = data.grid;
+        controller.turn = data.token;
     });
 
     this.placeToken = function (x, y) {
@@ -417,6 +419,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         if (controller.grid[x][y] != 0) {
             // The spot is already taken
             alert("You can't place your token here");
+        } else if(controller.token != controller.turn) {
+            alert("it is not your turn!");
         } else {
            controller.grid[x][y] = controller.token;
            WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {

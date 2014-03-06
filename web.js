@@ -278,6 +278,7 @@ socket.on('connection', function (client) {
   });
 
   client.on('update-grid', function (grid, cb) {
+
     var user = people[client.id];
     var game = games[user.game];
     var token = 0;
