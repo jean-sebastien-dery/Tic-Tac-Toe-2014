@@ -153,8 +153,6 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
       else{
         $location.path("/waitingroom");
       }
-
-
     })
   }
 
@@ -387,12 +385,14 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.settings = {};
     this.starter = '';
     this.timer= 0;
-    this.round = 0;
+    this.round = 1;
+    this.players = [];
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
     this.turn = 2;
     this.wins = [0, 0];
+    this.recentWinner = "\n";
 
     // Change load to false when you dev environment
     this.load = true;
@@ -419,13 +419,27 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             alert("")
             controller.round++;
             controller.turn = data;
+            controller.starter = controller.players[data-1].username;//the loser starts
             resetGrid(controller.grid);
             controller.wins[data]++;
+            controller.recentWinner = controller.players[Math.abs(data-2)].username;//the winner won
         } else if(data == 3) {
             controller.round++;
             controller.turn = Math.ceil(Math.random()*2);
+            controller.starter = controller.players[controller.turn-1].username;
             resetGrid(controller.grid);
         }
+        WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {
+              if (err) {
+                alert(err);
+              } else {
+                if(data!=3){
+                  alert(controller.recentWinner + " wins!");
+                } else {
+                  alert("it is a tie!");
+                }
+              }
+            });
     });
 
     function resetGrid(grid){
@@ -469,8 +483,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
       controller.rounds  = game.rounds;
       controller.timer   = game.timer;
       controller.creator = game.creator;
-      controller.starter = game.players[Math.round(Math.random())].username;
       controller.token = game.userToken;
+      controller.players = game.players;
       if(game.players.length==2){
         controller.newPlayer = game.players[1].username;
         
