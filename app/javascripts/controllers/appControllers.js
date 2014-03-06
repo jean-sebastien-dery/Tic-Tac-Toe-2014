@@ -392,6 +392,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.newPlayer = '';
     this.lock = false;
     this.turn = 2;
+    this.wins = [0, 0];
 
     // Change load to false when you dev environment
     this.load = true;
@@ -411,6 +412,20 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     WebSocketFactory.receive('update-grid', function(data) {
         controller.grid = data.grid;
         controller.turn = data.token;
+    });
+
+    WebSocketFactory.receive('game-status', function(data){
+        if(data == 1 || data == 2){
+            controller.round++;
+            controller.turn = data;
+            controller.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+            controller.wins[data]++;
+        } else if(data == 3) {
+            controller.round++;
+            controller.turn = Math.ceil(Math.random()*2);
+            controller.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        }
+
     });
 
     this.placeToken = function (x, y) {

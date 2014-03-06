@@ -28,8 +28,10 @@ Game.prototype.status = function (cb) {
 	var d2 = [r1[2], r2[1], r3[0]];
 
 	function checkRow (row) {
-		if (row[0] == row[1] && row[0] == row[2] && row[1] == rrow1[2]) {
-			return true;
+		if (row[0] != 0) {
+			if (row[0] == row[1] && row[0] == row[2] && row[1] == row[2]) {
+				return true;
+			}
 		}
 	}
 
