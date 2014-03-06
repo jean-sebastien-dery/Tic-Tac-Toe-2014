@@ -11,6 +11,12 @@ function Game (rounds, timer, creatorName, creatorID) {
 	this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 }
 
+Game.prototype.playerMoved = function (grid, cb) {
+	this.grid = grid;
+	cb(null);
+
+}
+
 exports.joinGame = function (player) {
 	this.waiting = false;
 	this.players.push(player)

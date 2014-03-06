@@ -278,10 +278,22 @@ socket.on('connection', function (client) {
   });
 
   client.on('update-grid', function (grid, cb) {
-    var game = games[people[client.id].game];
-    game.grid = grid;
-    cb(null, game);
-    socket.sockets.in(game.id).emit('update-grid', game.grid);
+    var user = people[client.id];
+    var game = games[user.game];
+    var token = 0;
+
+    if (user.token == 1) {
+      token = 2;
+    } else {
+      token = 1;
+    }
+
+    game.playerMoved(grid, function (err) {
+      if (!err) {
+        socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
+        cb(null, game);
+      }
+    });
   });
 
   client.on('create-game', function (game, cb) {
@@ -345,9 +357,11 @@ socket.on('connection', function (client) {
 
     // Select good token and set player ready
     if(game.creator == people[client.id].username) {
+      people[client.id].token = 2;
       game.userToken = 2;
       game.players[0].ready = true;
     } else {
+      people[client.id].token = 1;
       game.userToken = 1;
       game.players[1].ready = true;
     }
