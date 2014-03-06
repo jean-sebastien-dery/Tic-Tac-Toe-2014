@@ -281,6 +281,7 @@ socket.on('connection', function (client) {
     var game = games[people[client.id].game];
     game.grid = grid;
     cb(null, game);
+    socket.sockets.in(game.id).emit('update-grid', game.grid);
   });
 
   client.on('create-game', function (game, cb) {

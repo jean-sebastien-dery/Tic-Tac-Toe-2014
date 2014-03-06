@@ -33,7 +33,7 @@ App.config(['$routeProvider',
       }).
       when('/mainmenu', {
         templateUrl   : 'tictac-partials/mainmenu',
-        controller    : 'MainMenuControllerFma',
+        controller    : 'MainMenuController',
         controllerAs  : 'main'
       }).
       when('/game', {
@@ -407,6 +407,10 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         controller.load = false;
     });
 
+    WebSocketFactory.receive('update-grid', function(grid) {
+        this.grid = grid;
+    });
+
     this.placeToken = function (x, y) {
       UserInfoService.getUsername().then(function (username) {
 
@@ -414,8 +418,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             // The spot is already taken
             alert("You can't place your token here");
         } else {
-           grid[x][y] = game.userToken;
-           WebSocketFactory.emit('update-grid', grid, function (err, game) {
+           controller.grid[x][y] = controller.token;
+           WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {
               if (err) {
                 alert(err);
               } else {
@@ -423,7 +427,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
               }
             });
         }
-      }
+      });
     };
 
     this.exitGame = function () {
@@ -437,6 +441,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
       controller.timer   = game.timer;
       controller.creator = game.creator;
       controller.starter = game.players[Math.round(Math.random())].username;
+      controller.token = game.userToken;
       if(game.players.length==2){
         controller.newPlayer = game.players[1].username;
         
