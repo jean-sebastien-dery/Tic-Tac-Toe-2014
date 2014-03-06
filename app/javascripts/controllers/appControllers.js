@@ -408,7 +408,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     });
 
     WebSocketFactory.receive('update-grid', function(grid) {
-        this.grid = grid;
+        controller.grid = grid;
     });
 
     this.placeToken = function (x, y) {
