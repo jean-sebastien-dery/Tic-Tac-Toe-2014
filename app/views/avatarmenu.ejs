@@ -16,27 +16,14 @@
 								<button ng-click="avatarMenu.uploadNew()" name="uploadNew" type="button" class="btn btn-primary">Upload new</button>
 								<button ng-click="avatarMenu.useDefault()" name="useDefault" type="button" class="btn btn-primary">Use default</button>
 								<button ng-click="avatarMenu.back()" name="back" type="button" class="btn btn-default">Back</button>
+								<!-- This will let the user select a file on its file system. -->
+								<!--<input type="file" ng-file-select="avatarMenu.onFileSelect($file)" name="avatar" accept="image/*" >-->
+								<!-- <div ng-controller="AvatarMenuController"> -->
+								<input type="file" id="file" name="file" onchange="angular.element(this).scope().inputSelectChange()" accept="image/*"/>
+								<!-- </div> -->
 							</div>
 						</form>
 					</div>
-
-					<!--
-					<div class="col-md-10 col-md-offset-1">
-						<div class="btn-group btn-group-justified">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default">Upload new</button>
-							</div>
-						 	<form name="useDefaultAvatar" action="/api/v1/setDefaultAvatar" method="post">
-						  		<div class="btn-group">
-						    		<button type="button" class="btn btn-default">Use default</button>
-						  		</div>
-							</form>
-						  <div class="btn-group">
-						    <a href="#/mainmenu"><button type="button" class="btn btn-default">Back</button></a>
-						  </div>
-						</div>
-					</div>
-					-->
 				</div>
 			</div>
 		</div>
