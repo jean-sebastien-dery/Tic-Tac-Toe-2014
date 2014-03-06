@@ -438,46 +438,24 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
 
 
     this.placeToken = function (x, y) {
-        if (controller.grid[x][y] != 0) {
+        UserInfoService.getUsername().then(function (username) {
 
+        if (controller.grid[x][y] != 0) {
             // The spot is already taken
             alert("You can't place your token here");
+        } else if(controller.token != controller.turn) {
+            alert("it is not your turn!");
         } else {
-
-            // The spot is free
-
-            controller.grid[x][y] = controller.token;
-
-            // for testing
-            controller.token = (controller.token == 1 ? 2 : 1);
+           controller.grid[x][y] = controller.token;
+           WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {
+              if (err) {
+                alert(err);
+              } else {
+                // FIXME: to add else statement
+              }
+            });
         }
-        if ((controller.grid[0][0] == 1 && controller.grid[0][1] == 1 && controller.grid[0][2] == 1) ||
-        (controller.grid[1][0] == 1 && controller.grid[1][1] == 1 && controller.grid[1][2] == 1) ||
-        (controller.grid[2][0] == 1 && controller.grid[2][1] == 1 && controller.grid[2][2] == 1) ||
-        (controller.grid[0][0] == 1 && controller.grid[1][1] == 1 && controller.grid[2][2] == 1) ||
-        (controller.grid[0][2] == 1 && controller.grid[1][1] == 1 && controller.grid[2][0] == 1) ||
-        (controller.grid[0][0] == 1 && controller.grid[1][0] == 1 && controller.grid[2][0] == 1) ||
-        (controller.grid[0][1] == 1 && controller.grid[1][1] == 1 && controller.grid[2][1] == 1) ||
-        (controller.grid[0][2] == 1 && controller.grid[1][2] == 1 && controller.grid[2][2] == 1)) {
-            alert(controller.starter + " wins");
-        } else if ((controller.grid[0][0] == 2 && controller.grid[0][1] == 2 && controller.grid[0][2] == 2) ||
-        (controller.grid[1][0] == 2 && controller.grid[1][1] == 2 && controller.grid[1][2] == 2) ||
-        (controller.grid[2][0] == 2 && controller.grid[2][1] == 2 && controller.grid[2][2] == 2) ||
-        (controller.grid[0][0] == 2 && controller.grid[1][1] == 2 && controller.grid[2][2] == 2) ||
-        (controller.grid[0][2] == 2 && controller.grid[1][1] == 2 && controller.grid[2][0] == 2) ||
-        (controller.grid[0][0] == 2 && controller.grid[1][0] == 2 && controller.grid[2][0] == 2) ||
-        (controller.grid[0][1] == 2 && controller.grid[1][1] == 2 && controller.grid[2][1] == 2) ||
-        (controller.grid[0][2] == 2 && controller.grid[1][2] == 2 && controller.grid[2][2] == 2)) {
-           if (controller.starter === (controller.creator)) {
-                alert(controller.newPlayer + " wins");
-           } else {
-                alert(controller.creator + " wins");
-           }
-        } else if (controller.grid[0][0] != 0 && controller.grid[0][1] != 0 && controller.grid[0][2] != 0
-        && controller.grid[1][0] != 0 && controller.grid[1][1] != 0 && controller.grid[1][2] != 0
-        && controller.grid[2][0] != 0 && controller.grid[2][1] != 0 && controller.grid[2][2] != 0) {
-            alert("tie game");
-        }
+      });
     };
 
     this.exitGame = function () {
