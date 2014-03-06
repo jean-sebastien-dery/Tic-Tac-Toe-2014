@@ -461,9 +461,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
       controller.creator = game.creator;
       controller.starter = game.players[Math.round(Math.random())].username;
       controller.token = game.userToken;
-      if(game.players.length==2){
+      if(game.players.length == 2){
         controller.newPlayer = game.players[1].username;
-        
       } else {
         controller.newPlayer = '';
       }
