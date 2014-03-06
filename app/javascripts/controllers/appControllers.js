@@ -431,7 +431,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     function resetGrid(grid){
         var i, j;
         for(i = 0; i < 3; i++){
-          for(j=0, j<3; j++){
+          for(j=0; j<3; j++){
             grid[i][j] = 0;
           }
         }
