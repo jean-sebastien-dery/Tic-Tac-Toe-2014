@@ -391,7 +391,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
-    this.turn = 0;
+    this.turn = 2;
 
     // Change load to false when you dev environment
     this.load = true;
