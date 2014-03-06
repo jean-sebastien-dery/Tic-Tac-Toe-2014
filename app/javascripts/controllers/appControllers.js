@@ -424,7 +424,7 @@ Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'W
 
     WebSocketFactory.receive('players-ready', function () {
         controller.load = false;
-        controller.startTimer();
+        //controller.startTimer();
     });
 
     WebSocketFactory.receive('update-grid', function(data) {
@@ -448,7 +448,7 @@ Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'W
             controller.starter = controller.players[controller.turn-1].username;
             resetGrid(controller.grid);
         }
-        WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {
+        WebSocketFactory.emit('update-grid', controller.grid, function (err, data) {
             if (err) {
               alert(err);
             } else {

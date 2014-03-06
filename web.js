@@ -279,6 +279,7 @@ socket.on('connection', function (client) {
 
   client.on('times-out', function (grid, cb) {
 
+    var user = people[client.id];
     var game = games[user.game];
     var data = user.token;
     console.log('>> Player ' + data + ' won!');
