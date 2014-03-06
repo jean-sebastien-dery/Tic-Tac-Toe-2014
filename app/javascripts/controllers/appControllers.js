@@ -386,7 +386,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.token = 1;
     this.settings = {};
     this.starter = ''
-    this.timer= 0;
+    this.timer = 0;
     this.round = 0;
     this.creator = '';
     this.newPlayer = '';
@@ -407,7 +407,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         controller.load = false;
     });
 
-    
+
 
     this.placeToken = function (x, y) {
         if (controller.grid[x][y] != 0) {
@@ -423,7 +423,33 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             // for testing
             controller.token = (controller.token == 1 ? 2 : 1);
         }
-
+        if ((controller.grid[0][0] == 1 && controller.grid[0][1] == 1 && controller.grid[0][2] == 1) ||
+        (controller.grid[1][0] == 1 && controller.grid[1][1] == 1 && controller.grid[1][2] == 1) ||
+        (controller.grid[2][0] == 1 && controller.grid[2][1] == 1 && controller.grid[2][2] == 1) ||
+        (controller.grid[0][0] == 1 && controller.grid[1][1] == 1 && controller.grid[2][2] == 1) ||
+        (controller.grid[0][2] == 1 && controller.grid[1][1] == 1 && controller.grid[2][0] == 1) ||
+        (controller.grid[0][0] == 1 && controller.grid[1][0] == 1 && controller.grid[2][0] == 1) ||
+        (controller.grid[0][1] == 1 && controller.grid[1][1] == 1 && controller.grid[2][1] == 1) ||
+        (controller.grid[0][2] == 1 && controller.grid[1][2] == 1 && controller.grid[2][2] == 1)) {
+            alert(controller.starter + " wins");
+        } else if ((controller.grid[0][0] == 2 && controller.grid[0][1] == 2 && controller.grid[0][2] == 2) ||
+        (controller.grid[1][0] == 2 && controller.grid[1][1] == 2 && controller.grid[1][2] == 2) ||
+        (controller.grid[2][0] == 2 && controller.grid[2][1] == 2 && controller.grid[2][2] == 2) ||
+        (controller.grid[0][0] == 2 && controller.grid[1][1] == 2 && controller.grid[2][2] == 2) ||
+        (controller.grid[0][2] == 2 && controller.grid[1][1] == 2 && controller.grid[2][0] == 2) ||
+        (controller.grid[0][0] == 2 && controller.grid[1][0] == 2 && controller.grid[2][0] == 2) ||
+        (controller.grid[0][1] == 2 && controller.grid[1][1] == 2 && controller.grid[2][1] == 2) ||
+        (controller.grid[0][2] == 2 && controller.grid[1][2] == 2 && controller.grid[2][2] == 2)) {
+           if (controller.starter === (controller.creator)) {
+                alert(controller.newPlayer + " wins");
+           } else {
+                alert(controller.creator + " wins");
+           }
+        } else if (controller.grid[0][0] != 0 && controller.grid[0][1] != 0 && controller.grid[0][2] != 0
+        && controller.grid[1][0] != 0 && controller.grid[1][1] != 0 && controller.grid[1][2] != 0
+        && controller.grid[2][0] != 0 && controller.grid[2][1] != 0 && controller.grid[2][2] != 0) {
+            alert("tie game");
+        }
     };
 
     this.exitGame = function () {
@@ -433,23 +459,23 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     };
 
     function refreshGame(game) {
-      controller.rounds  = game.rounds;
-      controller.timer   = game.timer;
-      controller.creator = game.creator;
-      controller.starter = game.players[Math.round(Math.random())].username;
-      if(game.players.length==2){
-        controller.newPlayer = game.players[1].username;
-        
-      } else {
-        controller.newPlayer = '';
-      }
+        controller.rounds = game.rounds;
+        controller.timer = game.timer;
+        controller.creator = game.creator;
+        controller.starter = game.players[Math.round(Math.random())].username;
+        if (game.players.length == 2) {
+            controller.newPlayer = game.players[1].username;
+
+        } else {
+            controller.newPlayer = '';
+        }
     }
 
     WebSocketFactory.emit("get-game", {});
 
-    WebSocketFactory.receive("get-game", function(game){
-    refreshGame(game);
-  });
+    WebSocketFactory.receive("get-game", function (game) {
+        refreshGame(game);
+    });
 
 
 
