@@ -416,6 +416,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
 
     WebSocketFactory.receive('game-status', function(data){
         if(data == 1 || data == 2){
+            alert("")
             controller.round++;
             controller.turn = data;
             resetGrid(controller.grid);
@@ -428,7 +429,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     });
 
     function resetGrid(grid){
-        int i, j;
+        var i, j;
         for(i = 0; i < 3; i++){
           for(j=0, j<3; j++){
             grid[i][j] = 0;
