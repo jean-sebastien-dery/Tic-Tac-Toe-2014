@@ -184,16 +184,30 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 
 Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$scope', '$http', '$location', function (UserInfoService, WebSocketFactory, $scope, $http, $location) {
   var controller = this;
+  var imageIsSelected = false;
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
+    console.log("The function uploadNew() was called.");
+
     // Uploads the picture to the server.
-    console.log("Will let the user select the image in its file system.");
+    if (typeof controller.imageIsSelected === true) {
+      alert("You must select a picture first!");
+    } else {
+      console.log("Uploading the new avatar to the server.");
 
-      
+      // Uploads the picture to the server.
+      $http.uploadFile({
+        url: 'my/upload/url',
+        file: $file
+      }).then(function(data, status, headers, config) {
+        // file is uploaded successfully
+        console.log(data);
+      });
 
-    // Modifies the attribute in the server.
-    controller.changeDefaultAvatarSetting('false');
+      // Modifies the attribute in the server.
+      controller.changeDefaultAvatarSetting('false');
+    }
   }
 
   // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
@@ -202,20 +216,22 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
   // http://stackoverflow.com/questions/13373834/upload-image-using-javascript
 
-  $scope.onFileSelect = function(file) {
-    console.log("A file was selected.");
+  // $scope.onFileSelect = function(file) {
+  //   console.log("A file was selected.");
 
-    $http.uploadFile({
-        url: 'my/upload/url',
-        file: $file
-      }).then(function(data, status, headers, config) {
-        // file is uploaded successfully
-        console.log(data);
-      }); 
-  }
+  //   $http.uploadFile({
+  //       url: 'my/upload/url',
+  //       file: $file
+  //     }).then(function(data, status, headers, config) {
+  //       // file is uploaded successfully
+  //       console.log(data);
+  //     }); 
+  // }
 
-  $scope.selectedANewFile = function() {
+  // When a change occurs in the input object, this function is called.
+  $scope.inputSelectChange = function() {
     console.log("A new file was selected by the user.");
+    controller.imageIsSelected = true;
   }
 
   // Handles the action of pressing on the 'Use default' button.
@@ -226,15 +242,15 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   }
 
   // Changes the 'defaultAvatar' variable of the user in the database (it is either 'true' or 'false').
-  this.changeDefaultAvatarSetting = function(valueOfVariable) {
-    console.log("function changeDefaultAvatarSetting was called.");
+  this.changeDefaultAvatarSetting = function(isUsingDefaultAvatar) {
+    console.log("Function changeDefaultAvatarSetting() was called with the 'isUsingDefaultAvatar' set to '" + isUsingDefaultAvatar + "'.");
     // The first thing to do is to get the username of the current user.
     UserInfoService.getUsername().then(function (username) {
       // Then, as soon as we have the username we can send the POST request.
 
       // Sends the POST message that sets the 'useDefault' variable to 'true'.
       // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
-      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : valueOfVariable}).success(function () {
+      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : isUsingDefaultAvatar}).success(function () {
 
       // There is nothing else to do here if the request is successfull.
 

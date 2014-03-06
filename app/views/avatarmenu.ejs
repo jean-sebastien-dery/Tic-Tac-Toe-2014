@@ -18,9 +18,9 @@
 								<button ng-click="avatarMenu.back()" name="back" type="button" class="btn btn-default">Back</button>
 								<!-- This will let the user select a file on its file system. -->
 								<!--<input type="file" ng-file-select="avatarMenu.onFileSelect($file)" name="avatar" accept="image/*" >-->
-								<div ng-controller="AvatarMenuController">
-									<input type="file" id="file" name='file' ng-file-select="selectedANewFile()" accept="image/*"/>
-								</div>
+								<!-- <div ng-controller="AvatarMenuController"> -->
+								<input type="file" id="file" name="file" onchange="angular.element(this).scope().inputSelectChange()" accept="image/*"/>
+								<!-- </div> -->
 							</div>
 						</form>
 					</div>
