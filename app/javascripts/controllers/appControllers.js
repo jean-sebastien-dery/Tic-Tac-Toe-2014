@@ -182,7 +182,7 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 
 }]);
 
-Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$http', '$location', function (UserInfoService, WebSocketFactory, $http, $location) {
+Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$scope', '$http', '$location', function (UserInfoService, WebSocketFactory, $scope, $http, $location) {
   var controller = this;
 
   // Handles the action of pressing on the 'Upload news' button.
@@ -190,20 +190,32 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
     // Uploads the picture to the server.
     console.log("Will let the user select the image in its file system.");
 
-    /*var reader = new FileReader();
-    reader.onload = function(event) {
-        var contents = event.target.result;
-        console.log("File contents: " + contents);
-    };
-
-    reader.onerror = function(event) {
-        console.error("File could not be read! Code " + event.target.error.code);
-    };
-
-    reader.readAsText(file);*/
+      
 
     // Modifies the attribute in the server.
     controller.changeDefaultAvatarSetting('false');
+  }
+
+  // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
+  // http://www.w3schools.com/jsref/event_onchange.asp
+  // https://code.google.com/p/angular-file-upload/
+  // http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
+  // http://stackoverflow.com/questions/13373834/upload-image-using-javascript
+
+  $scope.onFileSelect = function(file) {
+    console.log("A file was selected.");
+
+    $http.uploadFile({
+        url: 'my/upload/url',
+        file: $file
+      }).then(function(data, status, headers, config) {
+        // file is uploaded successfully
+        console.log(data);
+      }); 
+  }
+
+  $scope.selectedANewFile = function() {
+    console.log("A new file was selected by the user.");
   }
 
   // Handles the action of pressing on the 'Use default' button.
