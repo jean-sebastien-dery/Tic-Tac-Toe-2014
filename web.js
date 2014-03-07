@@ -6,7 +6,8 @@ var express         	= require('express')
   , mongoose          = require('mongoose')
   , userManager       = require('./server/routes/userManager.js')
   , LocalStrategy     = require('passport-local').Strategy
-  , gameManager       = require('./server/lib/gameManager.js');
+  , gameManager       = require('./server/lib/gameManager.js')
+  , fs                = require('fs');
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -133,6 +134,19 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
   } else {
     res.send(400);
   }
+});
+
+app.post('/api/v1/uploadImage', function (req, res) {
+  console.log(req.body);
+  fs.writeFile("./app/images/avatars/lulz.png", req.body.image, 'binary', function(error) {
+    if (error) {
+      console.log("An error occured while saving the avatar.", error);
+      res.send(500);
+    } else {
+      console.log("Successfully saved the avatar on the server side.");
+      res.send(200);
+    }
+  });
 });
 
 app.post('/api/v1/setDefaultAvatar', function (req, res) {
@@ -297,7 +311,7 @@ socket.on('connection', function (client) {
         game.status(function (data) {
           if (data != null) {
             console.log('>> Player ' + data + ' won!');
-            socket.sockets.in(game.id).emit('game-status', data);
+            socket.sockets.in(game.id).emit('game-status', { winner : data, grid : game.grid });
           }
         });
         socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});

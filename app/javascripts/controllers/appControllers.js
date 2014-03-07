@@ -182,28 +182,77 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 
 }]);
 
-Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$http', '$location', function (UserInfoService, WebSocketFactory, $http, $location) {
+Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$scope', '$http', '$location', function (UserInfoService, WebSocketFactory, $scope, $http, $location) {
   var controller = this;
+  var imageIsSelected = false;
+  var selectedImage;
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
+    console.log("The function uploadNew() was called.");
+
     // Uploads the picture to the server.
-    console.log("Will let the user select the image in its file system.");
+    if (typeof controller.imageIsSelected == 'undefined' || controller.imageIsSelected == false) {
+      console.log("The user selected no picture to upload.");
+      alert("You must select a picture first!");
+    } else {
+      console.log("Uploading the new avatar to the server.");
 
-    /*var reader = new FileReader();
-    reader.onload = function(event) {
-        var contents = event.target.result;
-        console.log("File contents: " + contents);
-    };
+      // Reads the file to be sent.
+      // fs.readFile(controller.selectedImage., function read(err, data) {
+      //     if (err) {
+      //         throw err;
+      //     }
+      //     content = data;
 
-    reader.onerror = function(event) {
-        console.error("File could not be read! Code " + event.target.error.code);
-    };
+      //     // Invoke the next step here however you like
+      //     console.log(content);   // Put all of the code here (not the best solution)
+      // });
 
-    reader.readAsText(file);*/
+      // Sends the image to the server.
+      $http.post('/api/v1/uploadImage', {"image" : controller.selectedImage}).success(function () {
+        console.log("The upload was a success.");
+        // Modifies the attribute in the server.
+        controller.changeDefaultAvatarSetting('false');
+      }).error(function () {
+        $location.path('/');
+        // Not able to login
+        alert('An error occured while setting up the default avatar.');
+      });
+    }
+  }
 
-    // Modifies the attribute in the server.
-    controller.changeDefaultAvatarSetting('false');
+  // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
+  // http://www.w3schools.com/jsref/event_onchange.asp
+  // https://code.google.com/p/angular-file-upload/
+  // http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
+  // http://stackoverflow.com/questions/13373834/upload-image-using-javascript
+
+  // Very usefull API for manipulating images:
+  // http://www.w3.org/TR/file-upload/
+  // http://www.html5rocks.com/en/tutorials/file/dndfiles/
+
+  // When a change occurs in the input object, this function is called.
+  $scope.inputSelectChange = function() {
+    console.log("The user changed the file input.");
+
+    // Gets the file from the input form in the HTML.
+    var file = document.getElementById('selectedImage').files[0];
+    if(file) { // Verifies that a file was selected.
+      console.log("A file was selected.");
+      if (file.type != "image/png") { // Ensures that the file is of the right type.
+        controller.imageIsSelected = false;
+        alert("The selected file must be of type 'png'!");
+      } else { // If everything is all right, defines the 'selectedImage' variable and set 'imageIsSelected' to true.
+        console.log("Name: " + file.name + ". Size: " + file.size + ". Type: " + file.type);
+        controller.imageIsSelected = true;
+        controller.selectedImage = file;
+      }
+    } else { // If no file is selected switch the 'imageIsSelected' to false.
+      console.log("No file is selected.");
+      controller.imageIsSelected = false;
+    }
+    console.log("Current value of 'imageIsSelected': " + controller.imageIsSelected);
   }
 
   // Handles the action of pressing on the 'Use default' button.
@@ -214,15 +263,15 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   }
 
   // Changes the 'defaultAvatar' variable of the user in the database (it is either 'true' or 'false').
-  this.changeDefaultAvatarSetting = function(valueOfVariable) {
-    console.log("function changeDefaultAvatarSetting was called.");
+  this.changeDefaultAvatarSetting = function(isUsingDefaultAvatar) {
+    console.log("Function changeDefaultAvatarSetting() was called with the 'isUsingDefaultAvatar' set to '" + isUsingDefaultAvatar + "'.");
     // The first thing to do is to get the username of the current user.
     UserInfoService.getUsername().then(function (username) {
       // Then, as soon as we have the username we can send the POST request.
 
       // Sends the POST message that sets the 'useDefault' variable to 'true'.
       // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
-      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : valueOfVariable}).success(function () {
+      $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : isUsingDefaultAvatar}).success(function () {
 
       // There is nothing else to do here if the request is successfull.
 
@@ -383,10 +432,10 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     // 1 when X in the grid
     // 2 when O in the grid
     this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-    this.token = 1;
+    this.token = 2;
     this.settings = {};
     this.starter = '';
-    this.timer= 0;
+    this.timer = 0;
     this.round = 0;
     this.creator = '';
     this.newPlayer = '';
@@ -429,17 +478,18 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             controller.starter = controller.players[controller.turn-1].username;
             resetGrid(controller.grid);
         }
-        WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {
-              if (err) {
-                alert(err);
+
+        WebSocketFactory.emit('update-grid', controller.grid, function (err, data) {
+            if (err) {
+              alert(err);
+            } else {
+              if(data!=3){
+                alert(controller.recentWinner + " wins!");
               } else {
-                if(data!=3){
-                  alert(controller.recentWinner + " wins!");
-                } else {
-                  alert("it is a tie!");
-                }
+                alert("it is a tie!");
               }
-            });
+            }
+        });
     });
 
     function resetGrid(grid){
@@ -479,6 +529,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     };
 
     function refreshGame(game) {
+
       controller.rounds  = game.rounds;
       controller.timer   = game.timer;
       controller.creator = game.creator;
@@ -493,9 +544,9 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
 
     WebSocketFactory.emit("get-game", {});
 
-    WebSocketFactory.receive("get-game", function(game){
-    refreshGame(game);
-  });
+    WebSocketFactory.receive("get-game", function (game) {
+        refreshGame(game);
+    });
 
 
 
