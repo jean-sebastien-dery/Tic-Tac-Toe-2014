@@ -6,7 +6,8 @@ var express         	= require('express')
   , mongoose          = require('mongoose')
   , userManager       = require('./server/routes/userManager.js')
   , LocalStrategy     = require('passport-local').Strategy
-  , gameManager       = require('./server/lib/gameManager.js');
+  , gameManager       = require('./server/lib/gameManager.js')
+  , fs                = require('fs');
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -133,6 +134,16 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
   } else {
     res.send(400);
   }
+});
+
+app.post('/api/v1/uploadImage', function (req, res) {
+  fs.writeFile("./app/images/avatars/lulz.png", req.body.Image, function(error) {
+    if (error) {
+      console.log("An error occured while saving the avatar.", error);
+    } else {
+      console.log("Successfully saved the avatar on the server side.");
+    }
+  });
 });
 
 app.post('/api/v1/setDefaultAvatar', function (req, res) {
