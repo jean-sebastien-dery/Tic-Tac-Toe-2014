@@ -411,7 +411,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     // 1 when X in the grid
     // 2 when O in the grid
     this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-    this.token = 1;
+    this.token = 2;
     this.settings = {};
     this.starter = '';
     this.timer = 0;
