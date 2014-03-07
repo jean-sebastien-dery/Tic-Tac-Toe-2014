@@ -153,6 +153,8 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
       else{
         $location.path("/waitingroom");
       }
+
+
     })
   }
 
@@ -385,14 +387,12 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.settings = {};
     this.starter = '';
     this.timer= 0;
-    this.round = 1;
-    this.players = [];
+    this.round = 0;
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
     this.turn = 2;
     this.wins = [0, 0];
-    this.recentWinner = "\n";
 
     // Change load to false when you dev environment
     this.load = true;
@@ -451,7 +451,6 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         }
     }
 
-
     this.placeToken = function (x, y) {
       UserInfoService.getUsername().then(function (username) {
 
@@ -485,9 +484,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
       controller.creator = game.creator;
       controller.token = game.userToken;
       controller.players = game.players;
-      if(game.players.length==2){
+      if(game.players.length == 2){
         controller.newPlayer = game.players[1].username;
-        
       } else {
         controller.newPlayer = '';
       }
