@@ -468,13 +468,17 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             alert("")
             controller.round++;
             controller.turn = data;
+            controller.starter = controller.players[data-1].username;//the loser starts
             resetGrid(controller.grid);
             controller.wins[data]++;
+            controller.recentWinner = controller.players[Math.abs(data-2)].username;//the winner won
         } else if(data == 3) {
             controller.round++;
             controller.turn = Math.ceil(Math.random()*2);
+            controller.starter = controller.players[controller.turn-1].username;
             resetGrid(controller.grid);
         }
+
         WebSocketFactory.emit('update-grid', controller.grid, function (err, data) {
             if (err) {
               alert(err);
@@ -496,7 +500,6 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
           }
         }
     }
-
 
     this.placeToken = function (x, y) {
       UserInfoService.getUsername().then(function (username) {
@@ -526,16 +529,17 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     };
 
     function refreshGame(game) {
-        controller.rounds = game.rounds;
-        controller.timer = game.timer;
-        controller.creator = game.creator;
-        controller.starter = game.players[Math.round(Math.random())].username;
-        if (game.players.length == 2) {
-            controller.newPlayer = game.players[1].username;
 
-        } else {
-            controller.newPlayer = '';
-        }
+      controller.rounds  = game.rounds;
+      controller.timer   = game.timer;
+      controller.creator = game.creator;
+      controller.token = game.userToken;
+      controller.players = game.players;
+      if(game.players.length == 2){
+        controller.newPlayer = game.players[1].username;
+      } else {
+        controller.newPlayer = '';
+      }
     }
 
     WebSocketFactory.emit("get-game", {});

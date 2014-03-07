@@ -8,11 +8,13 @@ function Game (rounds, timer, creatorName, creatorID) {
 	this.waiting = true;
 	this.players = [];
 	this.players.push({playerID:creatorID, username:creatorName});
+	this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
 }
 
 Game.prototype.playerMoved = function (grid, cb) {
 	this.grid = grid;
 	cb(null);
+
 }
 
 Game.prototype.status = function (cb) {

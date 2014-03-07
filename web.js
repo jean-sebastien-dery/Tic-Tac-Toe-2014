@@ -305,7 +305,7 @@ socket.on('connection', function (client) {
         game.status(function (data) {
           if (data != null) {
             console.log('>> Player ' + data + ' won!');
-            socket.sockets.in(game.id).emit('game-status', data);
+            socket.sockets.in(game.id).emit('game-status', { winner : data, grid : game.grid });
           }
         });
         socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
