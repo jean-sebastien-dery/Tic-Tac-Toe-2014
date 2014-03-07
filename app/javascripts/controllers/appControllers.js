@@ -198,27 +198,27 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
     } else {
       console.log("Uploading the new avatar to the server.");
 
-      $http.post('/api/v1/uploadImage', {"Image" : controller.selectedImage}).success(function () {
+      // Reads the file to be sent.
+      // fs.readFile(controller.selectedImage., function read(err, data) {
+      //     if (err) {
+      //         throw err;
+      //     }
+      //     content = data;
 
-      // There is nothing else to do here if the request is successfull.
+      //     // Invoke the next step here however you like
+      //     console.log(content);   // Put all of the code here (not the best solution)
+      // });
 
+      // Sends the image to the server.
+      $http.post('/api/v1/uploadImage', {"image" : controller.selectedImage}).success(function () {
+        console.log("The upload was a success.");
+        // Modifies the attribute in the server.
+        controller.changeDefaultAvatarSetting('false');
       }).error(function () {
         $location.path('/');
         // Not able to login
         alert('An error occured while setting up the default avatar.');
       });
-
-      // // Uploads the picture to the server.
-      // $http.uploadFile({
-      //   url: 'my/upload/url',
-      //   file: controller.selectedImage
-      // }).then(function(data, status, headers, config) {
-      //   // file is uploaded successfully
-      //   console.log(data);
-      // });
-
-      // Modifies the attribute in the server.
-      controller.changeDefaultAvatarSetting('false');
     }
   }
 
