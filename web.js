@@ -188,6 +188,9 @@ var games   = {};
 socket.on('connection', function (client) {
   client.on('join', function(name) {
 
+    userManager.findHighestWinningUsers();
+    userManager.registerWonGame(name);
+
     if (name != "") {
       gameID = null;
       people[client.id] = {username : name, game : gameID};
