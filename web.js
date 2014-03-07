@@ -137,11 +137,14 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
 });
 
 app.post('/api/v1/uploadImage', function (req, res) {
-  fs.writeFile("./app/images/avatars/lulz.png", req.body.Image, function(error) {
+  console.log(req.body);
+  fs.writeFile("./app/images/avatars/lulz.png", req.body.image, 'binary', function(error) {
     if (error) {
       console.log("An error occured while saving the avatar.", error);
+      res.send(500);
     } else {
       console.log("Successfully saved the avatar on the server side.");
+      res.send(200);
     }
   });
 });
