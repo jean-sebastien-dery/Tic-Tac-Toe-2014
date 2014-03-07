@@ -277,15 +277,6 @@ socket.on('connection', function (client) {
     }
   });
 
-  client.on('times-out', function (grid, cb) {
-
-    var user = people[client.id];
-    var game = games[user.game];
-    var data = user.token;
-    console.log('>> Player ' + data + ' won!');
-    socket.sockets.in(game.id).emit('game-status', data);
-  });
-
   client.on('update-grid', function (grid, cb) {
 
     var user = people[client.id];
@@ -300,12 +291,6 @@ socket.on('connection', function (client) {
 
     game.playerMoved(grid, function (err) {
       if (!err) {
-        game.status(function (data) {
-          if (data != null) {
-            console.log('>> Player ' + data + ' won!');
-            socket.sockets.in(game.id).emit('game-status', data);
-          }
-        });
         socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
         cb(null, game);
       }

@@ -153,6 +153,8 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
       else{
         $location.path("/waitingroom");
       }
+
+
     })
   }
 
@@ -373,7 +375,7 @@ Tic.controller('MainController', ['UserInfoService', function (UserInfoService) 
     }   
 }])
 
-Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'WebSocketFactory', function ($timeout, $location, UserInfoService, WebSocketFactory) {
+Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
     //UserInfoService.validateLogin();
     var controller = this;
 
@@ -385,14 +387,12 @@ Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'W
     this.settings = {};
     this.starter = '';
     this.timer= 0;
-    this.round = 1;
-    this.players = [];
+    this.round = 0;
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
     this.turn = 2;
     this.wins = [0, 0];
-    this.recentWinner = "\n";
 
     // Change load to false when you dev environment
     this.load = true;
@@ -405,71 +405,28 @@ Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'W
 
     // Until here
 
-    this.startTimer = function () {
-      while(controller.timer > 0) {
-        $timeout(function() { controller.timer--; }, 1000);
-      }
-      WebSocketFactory.emit('times-out', function (err, data) {
-            if (err) {
-              alert(err);
-            } else {
-              if(data != 3){
-                alert(controller.recentWinner + " wins!");
-              } else {
-                alert("it is a tie!");
-              }
-            }
-        });
-    }
-
     WebSocketFactory.receive('players-ready', function () {
         controller.load = false;
-        //controller.startTimer();
     });
 
     WebSocketFactory.receive('update-grid', function(data) {
         controller.grid = data.grid;
         controller.turn = data.token;
-        controller.startTimer();
     });
 
     WebSocketFactory.receive('game-status', function(data){
         if(data == 1 || data == 2){
-            alert("")
             controller.round++;
             controller.turn = data;
-            controller.starter = controller.players[data-1].username;//the loser starts
-            resetGrid(controller.grid);
+            controller.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
             controller.wins[data]++;
-            controller.recentWinner = controller.players[Math.abs(data-2)].username;//the winner won
         } else if(data == 3) {
             controller.round++;
             controller.turn = Math.ceil(Math.random()*2);
-            controller.starter = controller.players[controller.turn-1].username;
-            resetGrid(controller.grid);
+            controller.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
         }
-        WebSocketFactory.emit('update-grid', controller.grid, function (err, data) {
-            if (err) {
-              alert(err);
-            } else {
-              if(data!=3){
-                alert(controller.recentWinner + " wins!");
-              } else {
-                alert("it is a tie!");
-              }
-            }
-        });
+
     });
-
-    function resetGrid(grid){
-        var i, j;
-        for(i = 0; i < 3; i++){
-          for(j=0; j<3; j++){
-            grid[i][j] = 0;
-          }
-        }
-    }
-
 
     this.placeToken = function (x, y) {
       UserInfoService.getUsername().then(function (username) {
@@ -502,9 +459,9 @@ Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'W
       controller.rounds  = game.rounds;
       controller.timer   = game.timer;
       controller.creator = game.creator;
+      controller.starter = game.players[Math.round(Math.random())].username;
       controller.token = game.userToken;
-      controller.players = game.players;
-      if(game.players.length==2){
+      if(game.players.length == 2){
         controller.newPlayer = game.players[1].username;
       } else {
         controller.newPlayer = '';

@@ -1,4 +1,4 @@
- <div class="game">
+<div class="game">
 	<div class="container">
 		<div id="processing-modal" role="dialog" aria-hidden="true" data-show="true" ng-show="game.load">
 		    <div class="modal-dialog">
@@ -21,31 +21,11 @@
 							<b>{{game.creator}}</b>
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="gameinfo">
-							<div class="row">
-								<div class="col-md-12">
-									<font size="4em"><b>PlayerX's turn</b></font><br>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									00:{{ game.timer }} remaining<br><br>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									Round {{game.round}}/{{ game.rounds}}<br>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									Previous round winner: {{game.recentWinner}}<br>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									Who start the first move: {{game.starter}}
-								</div>
-							</div>
+							<font size="4em"><b>PlayerX's turn</b></font><br>
+							00:{{ game.timer}} remaining<br><br>
+							Round 1/{{ game.rounds}}<br>
+							Previous round winner: None <br>
+							Who start the first move: {{game.starter}}
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="otherplayer">
 							<img src="images/unknown-player-avatar.png" class="avatar"></img><br>
