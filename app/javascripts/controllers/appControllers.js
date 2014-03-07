@@ -33,7 +33,7 @@ App.config(['$routeProvider',
       }).
       when('/mainmenu', {
         templateUrl   : 'tictac-partials/mainmenu',
-        controller    : 'MainMenuControllerFma',
+        controller    : 'MainMenuController',
         controllerAs  : 'main'
       }).
       when('/game', {
@@ -185,25 +185,37 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$scope', '$http', '$location', function (UserInfoService, WebSocketFactory, $scope, $http, $location) {
   var controller = this;
   var imageIsSelected = false;
+  var selectedImage;
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
     console.log("The function uploadNew() was called.");
 
     // Uploads the picture to the server.
-    if (typeof controller.imageIsSelected === true) {
+    if (typeof controller.imageIsSelected == 'undefined' || controller.imageIsSelected == false) {
+      console.log("The user selected no picture to upload.");
       alert("You must select a picture first!");
     } else {
       console.log("Uploading the new avatar to the server.");
 
-      // Uploads the picture to the server.
-      $http.uploadFile({
-        url: 'my/upload/url',
-        file: $file
-      }).then(function(data, status, headers, config) {
-        // file is uploaded successfully
-        console.log(data);
+      $http.post('/api/v1/uploadImage', {"Image" : controller.selectedImage}).success(function () {
+
+      // There is nothing else to do here if the request is successfull.
+
+      }).error(function () {
+        $location.path('/');
+        // Not able to login
+        alert('An error occured while setting up the default avatar.');
       });
+
+      // // Uploads the picture to the server.
+      // $http.uploadFile({
+      //   url: 'my/upload/url',
+      //   file: controller.selectedImage
+      // }).then(function(data, status, headers, config) {
+      //   // file is uploaded successfully
+      //   console.log(data);
+      // });
 
       // Modifies the attribute in the server.
       controller.changeDefaultAvatarSetting('false');
@@ -216,22 +228,31 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
   // http://stackoverflow.com/questions/13373834/upload-image-using-javascript
 
-  // $scope.onFileSelect = function(file) {
-  //   console.log("A file was selected.");
-
-  //   $http.uploadFile({
-  //       url: 'my/upload/url',
-  //       file: $file
-  //     }).then(function(data, status, headers, config) {
-  //       // file is uploaded successfully
-  //       console.log(data);
-  //     }); 
-  // }
+  // Very usefull API for manipulating images:
+  // http://www.w3.org/TR/file-upload/
+  // http://www.html5rocks.com/en/tutorials/file/dndfiles/
 
   // When a change occurs in the input object, this function is called.
   $scope.inputSelectChange = function() {
-    console.log("A new file was selected by the user.");
-    controller.imageIsSelected = true;
+    console.log("The user changed the file input.");
+
+    // Gets the file from the input form in the HTML.
+    var file = document.getElementById('selectedImage').files[0];
+    if(file) { // Verifies that a file was selected.
+      console.log("A file was selected.");
+      if (file.type != "image/png") { // Ensures that the file is of the right type.
+        controller.imageIsSelected = false;
+        alert("The selected file must be of type 'png'!");
+      } else { // If everything is all right, defines the 'selectedImage' variable and set 'imageIsSelected' to true.
+        console.log("Name: " + file.name + ". Size: " + file.size + ". Type: " + file.type);
+        controller.imageIsSelected = true;
+        controller.selectedImage = file;
+      }
+    } else { // If no file is selected switch the 'imageIsSelected' to false.
+      console.log("No file is selected.");
+      controller.imageIsSelected = false;
+    }
+    console.log("Current value of 'imageIsSelected': " + controller.imageIsSelected);
   }
 
   // Handles the action of pressing on the 'Use default' button.
