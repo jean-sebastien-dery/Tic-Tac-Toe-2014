@@ -4,6 +4,7 @@ function Game (rounds, timer, creatorName, creatorID) {
 	this.id      = uuid.v4();
 	this.creator = creatorName;
 	this.rounds  = rounds;
+	this.round 	 = [];
 	this.timer   = timer;
 	this.waiting = true;
 	this.players = [];
@@ -14,7 +15,25 @@ function Game (rounds, timer, creatorName, creatorID) {
 Game.prototype.playerMoved = function (grid, cb) {
 	this.grid = grid;
 	cb(null);
+}
 
+Game.prototype.whoWon = function () {
+	var p1 = 0, p2 = 0;
+	for (var i = 0, round; round = this.round[i]; i++) {
+		if (round == 1) {
+			p1++;
+		} else if (round == 2) {
+			p2++;
+		}
+	}
+
+	if (p1 > p2) {
+		return 1;
+	} else if (p2 > p1) {
+		return 2;
+	} else {
+		return 3;
+	}
 }
 
 Game.prototype.status = function (cb) {
@@ -29,11 +48,17 @@ Game.prototype.status = function (cb) {
 	var d1 = [r1[0], r2[1], r3[2]];
 	var d2 = [r1[2], r2[1], r3[0]];
 
+	var round = this.round;
 	function checkRow (row) {
 		if (row[0] != 0) {
 			if (row[0] == row[1] && row[0] == row[2] && row[1] == row[2]) {
+				round.push(row[0]);
 				return true;
+			} else {
+				return false;
 			}
+		} else {
+			return false;
 		}
 	}
 
@@ -42,6 +67,7 @@ Game.prototype.status = function (cb) {
 			r2[0] != 0 && r2[1] != 0 && r2[2] != 0 &&
 			r3[0] != 0 && r3[1] != 0 && r3[2] != 0) 
 		{
+			this.round.push(0);
 			return true;
 		} else {
 			return false;

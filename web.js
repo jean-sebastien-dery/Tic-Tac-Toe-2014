@@ -309,13 +309,28 @@ socket.on('connection', function (client) {
     game.playerMoved(grid, function (err) {
       if (!err) {
         game.status(function (data) {
+
+          // There is a winner or the game is tied
           if (data != null) {
             console.log('>> Player ' + data + ' won!');
-            socket.sockets.in(game.id).emit('game-status', { winner : data, grid : game.grid });
+            socket.sockets.in(game.id).emit('game-status', { win : data, grid : game.grid });
+            
+            // The game is finished
+            if (game.round.length == game.rounds) {
+              var winner = game.whoWon();
+              if (winner == 1) {
+                userManager.registerWonGame(game.players[1].username);
+                userManager.registerLostGame(game.players[0].username);
+              } else if (winner == 2) {
+                userManager.registerWonGame(game.players[0].username);
+                userManager.registerLostGame(game.players[1].username);
+              }
+              socket.sockets.in(game.id).emit('game-done', winner);
+            }
+          } else {
+            socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
           }
         });
-        socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
-        cb(null, game);
       }
     });
   });
