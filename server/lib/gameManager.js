@@ -74,7 +74,7 @@ Game.prototype.status = function (cb) {
 		}
 	}
 
-	if (checkRow(r1)) {
+	if (checkRow(r1)) { 
 		cb(r1[0]);
 	} else if (checkRow(r2)) {
 		cb(r2[0]);

@@ -294,6 +294,36 @@ socket.on('connection', function (client) {
     }
   });
 
+  client.on('times-up', function() {
+    var user = people[client.id];
+    var game = games[user.game];
+
+    // for debug use
+    alert("Player " + (user.username) + " lost the game");
+
+    // if (user == 1) {
+    //   var data = 2;
+    // } else {
+    //   var data = 1;
+    // }
+
+    // console.log('>> Player ' + data + ' won!');
+    // socket.sockets.in(game.id).emit('game-status', { win : data, grid : game.grid });
+    
+    // // The game is finished
+    // if (game.round.length == game.rounds) {
+    //   var winner = game.whoWon();
+    //   if (winner == 1) {
+    //     userManager.registerWonGame(game.players[1].username);
+    //     userManager.registerLostGame(game.players[0].username);
+    //   } else if (winner == 2) {
+    //     userManager.registerWonGame(game.players[0].username);
+    //     userManager.registerLostGame(game.players[1].username);
+    //   }
+    //   socket.sockets.in(game.id).emit('game-done', winner);
+    // }
+  });
+
   client.on('update-grid', function (grid, cb) {
 
     var user = people[client.id];

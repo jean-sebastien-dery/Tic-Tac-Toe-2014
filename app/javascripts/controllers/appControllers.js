@@ -424,7 +424,7 @@ Tic.controller('MainController', ['UserInfoService', function (UserInfoService) 
     }   
 }])
 
-Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
+Tic.controller('GameController', ['$timeout', '$location', 'UserInfoService', 'WebSocketFactory', function ($timeout, $location, UserInfoService, WebSocketFactory) {
     //UserInfoService.validateLogin();
     var controller = this;
 
@@ -436,6 +436,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     this.settings = {};
     this.starter = '';
     this.timer = 0;
+    this.countdown = 0;
     this.round = 0;
     this.creator = '';
     this.newPlayer = '';
@@ -456,11 +457,13 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
 
     WebSocketFactory.receive('players-ready', function () {
         controller.load = false;
+        startTimer();
     });
 
     WebSocketFactory.receive('update-grid', function(data) {
         controller.grid = data.grid;
         controller.turn = data.token;
+        startTimer();
     });
 
     WebSocketFactory.receive('game-status', function(data){
@@ -525,6 +528,15 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             $location.path("/lobby");
         });
     };
+ 
+    function startTimer () {
+      // this is definitely not the right way to do it, but this is the way it works for now
+      controller.countdown = controller.timer;
+      for (var i = 0; i < controller.timer; i++) {
+        $timeout(function() { controller.countdown--; }, (i + 1) * 1000);
+      }
+      WebSocketFactory.emit('times-up', {});
+    }
 
     function refreshGame(game) {
 
