@@ -37,6 +37,14 @@ exports.getAllGames = function (req, res){
 
 }
 
+exports.getScoreOf = function(username, cb) {
+
+	User.find({'username': username}, function (err, users) {
+		user = users[0]._doc;
+		return cb(user.gameWon - user.gameLose);
+	});
+}
+
 
 exports.FindGameByUsername = function (username, cb){
 	Game.findOne({'username': username}, function(err, user) {

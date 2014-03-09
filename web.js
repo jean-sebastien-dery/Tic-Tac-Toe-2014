@@ -202,24 +202,28 @@ var games   = {};
 socket.on('connection', function (client) {
   client.on('join', function(name) {
 
-    userManager.findHighestWinningUsers();
-    userManager.registerWonGame(name);
-
     if (name != "") {
       gameID = null;
-      people[client.id] = {username : name, game : gameID};
+      people[client.id] = {username : name, game : gameID, score : 0};
 
-      //Update message
-      client.emit("update", "Connected to the lobby");
-      socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
+      // Get score
+      userManager.getScoreOf(name, function (score) {
+        
+        people[client.id].score = score;
 
-      //  Refresh the people list
-      socket.sockets.emit('update-players', people);
+        //Update message
+        client.emit("update", "Connected to the lobby");
+        socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
 
-      // Send the list of game to the client
-      client.emit('game-lists', {games : games});
+        //  Refresh the people list
+        socket.sockets.emit('update-players', people);
 
-      console.log('username joined the lobby', name);
+        // Send the list of game to the client
+        client.emit('game-lists', {games : games});
+
+        console.log('username joined the lobby', name);
+      });
+
 
 
     }
