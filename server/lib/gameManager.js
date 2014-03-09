@@ -1,4 +1,5 @@
- var uuid = require('node-uuid');
+ var uuid = require('node-uuid'),
+ 	 userManager = require('./../routes/userManager.js');
 
 function Game (rounds, timer, creatorName, creatorID) {
 	this.id      = uuid.v4();
@@ -10,11 +11,41 @@ function Game (rounds, timer, creatorName, creatorID) {
 	this.players = [];
 	this.players.push({playerID:creatorID, username:creatorName});
 	this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+	this.token = 2;
+}
+
+Game.prototype.timerExpired = function (cb) {
+	var winner = ( this.token == 1 ? 2 : 1);
+	if (this.token == 1) {
+		this.round.push(2);
+	} else {
+		this.round.push(1);
+	}
+
+	cb(winner);
 }
 
 Game.prototype.playerMoved = function (grid, cb) {
 	this.grid = grid;
-	cb(null);
+	this.token = ( this.token == 2 ? 1 : 2);
+	cb();
+}
+
+Game.prototype.isGameFinished = function () {
+
+    if (this.round.length == this.rounds) {
+      var winner = this.whoWon();
+      if (winner == 1) {
+        userManager.registerWonGame(this.players[1].username);
+        userManager.registerLostGame(this.players[0].username);
+      } else if (winner == 2) {
+        userManager.registerWonGame(this.players[0].username);
+        userManager.registerLostGame(this.players[1].username);
+      }
+      return true;
+    } else {
+    	return false;
+    }
 }
 
 Game.prototype.whoWon = function () {

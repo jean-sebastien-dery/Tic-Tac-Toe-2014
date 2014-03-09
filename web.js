@@ -240,9 +240,9 @@ socket.on('connection', function (client) {
 
       // Handle cancelling during waiting room scenario 
       var gameID = people[client.id].game;
+      var game = games[gameID];
 
-      if(gameID != null){ // check if disconnector is waiting for a game
-        var game = games[gameID];
+      if(game != null || game != undefined){ // check if disconnector is waiting for a game
         if(game.players[0].playerID == client.id){ // disconnector is creator
           if(game.players.length > 1){ //check if there are multiple players in game
             socket.sockets.in(gameID).emit('game-cancelled');
@@ -298,47 +298,30 @@ socket.on('connection', function (client) {
     var user = people[client.id];
     var game = games[user.game];
 
-    // for debug use
-    alert("Player " + (user.username) + " lost the game");
+    game.timerExpired(function (winner) {
 
-    // if (user == 1) {
-    //   var data = 2;
-    // } else {
-    //   var data = 1;
-    // }
+      socket.sockets.in(game.id).emit('game-status', { win : winner, grid : game.grid });
 
-    // console.log('>> Player ' + data + ' won!');
-    // socket.sockets.in(game.id).emit('game-status', { win : data, grid : game.grid });
-    
-    // // The game is finished
-    // if (game.round.length == game.rounds) {
-    //   var winner = game.whoWon();
-    //   if (winner == 1) {
-    //     userManager.registerWonGame(game.players[1].username);
-    //     userManager.registerLostGame(game.players[0].username);
-    //   } else if (winner == 2) {
-    //     userManager.registerWonGame(game.players[0].username);
-    //     userManager.registerLostGame(game.players[1].username);
-    //   }
-    //   socket.sockets.in(game.id).emit('game-done', winner);
-    // }
+      // The game is finished
+      if (game.isGameFinished()) {
+        socket.sockets.in(game.id).emit('game-done', game.whoWon());
+      }
+
+    });
+
+
+
   });
 
   client.on('update-grid', function (grid, cb) {
 
     var user = people[client.id];
     var game = games[user.game];
-    var token = 0;
-
-    if (user.token == 1) {
-      token = 2;
-    } else {
-      token = 1;
-    }
 
     game.playerMoved(grid, function (err) {
       if (!err) {
         game.status(function (data) {
+          cb(game);
 
           // There is a winner or the game is tied
           if (data != null) {
@@ -346,21 +329,15 @@ socket.on('connection', function (client) {
             socket.sockets.in(game.id).emit('game-status', { win : data, grid : game.grid });
             
             // The game is finished
-            if (game.round.length == game.rounds) {
-              var winner = game.whoWon();
-              if (winner == 1) {
-                userManager.registerWonGame(game.players[1].username);
-                userManager.registerLostGame(game.players[0].username);
-              } else if (winner == 2) {
-                userManager.registerWonGame(game.players[0].username);
-                userManager.registerLostGame(game.players[1].username);
-              }
-              socket.sockets.in(game.id).emit('game-done', winner);
+            if (game.isGameFinished()) {
+              socket.sockets.in(game.id).emit('game-done', game.whoWon());
             }
           } else {
-            socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
+            socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: game.token});
           }
         });
+      } else {
+        cb(err);
       }
     });
   });
