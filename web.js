@@ -6,7 +6,8 @@ var express         	= require('express')
   , mongoose          = require('mongoose')
   , userManager       = require('./server/routes/userManager.js')
   , LocalStrategy     = require('passport-local').Strategy
-  , gameManager       = require('./server/lib/gameManager.js');
+  , gameManager       = require('./server/lib/gameManager.js')
+  , fs                = require('fs');
 
 // serialize and deserialize
 passport.serializeUser(function(user, done) {
@@ -135,6 +136,19 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
   }
 });
 
+app.post('/api/v1/uploadImage', function (req, res) {
+  console.log(req.body);
+  fs.writeFile("./app/images/avatars/lulz.png", req.body.image, 'binary', function(error) {
+    if (error) {
+      console.log("An error occured while saving the avatar.", error);
+      res.send(500);
+    } else {
+      console.log("Successfully saved the avatar on the server side.");
+      res.send(200);
+    }
+  });
+});
+
 app.post('/api/v1/setDefaultAvatar', function (req, res) {
   userManager.setDefaultAvatar(req, res);
 });
@@ -188,6 +202,9 @@ var games   = {};
 socket.on('connection', function (client) {
   client.on('join', function(name) {
 
+    userManager.findHighestWinningUsers();
+    userManager.registerWonGame(name);
+
     if (name != "") {
       gameID = null;
       people[client.id] = {username : name, game : gameID};
@@ -223,9 +240,9 @@ socket.on('connection', function (client) {
 
       // Handle cancelling during waiting room scenario 
       var gameID = people[client.id].game;
+      var game = games[gameID];
 
-      if(gameID != null){ // check if disconnector is waiting for a game
-        var game = games[gameID];
+      if(game != null || game != undefined){ // check if disconnector is waiting for a game
         if(game.players[0].playerID == client.id){ // disconnector is creator
           if(game.players.length > 1){ //check if there are multiple players in game
             socket.sockets.in(gameID).emit('game-cancelled');
@@ -275,6 +292,54 @@ socket.on('connection', function (client) {
       // Handle the in game scenario
 
     }
+  });
+
+  client.on('times-up', function() {
+    var user = people[client.id];
+    var game = games[user.game];
+
+    game.timerExpired(function (winner) {
+
+      socket.sockets.in(game.id).emit('game-status', { win : winner, grid : game.grid });
+
+      // The game is finished
+      if (game.isGameFinished()) {
+        socket.sockets.in(game.id).emit('game-done', game.whoWon());
+      }
+
+    });
+
+
+
+  });
+
+  client.on('update-grid', function (grid, cb) {
+
+    var user = people[client.id];
+    var game = games[user.game];
+
+    game.playerMoved(grid, function (err) {
+      if (!err) {
+        game.status(function (data) {
+          cb(game);
+
+          // There is a winner or the game is tied
+          if (data != null) {
+            console.log('>> Player ' + data + ' won!');
+            socket.sockets.in(game.id).emit('game-status', { win : data, grid : game.grid });
+            
+            // The game is finished
+            if (game.isGameFinished()) {
+              socket.sockets.in(game.id).emit('game-done', game.whoWon());
+            }
+          } else {
+            socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: game.token});
+          }
+        });
+      } else {
+        cb(err);
+      }
+    });
   });
 
   client.on('create-game', function (game, cb) {
@@ -338,9 +403,11 @@ socket.on('connection', function (client) {
 
     // Select good token and set player ready
     if(game.creator == people[client.id].username) {
+      people[client.id].token = 2;
       game.userToken = 2;
       game.players[0].ready = true;
     } else {
+      people[client.id].token = 1;
       game.userToken = 1;
       game.players[1].ready = true;
     }
