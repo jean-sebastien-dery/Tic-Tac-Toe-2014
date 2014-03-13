@@ -21,11 +21,31 @@
 							<b>{{game.creator}}</b>
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="gameinfo">
-							<font size="4em"><b>PlayerX's turn</b></font><br>
-							00:{{ game.timer}} remaining<br><br>
-							Round 1/{{ game.rounds}}<br>
-							Previous round winner: None <br>
-							Who start the first move: {{game.starter}}
+							<div class="row">
+								<div class="col-md-4">
+									<font size="4em"><b>{{game.players[game.turn].username}}'s turn</b></font>									
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4" ng-class="{red : game.countdown < 4}" class="counter">
+									00:{{game.countdown}} remaining
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									Round {{game.round + 1}}/{{ game.rounds}}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									Previous round winner: {{game.recentWinner}}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									Who start the first move: {{game.starter}}
+								</div>
+							</div>
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="otherplayer">
 							<img src="images/unknown-player-avatar.png" class="avatar"></img><br>

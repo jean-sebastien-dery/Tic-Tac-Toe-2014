@@ -112,20 +112,29 @@ div.home button {
 }
 
 /* ------------------------
- * Registration page
+ * Main Menu
  * ------------------------
  */
 /* line 121, ../sass/app.scss */
+div.mainmenu div {
+  text-align: center;
+}
+
+/* ------------------------
+ * Registration page
+ * ------------------------
+ */
+/* line 133, ../sass/app.scss */
 div.register h2 {
   text-align: center;
 }
-/* line 125, ../sass/app.scss */
+/* line 137, ../sass/app.scss */
 div.register div.registration-form {
   /* Centers div horizontally */
   float: none;
   margin: 0 auto;
 }
-/* line 131, ../sass/app.scss */
+/* line 143, ../sass/app.scss */
 div.register button {
   margin: 1em 0.5em 0 0;
 }
@@ -134,19 +143,19 @@ div.register button {
  * Waiting Room
  * ------------------------
  */
-/* line 143, ../sass/app.scss */
+/* line 155, ../sass/app.scss */
 div.waitingroom h2.title {
   padding-bottom: 1em;
 }
-/* line 147, ../sass/app.scss */
+/* line 159, ../sass/app.scss */
 div.waitingroom div {
   text-align: center;
 }
-/* line 152, ../sass/app.scss */
+/* line 164, ../sass/app.scss */
 div.waitingroom button {
   margin: 1em 0 1.5em 0;
 }
-/* line 156, ../sass/app.scss */
+/* line 168, ../sass/app.scss */
 div.waitingroom div.countdown {
   font-size: 70px;
 }
@@ -155,11 +164,11 @@ div.waitingroom div.countdown {
  * Avatar Menu
  * ------------------------
  */
-/* line 166, ../sass/app.scss */
+/* line 178, ../sass/app.scss */
 div.avatarmenu div.row-spacing {
   padding: 1em 0 1em 0;
 }
-/* line 169, ../sass/app.scss */
+/* line 181, ../sass/app.scss */
 div.avatarmenu img {
   border-style: solid;
   border-color: #000000;
@@ -176,15 +185,15 @@ div.avatarmenu img {
  * Create Game
  * ------------------------
  */
-/* line 184, ../sass/app.scss */
+/* line 196, ../sass/app.scss */
 div.creategame h2.title {
   padding-bottom: 1em;
 }
-/* line 188, ../sass/app.scss */
+/* line 200, ../sass/app.scss */
 div.creategame div {
   text-align: center;
 }
-/* line 194, ../sass/app.scss */
+/* line 206, ../sass/app.scss */
 div.creategame button {
   margin: 1em 0 1.5em 0;
 }
@@ -193,29 +202,29 @@ div.creategame button {
  * Lobby
  * ------------------------
  */
-/* line 206, ../sass/app.scss */
+/* line 218, ../sass/app.scss */
 div.lobby div {
   text-align: center;
 }
-/* line 210, ../sass/app.scss */
+/* line 222, ../sass/app.scss */
 div.lobby .table-cell {
   padding-left: 0;
   padding-right: 0;
 }
-/* line 215, ../sass/app.scss */
+/* line 227, ../sass/app.scss */
 div.lobby .game {
   padding-top: 3px;
   padding-bottom: 3px;
 }
-/* line 220, ../sass/app.scss */
+/* line 232, ../sass/app.scss */
 div.lobby a:hover {
   text-decoration: none;
 }
-/* line 224, ../sass/app.scss */
+/* line 236, ../sass/app.scss */
 div.lobby a {
   font-weight: bold;
 }
-/* line 228, ../sass/app.scss */
+/* line 240, ../sass/app.scss */
 div.lobby .game:hover {
   background-color: #fffdea;
   -moz-border-radius: 3px;
@@ -225,7 +234,7 @@ div.lobby .game:hover {
   -khtml-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 233, ../sass/app.scss */
+/* line 245, ../sass/app.scss */
 div.lobby button {
   margin-top: 1em;
 }
@@ -234,44 +243,52 @@ div.lobby button {
  * Game
  * ------------------------
  */
-/* line 245, ../sass/app.scss */
+/* line 257, ../sass/app.scss */
 div.game div {
   text-align: center;
 }
-/* line 249, ../sass/app.scss */
+/* line 261, ../sass/app.scss */
 div.game div.top {
   padding-bottom: 2em;
 }
-/* line 253, ../sass/app.scss */
+/* line 265, ../sass/app.scss */
 div.game div.bottom {
   padding-top: 1em;
 }
-/* line 257, ../sass/app.scss */
+/* line 269, ../sass/app.scss */
 div.game table {
   width: 100%;
   border: 0;
 }
-/* line 262, ../sass/app.scss */
+/* line 274, ../sass/app.scss */
 div.game td.square {
   text-align: center;
   height: 100px;
   width: 100px;
   padding: 0;
 }
-/* line 268, ../sass/app.scss */
+/* line 280, ../sass/app.scss */
 div.game td.square a {
   display: block;
   text-decoration: none;
   width: 100%;
   height: 100%;
 }
-/* line 276, ../sass/app.scss */
+/* line 288, ../sass/app.scss */
 div.game td.vertical-borders {
   border-left: 3px solid #000;
   border-right: 3px solid #000;
 }
-/* line 281, ../sass/app.scss */
+/* line 293, ../sass/app.scss */
 div.game td.horizontal-borders {
   border-top: 3px solid #000;
   border-bottom: 3px solid #000;
+}
+/* line 298, ../sass/app.scss */
+div.game div.counter {
+  font-size: 2 em;
+}
+/* line 302, ../sass/app.scss */
+div.game div.red {
+  color: red;
 }

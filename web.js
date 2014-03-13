@@ -204,19 +204,26 @@ socket.on('connection', function (client) {
 
     if (name != "") {
       gameID = null;
-      people[client.id] = {username : name, game : gameID};
+      people[client.id] = {username : name, game : gameID, score : 0};
 
-      //Update message
-      client.emit("update", "Connected to the lobby");
-      socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
+      // Get score
+      userManager.getScoreOf(name, function (score) {
+        
+        people[client.id].score = score;
 
-      //  Refresh the people list
-      socket.sockets.emit('update-players', people);
+        //Update message
+        client.emit("update", "Connected to the lobby");
+        socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
 
-      // Send the list of game to the client
-      client.emit('game-lists', {games : games});
+        //  Refresh the people list
+        socket.sockets.emit('update-players', people);
 
-      console.log('username joined the lobby', name);
+        // Send the list of game to the client
+        client.emit('game-lists', {games : games});
+
+        console.log('username joined the lobby', name);
+      });
+
 
 
     }
@@ -237,9 +244,9 @@ socket.on('connection', function (client) {
 
       // Handle cancelling during waiting room scenario 
       var gameID = people[client.id].game;
+      var game = games[gameID];
 
-      if(gameID != null){ // check if disconnector is waiting for a game
-        var game = games[gameID];
+      if(game != null || game != undefined){ // check if disconnector is waiting for a game
         if(game.players[0].playerID == client.id){ // disconnector is creator
           if(game.players.length > 1){ //check if there are multiple players in game
             socket.sockets.in(gameID).emit('game-cancelled');
@@ -291,28 +298,50 @@ socket.on('connection', function (client) {
     }
   });
 
+  client.on('times-up', function() {
+    var user = people[client.id];
+    var game = games[user.game];
+
+    game.timerExpired(function (winner) {
+
+      socket.sockets.in(game.id).emit('game-status', { win : winner, grid : game.grid });
+
+      // The game is finished
+      if (game.isGameFinished()) {
+        socket.sockets.in(game.id).emit('game-done', game.whoWon());
+      }
+
+    });
+
+
+
+  });
+
   client.on('update-grid', function (grid, cb) {
 
     var user = people[client.id];
     var game = games[user.game];
-    var token = 0;
-
-    if (user.token == 1) {
-      token = 2;
-    } else {
-      token = 1;
-    }
 
     game.playerMoved(grid, function (err) {
       if (!err) {
         game.status(function (data) {
+          cb(game);
+
+          // There is a winner or the game is tied
           if (data != null) {
             console.log('>> Player ' + data + ' won!');
-            socket.sockets.in(game.id).emit('game-status', data);
+            socket.sockets.in(game.id).emit('game-status', { win : data, grid : game.grid });
+            
+            // The game is finished
+            if (game.isGameFinished()) {
+              socket.sockets.in(game.id).emit('game-done', game.whoWon());
+            }
+          } else {
+            socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: game.token});
           }
         });
-        socket.sockets.in(game.id).emit('update-grid', {grid: game.grid, token: token});
-        cb(null, game);
+      } else {
+        cb(err);
       }
     });
   });

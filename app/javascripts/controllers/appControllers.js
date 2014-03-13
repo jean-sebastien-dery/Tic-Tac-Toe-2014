@@ -425,27 +425,67 @@ Tic.controller('MainController', ['UserInfoService', function (UserInfoService) 
     }   
 }])
 
-Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
+Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', 'WebSocketFactory', function ($interval, $location, UserInfoService, WebSocketFactory) {
     //UserInfoService.validateLogin();
     var controller = this;
 
     // 0 when nothing in the grid
-    // 1 when X in the grid
-    // 2 when O in the grid
+    // 2 when X in the grid
+    // 1 when O in the grid
     this.grid = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-    this.token = 1;
+    this.token = 2;
     this.settings = {};
     this.starter = '';
     this.timer = 0;
+    this.countdown = 0;
     this.round = 0;
     this.creator = '';
     this.newPlayer = '';
     this.lock = false;
     this.turn = 2;
     this.wins = [0, 0];
+    this.players = [];
+
+    var timerId;
 
     // Change load to false when you dev environment
     this.load = true;
+
+    function startCountdown () {
+      if (timerId) stopCountdown();
+
+      controller.countdown = controller.timer;
+      timerId = $interval(countDown, 1000);
+      countDown();
+    }
+
+    function stopCountdown () {
+      $interval.cancel(timerId);
+      timerId = null;
+      controller.countdown = controller.timer;
+    }
+ 
+    function countDown () {
+      controller.countdown--;
+      
+      // Count has not reached zero
+      if (controller.countdown <= 0) {
+
+        if (controller.countdown == 0) {
+
+          stopCountdown();
+
+          //Time is up
+          if (controller.turn == controller.token) {
+            alert('Your time is up, you losed the round');
+            WebSocketFactory.emit('times-up', {});
+          }
+        }
+
+
+        controller.countdown = controller.timer;
+      }
+    };
 
     // Comment this out if you want to avoid matching to player when you develop!
     WebSocketFactory.emit('load-game', function (game) {
@@ -457,37 +497,53 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
 
     WebSocketFactory.receive('players-ready', function () {
         controller.load = false;
+        startCountdown();
     });
 
     WebSocketFactory.receive('update-grid', function(data) {
         controller.grid = data.grid;
         controller.turn = data.token;
+        startCountdown();
     });
 
     WebSocketFactory.receive('game-status', function(data){
-        if(data == 1 || data == 2){
-            alert("")
+        stopCountdown();
+        controller.grid = data.grid;
+        var winnerToken = data.win;
+        var loserToken = ( winnerToken == 1 ? 2 : 1);
+
+        if(data.win == 1 || data.win == 2){
+            alert(controller.players[winnerToken].username + " won the round#" + controller.round);
             controller.round++;
-            controller.turn = data;
+            controller.turn = loserToken;
+            controller.starter = loserToken;//the loser starts
             resetGrid(controller.grid);
-            controller.wins[data]++;
-        } else if(data == 3) {
+            controller.wins[winnerToken]++;
+            controller.recentWinner = controller.players[winnerToken].username;//the winner won
+        } else if(data.win == 3) {
             controller.round++;
-            controller.turn = Math.ceil(Math.random()*2);
+            controller.starter = (controller.starter == 1 ? 2 : 1);
+            controller.turn = controller.starter;
             resetGrid(controller.grid);
         }
-        WebSocketFactory.emit('update-grid', controller.grid, function (err, data) {
-            if (err) {
-              alert(err);
-            } else {
-              if(data!=3){
-                alert(controller.recentWinner + " wins!");
-              } else {
-                alert("it is a tie!");
-              }
-            }
-        });
+
+        startCountdown();
     });
+
+    WebSocketFactory.receive('game-done', function(winner) {
+      stopCountdown();
+      if (winner == 1 || winner == 2) {
+        alert("Player " + (winner == 1 ? controller.players[1].username : controller.players[2].username) + " won the game");
+        WebSocketFactory.emit("cancel-game", {}, function () {
+            $location.path("/lobby");
+        });        
+      } else {
+        alert("The game is tie");
+        WebSocketFactory.emit("cancel-game", {}, function () {
+            $location.path("/mainmenu");
+        });     
+      }
+    })
 
     function resetGrid(grid){
         var i, j;
@@ -498,8 +554,8 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
         }
     }
 
-
     this.placeToken = function (x, y) {
+      stopCountdown();
       UserInfoService.getUsername().then(function (username) {
 
         if (controller.grid[x][y] != 0) {
@@ -509,13 +565,7 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
             alert("it is not your turn!");
         } else {
            controller.grid[x][y] = controller.token;
-           WebSocketFactory.emit('update-grid', controller.grid, function (err, game) {
-              if (err) {
-                alert(err);
-              } else {
-                // FIXME: to add else statement
-              }
-            });
+           WebSocketFactory.emit('update-grid', controller.grid);
         }
       });
     };
@@ -527,16 +577,18 @@ Tic.controller('GameController', ['$location', 'UserInfoService', 'WebSocketFact
     };
 
     function refreshGame(game) {
-        controller.rounds = game.rounds;
-        controller.timer = game.timer;
-        controller.creator = game.creator;
-        controller.starter = game.players[Math.round(Math.random())].username;
-        if (game.players.length == 2) {
-            controller.newPlayer = game.players[1].username;
 
-        } else {
-            controller.newPlayer = '';
-        }
+      controller.rounds  = game.rounds;
+      controller.timer   = game.timer;
+      controller.creator = game.creator;
+      controller.token = game.userToken;
+      controller.players[2] = game.players[0];
+      controller.players[1] = game.players[1];
+      if(game.players.length == 2){
+        controller.newPlayer = game.players[1].username;
+      } else {
+        controller.newPlayer = '';
+      }
     }
 
     WebSocketFactory.emit("get-game", {});
@@ -553,7 +605,7 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
   UserInfoService.validateLogin();
   var controller = this;
 
-  this.time   = 2;
+  this.time   = 10;
   this.rounds = 3;
 
   this.setTimer = function (time) {

@@ -5,13 +5,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-	username:{
-		type		: String,
-		unique		: true	},
-		password 	: {type:String},
-		gameWon		: {type:Number},
-		gameLose	: {type:Number},
-		defaultAvatar : {type:Boolean},
+	username:{ type	: String, unique : true	},
+	password 	: {type:String},
+	gameWon		: {type:Number},
+	gameLose	: {type:Number},
+	defaultAvatar : {type:Boolean},
 });
 
 //username of the player who created this game
@@ -37,6 +35,14 @@ exports.getAllGames = function (req, res){
 
     res.send(games);
 
+}
+
+exports.getScoreOf = function(username, cb) {
+
+	User.find({'username': username}, function (err, users) {
+		user = users[0]._doc;
+		return cb(user.gameWon - user.gameLose);
+	});
 }
 
 
@@ -144,6 +150,7 @@ exports.registerUser = function (req, res) {
 		if (err){
 			res.send(500, err);
 		}else{
+			// if no error, redirect to home page
 			res.redirect('/');
 		}
 	});
@@ -160,5 +167,37 @@ exports.registerGame = function(req, res){
 			res.redirect('/');
 		}
 	});
+};
 
-}
+exports.findHighestWinningUsers = function () {
+	
+	//return users in descending order of games won
+	User.find()
+	.sort('-gameWon' )
+	.limit(1)
+	.exec( function (err, data) {
+		if (err) {
+			console.log('Error', err);
+		} else {
+			console.log('NEW data', data);
+		}
+	}); 
+};
+
+exports.registerWonGame = function(name){
+
+	User.update( {username: name },
+                    { $inc: { gameWon: 1 } }, function (err, data) {
+                    	console.log('increment game won', data);
+                    } );
+};
+
+exports.registerLostGame = function(name){
+
+	User.update( {username: name }, { $inc: { gameLose: 1 } }, function (err, data) {
+		console.log(' increment game lost', data);
+	} );
+
+};
+
+
