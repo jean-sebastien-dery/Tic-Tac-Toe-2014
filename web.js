@@ -341,6 +341,9 @@ socket.on('connection', function (client) {
 
   });
 
+
+
+
   client.on('update-grid', function (grid, cb) {
 
     var user = people[client.id];
@@ -423,6 +426,10 @@ socket.on('connection', function (client) {
       games[gameID].waiting = false;
       socket.sockets.emit('update-games', games);
       cb();
+  });
+
+  client.on("restart-game", function (game, cb){
+    game.isGameFinished = false;
   });
 
   client.on("load-game", function (data, cb) {

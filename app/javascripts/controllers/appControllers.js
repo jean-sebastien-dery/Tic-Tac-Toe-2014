@@ -589,13 +589,15 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
         var loserToken = ( winnerToken == 1 ? 2 : 1);
 
         if(data.win == 1 || data.win == 2){
-            alert(controller.players[winnerToken].username + " won the round#" + controller.round);
+            alert(controller.players[winnerToken].username + " has won round #" + (controller.round + 1));
             controller.round++;
             controller.turn = loserToken;
             controller.starter = loserToken;//the loser starts
             resetGrid(controller.grid);
             controller.wins[winnerToken]++;
-            controller.recentWinner = controller.players[winnerToken].username;//the winner won
+            controller.recentWinner = controller.players[winnerToken].username;//this player won
+            controller.recentLoser = controller.players[loserToken].username;//this player goes first next round
+
         } else if(data.win == 3) {
             controller.round++;
             controller.starter = (controller.starter == 1 ? 2 : 1);
@@ -609,15 +611,15 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
     WebSocketFactory.receive('game-done', function(winner) {
       stopCountdown();
       if (winner == 1 || winner == 2) {
-        alert("Player " + (winner == 1 ? controller.players[1].username : controller.players[2].username) + " won the game");
-        WebSocketFactory.emit("cancel-game", {}, function () {
-            $location.path("/lobby");
-        });        
+        alert("Player " + (winner == 1 ? controller.players[1].username : controller.players[2].username) + " won the game");       
       } else {
-        alert("The game is tie");
-        WebSocketFactory.emit("cancel-game", {}, function () {
-            $location.path("/mainmenu");
-        });     
+        alert("The game is tie");    
+      }
+      var restart = confirm("Would you like to play again?");
+      if (restart == true){
+        restartGame();
+      } else {
+        exitGame();
       }
     })
 
@@ -665,6 +667,15 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
       } else {
         controller.newPlayer = '';
       }
+    }
+
+
+    function restartGame() {
+      controller.round = 0;
+      resetGrid(controller.grid);
+      wins[0] = 0;
+      wins[1] = 0;
+      WebSocketFactory.emit("restart-game",{});
     }
 
     WebSocketFactory.emit("get-game", {});
