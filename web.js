@@ -136,6 +136,10 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
   }
 });
 
+app.get('/api/v1/userAvatar', function (req, res) {
+  console.log("Getting the user's avatar.");
+});
+
 app.post('/api/v1/uploadImage', function (req, res) {
   console.log(req.body);
 

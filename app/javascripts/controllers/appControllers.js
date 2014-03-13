@@ -201,6 +201,11 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // http://dev.w3.org/2009/dap/file-system/pub/FileSystem/
   // http://blog.teamtreehouse.com/building-an-html5-text-editor-with-the-filesystem-apis
   // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
+  // http://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
+
+  this.executeWhenPageIsLoaded = function() {
+    
+  }
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
@@ -217,10 +222,11 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
       window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
       if (window.requestFileSystem) {
         console.log("The current browser supports the FileSystem API.");
-        controller.initFileSystem();
+        controller.loadTheSelectedImage();
       } else {
         alert('Sorry! Your browser does not support the FileSystem API! You will not be able to upload your avatar!');
       }
+
     }
   }
 
@@ -243,7 +249,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
     console.log(error);
   }
 
-  this.initFileSystem = function() {
+  this.loadTheSelectedImage = function() {
     navigator.webkitPersistentStorage.requestQuota(1024 * 1024 * 5, function(grantedSize) {
       // Request a file system with the new size.
       window.requestFileSystem(window.PERSISTENT, grantedSize, function(fs) {
@@ -255,7 +261,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
         reader.onload = function(e) { //  Defines the callback function that will be called once the image is loaded.
           console.log("The selected file has been loaded.");
           var currentImage = reader.result;
-          controller.sendImage(currentImage);
+          controller.sendTheLoadedImage(currentImage);
         }
 
         console.log("About to read the image the user selected.");
@@ -264,7 +270,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
     }, controller.fileSystemErrorHandler);
   }
 
-  this.sendImage = function(imageToSend) {
+  this.sendTheLoadedImage = function(imageToSend) {
 
     UserInfoService.getUsername().then(function (username) {
       
@@ -296,9 +302,13 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
         controller.imageIsSelected = false;
         alert("The selected file must be of type 'png'!");
       } else { // If everything is all right, defines the 'selectedImageMetadata' variable and set 'imageIsSelected' to true.
-        console.log("Name: " + file.name + ". Size: " + file.size + ". Type: " + file.type);
-        controller.imageIsSelected = true;
-        controller.selectedImageMetadata = file;
+        if (file.size < 20000) {
+          console.log("Name: " + file.name + ". Size: " + file.size + ". Type: " + file.type);
+          controller.imageIsSelected = true;
+          controller.selectedImageMetadata = file;
+        } else {
+          alert("The file is too big, it needs to be smaller than 20KB (try 100px*100px).");
+        }
       }
     } else { // If no file is selected switch the 'imageIsSelected' to false.
       console.log("No file is selected.");
