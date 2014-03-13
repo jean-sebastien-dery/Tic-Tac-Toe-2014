@@ -186,6 +186,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   var controller = this;
   var imageIsSelected = false;
   var selectedImageMetadata;
+  var fileSystem = null; // This will contain a reference to the file systme later on.
 
   // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
   // http://www.w3schools.com/jsref/event_onchange.asp
@@ -200,6 +201,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // http://www.html5rocks.com/en/tutorials/file/filesystem/
   // http://dev.w3.org/2009/dap/file-system/pub/FileSystem/
   // http://blog.teamtreehouse.com/building-an-html5-text-editor-with-the-filesystem-apis
+  // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
 
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
@@ -216,36 +218,10 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
       window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
       if (window.requestFileSystem) {
         console.log("The current browser supports the FileSystem API.");
+        controller.initFileSystem();
       } else {
         alert('Sorry! Your browser does not support the FileSystem API! You will not be able to upload your avatar!');
       }
-
-      var fileSystem = null; // This will contain a reference to the file systme later on.
-
-      // // Request a FileSystem and set the filesystem variable.
-      // function initFileSystem() {
-      //   navigator.webkitPersistentStorage.requestQuota(1024 * 1024 * 5, function(grantedSize) {
-
-      //       // Request a file system with the new size.
-      //       window.requestFileSystem(window.PERSISTENT, grantedSize, function(fs) {
-
-      //         // Set the filesystem variable.
-      //         filesystem = fs;
-
-      //       }, errorHandler);
-
-      //     }, errorHandler);
-      // }
-
-      // Sends the image to the server.
-      $http.post('/api/v1/uploadImage', {"image" : controller.selectedImageMetadata}).success(function () {
-        console.log("The upload was a success.");
-        // Modifies the attribute in the server.
-        controller.changeDefaultAvatarSetting('false');
-      }).error(function () {
-        $location.path('/');
-        alert('An error occured while setting up the default avatar.');
-      });
     }
   }
 
@@ -260,6 +236,56 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // The only thing that needs to be done is going back to the 'mainmenu'.
   this.back = function() {
     $location.path('/mainmenu');
+  }
+
+  // Handles the error that might happen with the FS API.
+  this.fileSystemErrorHandler = function(error) {
+    alert("Something went wrong with the file system on the front-end of the application.");
+    console.log(error);
+  }
+
+  this.initFileSystem = function() {
+    navigator.webkitPersistentStorage.requestQuota(1024 * 1024 * 5, function(grantedSize) {
+      // Request a file system with the new size.
+      window.requestFileSystem(window.PERSISTENT, grantedSize, function(fs) {
+        // Set the filesystem variable.
+        controller.filesystem = fs;
+        console.log("The file system was acquired.");
+
+        var reader = new FileReader();
+        reader.onload = function(e) { //  Defines the callback function that will be called once the image is loaded.
+          console.log("The selected file has been loaded.");
+          // fileDisplayArea.innerHTML = "";
+
+          // // Create a new image.
+          // var currentImage = new Image();
+          // // Set the img src property using the data URL.
+          // currentImage.src = reader.result;
+
+          var currentImage = reader.result;
+          controller.sendImage(currentImage);
+
+          // Add the image to the page.
+          // fileDisplayArea.appendChild(currentImage);
+        }
+
+        console.log("About to read the image the user selected.");
+        reader.readAsBinaryString(controller.selectedImageMetadata); 
+      }, controller.fileSystemErrorHandler);
+    }, controller.fileSystemErrorHandler);
+  }
+
+  this.sendImage = function(imageToSend) {
+    console.log("About to send the image.");
+    // Sends the image to the server.
+    $http.post('/api/v1/uploadImage', {"image" : imageToSend}).success(function () {
+      console.log("The upload was a success.");
+      // Modifies the attribute in the server.
+      controller.changeDefaultAvatarSetting('false');
+    }).error(function () {
+      $location.path('/');
+      alert('An error occured while setting up the default avatar.');
+    });
   }
 
   // When a change occurs in the input object, this function is called.
