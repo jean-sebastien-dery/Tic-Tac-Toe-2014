@@ -254,18 +254,8 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
         var reader = new FileReader();
         reader.onload = function(e) { //  Defines the callback function that will be called once the image is loaded.
           console.log("The selected file has been loaded.");
-          // fileDisplayArea.innerHTML = "";
-
-          // // Create a new image.
-          // var currentImage = new Image();
-          // // Set the img src property using the data URL.
-          // currentImage.src = reader.result;
-
           var currentImage = reader.result;
           controller.sendImage(currentImage);
-
-          // Add the image to the page.
-          // fileDisplayArea.appendChild(currentImage);
         }
 
         console.log("About to read the image the user selected.");
@@ -277,7 +267,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   this.sendImage = function(imageToSend) {
     console.log("About to send the image.");
     // Sends the image to the server.
-    $http.post('/api/v1/uploadImage', {"image" : imageToSend}).success(function () {
+    $http.post('/api/v1/uploadImage', {"image" : imageToSend, "username" : "testUser"}).success(function () {
       console.log("The upload was a success.");
       // Modifies the attribute in the server.
       controller.changeDefaultAvatarSetting('false');

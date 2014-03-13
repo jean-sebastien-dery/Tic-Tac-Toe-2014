@@ -138,10 +138,8 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
 
 app.post('/api/v1/uploadImage', function (req, res) {
   console.log(req.body);
-  // var imageToSave = new Image();
-  // imageToSave.src = req.body.image.src;
 
-  fs.writeFile("./app/images/avatars/test.png", req.body.image, 'binary', function(error) {
+  fs.writeFile("./app/images/avatars/" + req.body.username + ".png", req.body.image, 'binary', function(error) {
     if (error) {
       console.log("An error occured while saving the avatar.", error);
       res.send(500);
