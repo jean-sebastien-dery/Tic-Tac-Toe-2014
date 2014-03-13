@@ -203,7 +203,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
       //     if (err) {
       //         throw err;
       //     }
-      //     content = data;
+      //     var content = data;
 
       //     // Invoke the next step here however you like
       //     console.log(content);   // Put all of the code here (not the best solution)
@@ -231,6 +231,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // Very usefull API for manipulating images:
   // http://www.w3.org/TR/file-upload/
   // http://www.html5rocks.com/en/tutorials/file/dndfiles/
+  // http://nodejs.org/api/fs.html
 
   // When a change occurs in the input object, this function is called.
   $scope.inputSelectChange = function() {
