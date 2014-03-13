@@ -265,16 +265,24 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   }
 
   this.sendImage = function(imageToSend) {
-    console.log("About to send the image.");
-    // Sends the image to the server.
-    $http.post('/api/v1/uploadImage', {"image" : imageToSend, "username" : "testUser"}).success(function () {
-      console.log("The upload was a success.");
-      // Modifies the attribute in the server.
-      controller.changeDefaultAvatarSetting('false');
-    }).error(function () {
-      $location.path('/');
-      alert('An error occured while setting up the default avatar.');
+
+    UserInfoService.getUsername().then(function (username) {
+      
+      console.log("About to send the image.");
+      // Sends the image to the server.
+      $http.post('/api/v1/uploadImage', {"image" : imageToSend, "username" : username}).success(function () {
+        console.log("The upload was a success.");
+        // Modifies the attribute in the server.
+        controller.changeDefaultAvatarSetting('false');
+      }).error(function () {
+        $location.path('/');
+        alert('An error occured while setting up the default avatar.');
+      });
+
+    }, function (err) { // Handles any error that could occur while identifying the current user.
+      alert('Enable to get the username of the current user.');
     });
+
   }
 
   // When a change occurs in the input object, this function is called.
