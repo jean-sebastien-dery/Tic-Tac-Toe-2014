@@ -185,42 +185,7 @@ Tic.controller('LogoutController', ['WebSocketFactory', '$http', '$location', fu
 Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '$scope', '$http', '$location', function (UserInfoService, WebSocketFactory, $scope, $http, $location) {
   var controller = this;
   var imageIsSelected = false;
-  var selectedImage;
-
-  // Handles the action of pressing on the 'Upload news' button.
-  this.uploadNew = function() {
-    console.log("The function uploadNew() was called.");
-
-    // Uploads the picture to the server.
-    if (typeof controller.imageIsSelected == 'undefined' || controller.imageIsSelected == false) {
-      console.log("The user selected no picture to upload.");
-      alert("You must select a picture first!");
-    } else {
-      console.log("Uploading the new avatar to the server.");
-
-      // Reads the file to be sent.
-      // fs.readFile(controller.selectedImage., function read(err, data) {
-      //     if (err) {
-      //         throw err;
-      //     }
-      //     var content = data;
-
-      //     // Invoke the next step here however you like
-      //     console.log(content);   // Put all of the code here (not the best solution)
-      // });
-
-      // Sends the image to the server.
-      $http.post('/api/v1/uploadImage', {"image" : controller.selectedImage}).success(function () {
-        console.log("The upload was a success.");
-        // Modifies the attribute in the server.
-        controller.changeDefaultAvatarSetting('false');
-      }).error(function () {
-        $location.path('/');
-        // Not able to login
-        alert('An error occured while setting up the default avatar.');
-      });
-    }
-  }
+  var selectedImageMetadata;
 
   // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
   // http://www.w3schools.com/jsref/event_onchange.asp
@@ -232,28 +197,56 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // http://www.w3.org/TR/file-upload/
   // http://www.html5rocks.com/en/tutorials/file/dndfiles/
   // http://nodejs.org/api/fs.html
+  // http://www.html5rocks.com/en/tutorials/file/filesystem/
+  // http://dev.w3.org/2009/dap/file-system/pub/FileSystem/
+  // http://blog.teamtreehouse.com/building-an-html5-text-editor-with-the-filesystem-apis
 
-  // When a change occurs in the input object, this function is called.
-  $scope.inputSelectChange = function() {
-    console.log("The user changed the file input.");
+  // Handles the action of pressing on the 'Upload news' button.
+  this.uploadNew = function() {
+    console.log("The function uploadNew() was called.");
 
-    // Gets the file from the input form in the HTML.
-    var file = document.getElementById('selectedImage').files[0];
-    if(file) { // Verifies that a file was selected.
-      console.log("A file was selected.");
-      if (file.type != "image/png") { // Ensures that the file is of the right type.
-        controller.imageIsSelected = false;
-        alert("The selected file must be of type 'png'!");
-      } else { // If everything is all right, defines the 'selectedImage' variable and set 'imageIsSelected' to true.
-        console.log("Name: " + file.name + ". Size: " + file.size + ". Type: " + file.type);
-        controller.imageIsSelected = true;
-        controller.selectedImage = file;
+    // Uploads the picture to the server.
+    if (typeof controller.imageIsSelected == 'undefined' || controller.imageIsSelected == false) { // Verifies if the user selected an image.
+      console.log("The user selected no picture to upload.");
+      alert("You must select a picture first!");
+    } else {
+      console.log("Uploading the new avatar to the server.");
+
+      // Determines if the browser supports the FileSystem API that will be used to read the image locally.
+      window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+      if (window.requestFileSystem) {
+        console.log("The current browser supports the FileSystem API.");
+      } else {
+        alert('Sorry! Your browser does not support the FileSystem API! You will not be able to upload your avatar!');
       }
-    } else { // If no file is selected switch the 'imageIsSelected' to false.
-      console.log("No file is selected.");
-      controller.imageIsSelected = false;
+
+      var fileSystem = null; // This will contain a reference to the file systme later on.
+
+      // // Request a FileSystem and set the filesystem variable.
+      // function initFileSystem() {
+      //   navigator.webkitPersistentStorage.requestQuota(1024 * 1024 * 5, function(grantedSize) {
+
+      //       // Request a file system with the new size.
+      //       window.requestFileSystem(window.PERSISTENT, grantedSize, function(fs) {
+
+      //         // Set the filesystem variable.
+      //         filesystem = fs;
+
+      //       }, errorHandler);
+
+      //     }, errorHandler);
+      // }
+
+      // Sends the image to the server.
+      $http.post('/api/v1/uploadImage', {"image" : controller.selectedImageMetadata}).success(function () {
+        console.log("The upload was a success.");
+        // Modifies the attribute in the server.
+        controller.changeDefaultAvatarSetting('false');
+      }).error(function () {
+        $location.path('/');
+        alert('An error occured while setting up the default avatar.');
+      });
     }
-    console.log("Current value of 'imageIsSelected': " + controller.imageIsSelected);
   }
 
   // Handles the action of pressing on the 'Use default' button.
@@ -261,6 +254,34 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // will be changed to 'true' for the current user.
   this.useDefault = function () {
     controller.changeDefaultAvatarSetting('true');
+  }
+
+  // Handles the action of pressing on the 'Back' button.
+  // The only thing that needs to be done is going back to the 'mainmenu'.
+  this.back = function() {
+    $location.path('/mainmenu');
+  }
+
+  // When a change occurs in the input object, this function is called.
+  $scope.inputSelectChange = function() {
+    console.log("The user changed the file input.");
+
+    var file = document.getElementById('selectedImageMetadata').files[0]; // Gets the image metadata from the 'input' embedded in the HTML.
+    if(file) { // Verifies that a file was selected.
+      console.log("A file was selected.");
+      if (file.type != "image/png") { // Ensures that the file is of the right type (we only accept PNGs).
+        controller.imageIsSelected = false;
+        alert("The selected file must be of type 'png'!");
+      } else { // If everything is all right, defines the 'selectedImageMetadata' variable and set 'imageIsSelected' to true.
+        console.log("Name: " + file.name + ". Size: " + file.size + ". Type: " + file.type);
+        controller.imageIsSelected = true;
+        controller.selectedImageMetadata = file;
+      }
+    } else { // If no file is selected switch the 'imageIsSelected' to false.
+      console.log("No file is selected.");
+      controller.imageIsSelected = false;
+    }
+    console.log("Current value of 'imageIsSelected': " + controller.imageIsSelected);
   }
 
   // Changes the 'defaultAvatar' variable of the user in the database (it is either 'true' or 'false').
@@ -278,19 +299,12 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
 
       }).error(function () {
         $location.path('/');
-        // Not able to login
         alert('An error occured while setting up the default avatar.');
       });
 
     }, function (err) { // Handles any error that could occur while identifying the current user.
       alert('Enable to get the username of the current user.');
     });
-  }
-
-  // Handles the action of pressing on the 'Back' button.
-  // The only thing that needs to be done is going back to the 'mainmenu'.
-  this.back = function() {
-    $location.path('/mainmenu');
   }
 
 }]);
