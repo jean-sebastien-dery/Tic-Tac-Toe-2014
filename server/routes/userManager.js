@@ -39,9 +39,11 @@ exports.getAllGames = function (req, res){
 
 exports.getScoreOf = function(username, cb) {
 
-	User.find({'username': username}, function (err, users) {
-		user = users[0]._doc;
-		return cb(user.gameWon - user.gameLose);
+	User.findOne({'username': username}, function (err, user) {
+		if (user) {
+			user = user._doc;
+			return cb(user.gameWon - user.gameLose);
+		}
 	});
 }
 
@@ -169,17 +171,19 @@ exports.registerGame = function(req, res){
 	});
 };
 
-exports.findHighestWinningUsers = function () {
+exports.findHighestWinningUsers = function (limit, cb) {
 	
 	//return users in descending order of games won
 	User.find()
 	.sort('-gameWon' )
-	.limit(1)
+	.limit(limit)
 	.exec( function (err, data) {
 		if (err) {
 			console.log('Error', err);
+			cb(err);
 		} else {
 			console.log('NEW data', data);
+			cb(null, data);
 		}
 	}); 
 };
