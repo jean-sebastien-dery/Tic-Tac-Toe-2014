@@ -200,7 +200,30 @@ var socket = require('socket.io').listen(app.listen(app.get('port')));
 
 var people  = {};
 var games   = {};
-//var clients = [];
+var top = userManager.findHighestWinningUsers(5, function (err, data) {
+        if (!err) {
+          top = data;
+          top10.emit('update-top', top);
+        } else {
+          console.log(err);
+        }
+      });
+
+var top10 = socket.of('/top')
+  .on('connection', function (socket) {
+    if (top == null) {
+      top = userManager.findHighestWinningUsers(5, function (err, data) {
+        if (!err) {
+          top = data;
+          top10.emit('update-top', top);
+        } else {
+          console.log(err);
+        }
+      });
+    }
+    socket.emit('update-top', top);
+  });
+
 
 socket.on('connection', function (client) {
   client.on('join', function(name) {

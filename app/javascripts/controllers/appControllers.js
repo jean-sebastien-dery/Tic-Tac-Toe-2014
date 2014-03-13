@@ -34,7 +34,6 @@ App.config(['$routeProvider',
       when('/mainmenu', {
         templateUrl   : 'tictac-partials/mainmenu',
         controller    : 'MainMenuController',
-        controllerAs  : 'main'
       }).
       when('/game', {
         templateUrl   : 'tictac-partials/game',
@@ -425,17 +424,56 @@ Tic.controller('RegisterController', ['$location', 'UserInfoService', function (
   }
 }]);
 
-Tic.controller('MainMenuController', ['$location', 'UserInfoService', 'WebSocketFactory', function ($location, UserInfoService, WebSocketFactory) {
+Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 'WebSocketFactory', function ($scope, $location, UserInfoService, WebSocketFactory) {
   UserInfoService.validateLogin();
 
-  this.joinLobby = function () {
-    WebSocketFactory.init().then(function () {
-      $location.path('/lobby');
-      WebSocketFactory.emit('update-games', {});
-    }, function (err) {
-      alert('Not able to join the lobby');
+  var top = io.connect('/top');
+
+  $scope.top = {};
+  $scope.top.list = [];
+
+  top.on('connect', function (top10) {
+    console.log('connected to top 10 list');
+  });
+
+  top.on('update-top', function (top) {
+    var players = [];
+
+    for (var i = 0, player; player = top[i]; i++) {
+      var win = 1, lose = 1;
+      if ( player.gameWon != 0) {
+        win = player.gameWon;
+      }
+
+      if ( player.gameLose != 0) {
+        lose = player.gameLose;
+      }
+
+      player.ratio = win/lose;
+
+      players.push(player);
+    }
+
+    $scope.$apply(function () {
+      $scope.top.list = players;
+    });
+  });
+
+  $scope.test = function () {
+    $scope.top.list.push({
+      username: 'allo',
+      ratio : 3
     });
   }
+
+  // this.joinLobby = function () {
+  //   WebSocketFactory.init().then(function () {
+  //     $location.path('/lobby');
+  //     WebSocketFactory.emit('update-games', {});
+  //   }, function (err) {
+  //     alert('Not able to join the lobby');
+  //   });
+  // }
 
 }]);
 
