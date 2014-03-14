@@ -155,7 +155,14 @@ app.post('/api/v1/setDefaultAvatar', function (req, res) {
   console.log("The value of the default avatar in the request is: " + req.body.defaultAvatar);
 
   if (req.body.defaultAvatar === 'true') {
-    console.log("About to change to default avatar.");
+    setDefaultAvatarToUser(req.body.username, res)
+  }
+
+  userManager.setDefaultAvatar(req, res);
+});
+
+function setDefaultAvatarToUser(username, res) {
+  console.log("About to change to default avatar.");
     var data;
     // Reads the data of the default avatar.
     fs.readFile('./app/images/avatars/default.png', function (err, data) {
@@ -167,24 +174,19 @@ app.post('/api/v1/setDefaultAvatar', function (req, res) {
         // console.log("Value of the data: " + data);
         console.log("About to write the default avatar on the server.");
         // Overwrite the current avatar image.
-        fs.writeFile("./app/images/avatars/" + req.body.username + ".png", data, 'binary', function(error) {
+        fs.writeFile("./app/images/avatars/" + username + ".png", data, 'binary', function(error) {
           if (error) {
             console.log("An error occured while saving the avatar.", error);
             res.send(500);
-          } else {
-            console.log("Successfully saved the avatar on the server side.");
-            res.send(200);
           }
         });
       }
     });
-  }
-
-  userManager.setDefaultAvatar(req, res);
-});
+}
 
 app.post('/api/v1/register', function (req, res) {
-    userManager.registerUser(req, res);
+  setDefaultAvatarToUser(req.body.username, res)
+  userManager.registerUser(req, res);
 });
 
 app.post('/api/v1/registerGame', function (req, res) {
