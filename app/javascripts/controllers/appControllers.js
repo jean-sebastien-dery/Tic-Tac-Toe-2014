@@ -375,7 +375,11 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
                                                   }, 5000);
     }
     else {
-      $timeout(function() { $location.path("/game"); }, 5000);
+      $timeout(function() {
+        if ($location.path() == "/waitingroom") {
+          $location.path("/game"); 
+        } 
+      }, 5000);
     }
 
   }
