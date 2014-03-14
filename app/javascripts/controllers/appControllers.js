@@ -662,6 +662,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
         }
       });
     };
+ 
   this.exitGame = function() {
     controller.gameStarted = false;
     stopCountdown();
