@@ -161,6 +161,10 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
     $location.path('/creategame');
   }
 
+  this.mainmenu = function () {
+    $location.path('/mainmenu');
+  }
+
 
 
 }]);
@@ -371,7 +375,11 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
                                                   }, 5000);
     }
     else {
-      $timeout(function() { $location.path("/game"); }, 5000);
+      $timeout(function() {
+        if ($location.path() == "/waitingroom") {
+          $location.path("/game"); 
+        } 
+      }, 5000);
     }
 
   }
@@ -659,6 +667,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
         }
       });
     };
+ 
   this.exitGame = function() {
     controller.gameStarted = false;
     stopCountdown();
