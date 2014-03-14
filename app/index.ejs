@@ -17,7 +17,9 @@
 </head>
 <body ng-controller="MainController as m">
     
-    <button ng-click="m.toggleFullScreen()" type="button" 	class="btn btn-primary btn-xs"> <img src="../../images/full_screen.png" class="img-responsive" alt="Responsive image"> </button>
+    <a ng-click="m.toggleFullScreen()"><img src="../../images/full_screen.png"></a><br>
+    <a ng-click="m.toggleSound()"><img ng-src="{{m.soundIcon}}"></a>
+
 	<div class="top-padding">
 	</div>
 	<div class="main-container">

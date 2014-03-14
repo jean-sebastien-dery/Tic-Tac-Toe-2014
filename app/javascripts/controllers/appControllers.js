@@ -490,6 +490,9 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
 }]);
 
 Tic.controller('MainController', ['UserInfoService', function (UserInfoService) {
+    this.soundOn = true;
+    this.soundIcon = "../../images/sound_on.png";
+
     this.toggleFullScreen = function () {
         if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
             if (document.documentElement.requestFullscreen) {
@@ -512,7 +515,20 @@ Tic.controller('MainController', ['UserInfoService', function (UserInfoService) 
                 document.webkitExitFullscreen();
             }
         }
-    }   
+    }  
+
+    this.toggleSound = function () { 
+      if (this.soundOn == true) {
+        this.soundOn = false;
+        this.soundIcon = "../../images/sound_off.png";
+      }
+      else {
+        this.soundOn = true;
+        this.soundIcon = "../../images/sound_on.png";
+      }
+
+    }
+
 }])
 
 Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', 'WebSocketFactory', function ($interval, $location, UserInfoService, WebSocketFactory) {
