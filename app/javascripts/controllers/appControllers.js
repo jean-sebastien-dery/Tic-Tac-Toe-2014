@@ -648,7 +648,8 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
 
         if (controller.grid[x][y] != 0) {
             // The spot is already taken
-            alert("You can't place your token here");
+            if(controller.token != controller.turn){
+            alert("You can't place your token here");} // to prevent annoying popups
         } else if(controller.token != controller.turn) {
             alert("it is not your turn!");
         } else {
