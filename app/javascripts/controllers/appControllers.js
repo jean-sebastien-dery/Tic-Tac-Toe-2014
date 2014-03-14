@@ -648,8 +648,8 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
 
         if (controller.grid[x][y] != 0) {
             // The spot is already taken
-            if(controller.token != controller.turn){
-            alert("You can't place your token here");} // to prevent annoying popups
+            if(controller.token != controller.turn){// to prevent annoying popups
+            alert("You can't place your token here");} 
         } else if(controller.token != controller.turn) {
             alert("it is not your turn!");
         } else {
@@ -659,7 +659,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
       });
     };
 
-    this.exitGame = function () {
+    function exitGame() {
         WebSocketFactory.emit("cancel-game", {}, function () {
             $location.path("/lobby");
         });
@@ -681,7 +681,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
     }
 
 
-    function restartGame() {
+     function restartGame() {
       controller.round = 0;
       resetGrid(controller.grid);
       wins[0] = 0;

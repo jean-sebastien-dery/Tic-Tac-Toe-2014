@@ -237,7 +237,7 @@ socket.on('connection', function (client) {
 
         //Update message
         client.emit("update", "Connected to the lobby");
-        socket.sockets.emit('update', people[client.id].username + "joined the lobby room");
+        socket.sockets.emit('update', people[client.id].username + " joined the lobby room");
 
         //  Refresh the people list
         socket.sockets.emit('update-players', people);
@@ -374,7 +374,6 @@ socket.on('connection', function (client) {
   });
 
   client.on('create-game', function (game, cb) {
-
     if (people[client.id].game == null) {
       gameManager.parseGame(game, client.id, function (err, game) {
         if (err) {
@@ -383,7 +382,7 @@ socket.on('connection', function (client) {
         } else {
 
           // Save the game
-          games[game.id]         = game;
+          games[game.id] = game;
           people[client.id].game = game.id;
           client.join(game.id);
 
