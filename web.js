@@ -136,8 +136,17 @@ app.get('/api/v1/isLoggedIn', function (req, res) {
   }
 });
 
-app.get('/api/v1/userAvatar', function (req, res) {
-  console.log("Getting the user's avatar.");
+app.post('/api/v1/getUserAvatar', function (req, res) {
+  console.log("Getting the avatar for user " + req.body.username);
+
+  fs.readFile("./app/images/avatars/" + req.body.username + ".png", "base64", function (err, data) {
+    if (err) {
+      res.send(500);
+    }
+    console.log(data);
+  });
+
+  res.send(data);
 });
 
 app.post('/api/v1/uploadImage', function (req, res) {

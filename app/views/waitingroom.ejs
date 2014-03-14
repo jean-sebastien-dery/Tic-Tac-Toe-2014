@@ -9,7 +9,7 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-5 col-sm-5 col-md-5">
-						<img src="images/test-avatar.png" class="avatar"></img>
+						<img src="images/avatars/{{waitingroom.creator}}.png" class="avatar"></img>
 						<p><b>{{waitingroom.creator}}</b></p>
 					</div>
 					<div class="col-xs-2 col-sm-2 col-md-2 countdown" ng-show="waitingroom.gameStarted">
@@ -19,7 +19,8 @@
 						v.
 					</div>
 					<div class="col-xs-5 col-sm-5 col-md-5">
-						<img src="images/unknown-player-avatar.png" class="avatar">
+						<img src="images/avatars/{{waitingroom.newPlayer}}.png" class="avatar">
+						<!-- <img src="images/unknown-player-avatar.png" class="avatar"> -->
 						<p><b>{{waitingroom.newPlayer}}</b></p>
 					</div>
 				</div>

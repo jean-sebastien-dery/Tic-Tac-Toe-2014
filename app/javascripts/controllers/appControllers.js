@@ -187,6 +187,10 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   var selectedImageMetadata;
   var fileSystem = null; // This will contain a reference to the file systme later on.
 
+  UserInfoService.getUsername().then(function(username) {
+    controller.picture = username;
+  });
+
   // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
   // http://www.w3schools.com/jsref/event_onchange.asp
   // https://code.google.com/p/angular-file-upload/
@@ -204,7 +208,27 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // http://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
 
   this.executeWhenPageIsLoaded = function() {
-    
+
+   UserInfoService.getUsername().then(function (username) {
+      
+      console.log("About to request the current avatar.");
+      // Sends the image to the server.
+      $http.post('/api/v1/getUserAvatar', {"username" : username}).success(function(data, status, headers, config) {
+        console.log("this is a success!");
+        console.log(data);
+        console.log(status);
+        console.log(headers);
+        console.log(config);
+
+      }).error(function () {
+        $location.path('/');
+        alert('An error occured while setting up the default avatar.');
+      });
+
+    }, function (err) { // Handles any error that could occur while identifying the current user.
+      alert('Enable to get the username of the current user.');
+    });
+
   }
 
   // Handles the action of pressing on the 'Upload news' button.
@@ -352,7 +376,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.rounds = 0;
   this.timer= 0;
   this.creator = '';
-  this.newPlayer = '';
+  this.newPlayer = "unknown-player-avatar";
   this.lock = false; // Allows two players to play on the same computer (different windows)
 
   function startGame() {
@@ -393,7 +417,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
       startGame();
     } else {
       controller.gameStarted = false;
-      controller.newPlayer = '';
+      controller.newPlayer = "unknown-player-avatar";
     }
   }
 
