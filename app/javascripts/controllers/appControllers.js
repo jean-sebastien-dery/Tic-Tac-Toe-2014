@@ -161,6 +161,10 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
     $location.path('/creategame');
   }
 
+  this.mainmenu = function () {
+    $location.path('/mainmenu');
+  }
+
 
 
 }]);
