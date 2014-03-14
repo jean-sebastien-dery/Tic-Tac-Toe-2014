@@ -375,7 +375,11 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
                                                   }, 5000);
     }
     else {
-      $timeout(function() { $location.path("/game"); }, 5000);
+      $timeout(function() {
+        if ($location.path() == "/waitingroom") {
+          $location.path("/game"); 
+        } 
+      }, 5000);
     }
 
   }
@@ -449,17 +453,38 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
   });
 
   top.on('update-top', function (top) {
+    console.log("function update-top has been called.");
     var players = [];
 
     for (var i = 0, player; player = top[i]; i++) {
       var win = 1, lose = 1;
-      if ( player.gameWon != 0) {
+
+      if (player.gameWon == undefined) {
+        win = 1;
+      } else if (player.gameWon != 0) {
         win = player.gameWon;
       }
 
-      if ( player.gameLose != 0) {
+      if (player.gameLose == undefined) {
+        lose = 1;
+      } else if (player.gameLose != 0) {
         lose = player.gameLose;
       }
+
+      // if ( player.gameWon != 0) {
+      //   win = player.gameWon;
+      // } else {
+      //   win = 0;
+      // }
+
+      // if ( player.gameLose != 0) {
+      //   lose = player.gameLose;
+      // } else if (player.gameLose == undefined) {
+      //   lose = 1;
+      // }
+
+      console.log("Number of won games: " + win);
+      console.log("Number of lost games: " + lose);
 
       player.ratio = win/lose;
 
@@ -678,6 +703,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
         }
       });
     };
+ 
   this.exitGame = function() {
     controller.gameStarted = false;
     stopCountdown();

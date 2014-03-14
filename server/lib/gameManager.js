@@ -33,12 +33,16 @@ Game.prototype.playerMoved = function (grid, cb) {
 
 Game.prototype.isGameFinished = function () {
 
-    if (this.rounds > 0 && (this.rounds % this.round.length) == 0) {
+    if (this.round.length > 0 && (this.round.length % this.rounds) == 0) {
       var winner = this.whoWon();
       if (winner == 1) {
+      	console.log("Adding a winning game to user: " + this.players[1].username);
+      	console.log("Adding a loosing game to user: " + this.players[0].username);
         userManager.registerWonGame(this.players[1].username);
         userManager.registerLostGame(this.players[0].username);
       } else if (winner == 2) {
+      	console.log("Adding a winning game to user: " + this.players[1].username);
+      	console.log("Adding a loosing game to user: " + this.players[0].username);
         userManager.registerWonGame(this.players[0].username);
         userManager.registerLostGame(this.players[1].username);
       }
