@@ -445,6 +445,7 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
   });
 
   top.on('update-top', function (top) {
+    console.log("function update-top has been called.");
     var players = [];
 
     for (var i = 0, player; player = top[i]; i++) {
