@@ -207,30 +207,6 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   // https://developer.mozilla.org/en-US/docs/Web/API/FileReader
   // http://blog.teamtreehouse.com/reading-files-using-the-html5-filereader-api
 
-  this.executeWhenPageIsLoaded = function() {
-
-   UserInfoService.getUsername().then(function (username) {
-      
-      console.log("About to request the current avatar.");
-      // Sends the image to the server.
-      $http.post('/api/v1/getUserAvatar', {"username" : username}).success(function(data, status, headers, config) {
-        console.log("this is a success!");
-        console.log(data);
-        console.log(status);
-        console.log(headers);
-        console.log(config);
-
-      }).error(function () {
-        $location.path('/');
-        alert('An error occured while setting up the default avatar.');
-      });
-
-    }, function (err) { // Handles any error that could occur while identifying the current user.
-      alert('Enable to get the username of the current user.');
-    });
-
-  }
-
   // Handles the action of pressing on the 'Upload news' button.
   this.uploadNew = function() {
     console.log("The function uploadNew() was called.");
