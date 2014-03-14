@@ -328,7 +328,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
       // The POST link '/api/v1/setDefaultAvatar' will be executed in 'web.js'.
       $http.post('/api/v1/setDefaultAvatar', {"username" : username, "defaultAvatar" : isUsingDefaultAvatar}).success(function () {
 
-      // There is nothing else to do here if the request is successfull.
+      $location.path('/mainmenu');
 
       }).error(function () {
         $location.path('/');

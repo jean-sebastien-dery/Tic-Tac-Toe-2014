@@ -151,6 +151,35 @@ app.post('/api/v1/uploadImage', function (req, res) {
 });
 
 app.post('/api/v1/setDefaultAvatar', function (req, res) {
+
+  console.log("The value of the default avatar in the request is: " + req.body.defaultAvatar);
+
+  if (req.body.defaultAvatar === 'true') {
+    console.log("About to change to default avatar.");
+    var data;
+    // Reads the data of the default avatar.
+    fs.readFile('./app/images/avatars/default.png', function (err, data) {
+      if (err) {
+        console.log("An error occured while reading the default avatar.");
+        res.send(500);
+      } else {
+        console.log("The default avatar was read successfully.");
+        // console.log("Value of the data: " + data);
+        console.log("About to write the default avatar on the server.");
+        // Overwrite the current avatar image.
+        fs.writeFile("./app/images/avatars/" + req.body.username + ".png", data, 'binary', function(error) {
+          if (error) {
+            console.log("An error occured while saving the avatar.", error);
+            res.send(500);
+          } else {
+            console.log("Successfully saved the avatar on the server side.");
+            res.send(200);
+          }
+        });
+      }
+    });
+  }
+
   userManager.setDefaultAvatar(req, res);
 });
 
