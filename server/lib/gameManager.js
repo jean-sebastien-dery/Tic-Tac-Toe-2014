@@ -33,7 +33,7 @@ Game.prototype.playerMoved = function (grid, cb) {
 
 Game.prototype.isGameFinished = function () {
 
-    if (this.round.length == this.rounds) {
+    if (this.rounds > 0 && (this.rounds % this.round.length) == 0) {
       var winner = this.whoWon();
       if (winner == 1) {
         userManager.registerWonGame(this.players[1].username);
