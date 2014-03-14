@@ -458,13 +458,33 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
 
     for (var i = 0, player; player = top[i]; i++) {
       var win = 1, lose = 1;
-      if ( player.gameWon != 0) {
+
+      if (player.gameWon == undefined) {
+        win = 1;
+      } else if (player.gameWon != 0) {
         win = player.gameWon;
       }
 
-      if ( player.gameLose != 0) {
+      if (player.gameLose == undefined) {
+        lose = 1;
+      } else if (player.gameLose != 0) {
         lose = player.gameLose;
       }
+
+      // if ( player.gameWon != 0) {
+      //   win = player.gameWon;
+      // } else {
+      //   win = 0;
+      // }
+
+      // if ( player.gameLose != 0) {
+      //   lose = player.gameLose;
+      // } else if (player.gameLose == undefined) {
+      //   lose = 1;
+      // }
+
+      console.log("Number of won games: " + win);
+      console.log("Number of lost games: " + lose);
 
       player.ratio = win/lose;
 
