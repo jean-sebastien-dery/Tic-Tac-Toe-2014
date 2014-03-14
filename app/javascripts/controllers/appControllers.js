@@ -658,12 +658,14 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
         }
       });
     };
-
-    function exitGame() {
-        WebSocketFactory.emit("cancel-game", {}, function () {
-            $location.path("/lobby");
-        });
-    };
+  this.exitGame = function() {
+    controller.gameStarted = false;
+    stopCountdown();
+    WebSocketFactory.emit("cancel-game", {}, function(){
+      $location.path("/lobby");
+    });
+  }
+    
 
     function refreshGame(game) {
 
