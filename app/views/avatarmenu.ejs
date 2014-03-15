@@ -1,26 +1,53 @@
 <div class="avatarmenu">
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-8 col-sm-5 col-md-4 login-form content-background">
-				<!-- This section is where the current avatar is being displayed. -->
-				<div class="row row-spacing">
-					<div class="col-md-5 col-md-offset-4">
-						<img src="../../images/avatars/{{avatarMenu.picture}}.png" class="img-responsive" alt="Responsive image">
+			<div class="col-xs-11 col-sm-11 col-md-8 content-background">
+				<div class="content-container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<h2 class="title">Player Profile</h2>
+						</div>
 					</div>
-				</div>
-				<!-- This section is where the buttons are being displayed. -->
-				<div class="row row-spacing">
-					<div class="content-container">
-						<form method="post" class="form-horizontal" role="form"> 
-							<div class="form-group" align="center">
-								<button ng-click="avatarMenu.uploadNew()" name="uploadNew" type="button" class="btn btn-primary">Upload new</button>
-								<button ng-click="avatarMenu.useDefault()" name="useDefault" type="button" class="btn btn-primary">Use default</button>
-								<button ng-click="avatarMenu.back()" name="back" type="button" class="btn btn-default">Back</button>
-
-								<!-- This will let the user select a file on its file system. -->
-								<input type="file" id="selectedImageMetadata" name="selectedImageMetadata" onchange="angular.element(this).scope().inputSelectChange()" accept="image/*" width="100" height="100"/>
+					<div class="row">
+						<div class="col-xs-6 col-sm-6 col-md-6">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<h3 class="title">Avatar</h3>
+								</div>
 							</div>
-						</form>
+							<div class="row row-spacing">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<center><img src="../../images/avatars/{{avatarMenu.picture}}.png" class="img-responsive"></center>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<form method="post" class="form-horizontal" role="form"> 
+										<div class="form-group" align="center">
+											<button ng-click="avatarMenu.uploadNew()" name="uploadNew" type="button" class="btn btn-primary">Upload new</button>
+											<button ng-click="avatarMenu.useDefault()" name="useDefault" type="button" class="btn btn-primary">Use default</button>
+											<button ng-click="avatarMenu.back()" name="back" type="button" class="btn btn-default">Back</button>
+											<input type="file" id="selectedImageMetadata" name="selectedImageMetadata" onchange="angular.element(this).scope().inputSelectChange()" accept="image/*" width="100" height="100"/>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6 col-sm-6 col-md-6">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<h3 class="title">Statistics</h3>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12 stats">
+									<p><b>Games won:</b> 1</p>
+									<p><b>Games lost:</b> 0</p>
+									<p><b>W/L ratio:</b> 1</p>
+									<p><b>Player rank:</b> 1</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -175,9 +175,23 @@ div.waitingroom {
  * ------------------------
  */
 div.avatarmenu {
-	div.row-spacing {
-		padding: 1em 0 1em 0;
+
+	p {
+		text-align: center;
 	}
+
+	.title {
+		text-align: center;
+	}
+
+	div.row-spacing {
+		padding: 0 0 1em 0;
+	}
+
+	div.stats {
+		padding-top: 0.1em;
+	}
+
 	img {
 		border-style: solid;
 		border-color: #000000;
