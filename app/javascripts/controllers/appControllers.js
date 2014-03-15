@@ -247,6 +247,10 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
     $location.path('/mainmenu');
   }
 
+  this.resetHistory = function() {
+    console.log("About to reset the user's history.");
+  }
+
   // Handles the error that might happen with the FS API.
   this.fileSystemErrorHandler = function(error) {
     alert("Something went wrong with the file system on the front-end of the application.");
