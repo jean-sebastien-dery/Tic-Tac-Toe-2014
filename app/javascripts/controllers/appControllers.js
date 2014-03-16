@@ -2,6 +2,7 @@ var App = angular.module('app', [
   'ngRoute',
   'tictactoe'
 ]);
+
  
 App.config(['$routeProvider',
   function($routeProvider) {
@@ -193,6 +194,7 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
 
   UserInfoService.getUsername().then(function(username) {
     controller.picture = username;
+
   });
 
   // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
@@ -580,7 +582,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
     this.turn = 2;
     this.wins = [0, 0];
     this.players = [];
-
+    var myUsername = '';
     var timerId;
 
     // Change load to false when you dev environment
@@ -670,6 +672,28 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
     WebSocketFactory.receive('game-done', function(winner) {
       stopCountdown();
       if (winner == 1 || winner == 2) {
+
+        if(winner==2){
+          if(myUsername==controller.players[2].username){
+            var audio = new Audio('../../audio/win.mp3');
+            audio.play();
+          }
+          else{
+            var audio = new Audio('../../audio/lose.mp3');
+            audio.play();
+          }
+        }
+        else if(winner == 1){
+          if(myUsername==controller.players[1].username){
+            var audio = new Audio('../../audio/win.mp3');
+            audio.play();
+          }
+          else{
+            var audio = new Audio('../../audio/lose.mp3');
+            audio.play();
+          }
+        }
+        
         alert("Player " + (winner == 1 ? controller.players[1].username : controller.players[2].username) + " won the game");       
       } else {
         alert("The game is tie");    
@@ -694,7 +718,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
     this.placeToken = function (x, y) {
       stopCountdown();
       UserInfoService.getUsername().then(function (username) {
-
+        myUsername = username;
         if (controller.grid[x][y] != 0) {
             // The spot is already taken
             if(controller.token != controller.turn){// to prevent annoying popups
@@ -711,6 +735,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
   this.exitGame = function() {
     controller.gameStarted = false;
     stopCountdown();
+    
     WebSocketFactory.emit("cancel-game", {}, function(){
       $location.path("/lobby");
     });
