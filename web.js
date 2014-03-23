@@ -346,6 +346,14 @@ socket.on('connection', function (client) {
 
   });
 
+  client.on('new-message', function (msg) {
+
+    socket.sockets.emit('new-message', {
+      user : people[client.id].username,
+      msg : msg
+    });
+  });
+
   client.on('disconnect', function () {
     if (people[client.id]) {
 
