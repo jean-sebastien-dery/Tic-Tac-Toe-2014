@@ -797,6 +797,14 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
       $location.path("/lobby");
     });
   }
+
+  this.showChat = function() {
+      document.getElementById("chatbox").style.display = "initial";
+  }
+
+  this.hideChat = function() {
+      document.getElementById("chatbox").style.display = "none";
+  }
     
 
     function refreshGame(game) {
