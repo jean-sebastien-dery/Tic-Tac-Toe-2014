@@ -736,6 +736,8 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
             var audio = new Audio('../../audio/lose.mp3');
             audio.play();
           }
+          alert(controller.players[1].username + "'s' high score has decresed by 1" + "\n" +
+            controller.players[2].username + "'s' high score has increased by 1");
         }
         else if(winner == 1){
           if(myUsername==controller.players[1].username){
@@ -746,6 +748,8 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
             var audio = new Audio('../../audio/lose.mp3');
             audio.play();
           }
+          alert(controller.players[1].username + "'s' high score has increased by 1" + "\n" +
+            controller.players[2].username + "'s' high score has decreased by 1");
         }
         }
         else{
