@@ -573,8 +573,7 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
 }]);
 
 Tic.controller('MainController', ['UserInfoService', function (UserInfoService) {
-    this.soundOn = true;
-    this.soundIcon = "../../images/sound_on.png";
+    
 
     this.toggleFullScreen = function () {
         if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
@@ -600,24 +599,14 @@ Tic.controller('MainController', ['UserInfoService', function (UserInfoService) 
         }
     }  
 
-    this.toggleSound = function () { 
-      if (this.soundOn == true) {
-        this.soundOn = false;
-        this.soundIcon = "../../images/sound_off.png";
-      }
-      else {
-        this.soundOn = true;
-        this.soundIcon = "../../images/sound_on.png";
-      }
-
-    }
 
 }])
 
 Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', 'WebSocketFactory', function ($interval, $location, UserInfoService, WebSocketFactory) {
     //UserInfoService.validateLogin();
     var controller = this;
-
+    this.soundOn = true;
+    this.soundIcon = "../../images/sound_on.png";
     // 0 when nothing in the grid
     // 2 when X in the grid
     // 1 when O in the grid
@@ -652,6 +641,19 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
       $interval.cancel(timerId);
       timerId = null;
       controller.countdown = controller.timer;
+    }
+
+
+    this.toggleSound = function () { 
+      if (this.soundOn == true) {
+        controller.soundOn = false;
+        controller.soundIcon = "../../images/sound_off.png";
+      }
+      else {
+        controller.soundOn = true;
+        controller.soundIcon = "../../images/sound_on.png";
+      }
+
     }
  
     function countDown () {
@@ -724,7 +726,7 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
     WebSocketFactory.receive('game-done', function(winner) {
       stopCountdown();
       if (winner == 1 || winner == 2) {
-
+        if(controller.soundOn==true){
         if(winner==2){
           if(myUsername==controller.players[2].username){
             var audio = new Audio('../../audio/win.mp3');
@@ -745,7 +747,10 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
             audio.play();
           }
         }
-        
+        }
+        else{
+          alert("you are muted");
+        }
         alert("Player " + (winner == 1 ? controller.players[1].username : controller.players[2].username) + " won the game");       
       } else {
         alert("The game is tie");    
