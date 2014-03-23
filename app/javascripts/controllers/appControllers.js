@@ -124,6 +124,17 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
     }
   }
 
+  
+  this.showChat = function() {
+      document.getElementById("chatbox").style.display = "initial";
+  }
+
+  this.hideChat = function() {
+      document.getElementById("chatbox").style.display = "none";
+  }
+    
+
+
   // Initialize the list when browser is refreshed
   WebSocketFactory.init().then(function () {
 
@@ -814,15 +825,6 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
       $location.path("/lobby");
     });
   }
-
-  this.showChat = function() {
-      document.getElementById("chatbox").style.display = "initial";
-  }
-
-  this.hideChat = function() {
-      document.getElementById("chatbox").style.display = "none";
-  }
-    
 
     function refreshGame(game) {
 
