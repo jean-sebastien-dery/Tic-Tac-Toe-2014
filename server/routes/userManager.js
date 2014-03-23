@@ -9,6 +9,7 @@ var userSchema = new Schema({
 	password 	: {type:String},
 	gameWon		: {type:Number},
 	gameLose	: {type:Number},
+	gameRank	: {type:Number},
 	defaultAvatar : {type:Boolean},
 });
 
@@ -188,12 +189,48 @@ exports.findHighestWinningUsers = function (limit, cb) {
 	}); 
 };
 
+exports.getUserHistory = function(username, clientResponse) {
+
+	// Searches for the user in the database, 'user' will be the found user.
+	User.findOne({'username' : username }, function (err, user) {
+		// If there is an error, include the error in the response.
+		if (err) {
+			clientResponse.send(500, err);
+		} else {
+			clientResponse.send(200, user);
+		}
+	});
+
+}
+
+exports.resetUserHistory = function(name, clientResponse) {
+	User.update( {username: name }, { $set: { gameWon: 0} }, function (err, data) {
+    	console.log('Reset the user history', data);
+    	if (err) {
+    		clientResponse.send(500);
+    	}
+    } );
+    User.update( {username: name }, { $set: { gameLose: 0} }, function (err, data) {
+    	console.log('Reset the user history', data);
+    	if (err) {
+    		clientResponse.send(500);
+    	}
+    } );
+    User.update( {username: name }, { $set: { gameRank: 0 } }, function (err, data) {
+    	console.log('Reset the user history', data);
+    	if (err) {
+    		clientResponse.send(500);
+    	}
+    } );
+
+    clientResponse.send(200);
+}
+
 exports.registerWonGame = function(name){
 
-	User.update( {username: name },
-                    { $inc: { gameWon: 1 } }, function (err, data) {
-                    	console.log('increment game won', data);
-                    } );
+	User.update( {username: name }, { $inc: { gameWon: 1 } }, function (err, data) {
+    	console.log('increment game won', data);
+    } );
 };
 
 exports.registerLostGame = function(name){

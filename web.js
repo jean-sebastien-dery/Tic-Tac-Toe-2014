@@ -184,8 +184,16 @@ function setDefaultAvatarToUser(username, res) {
     });
 }
 
+app.post('/api/v1/getUserHistory', function (req, res) {
+  userManager.getUserHistory(req.body.username, res);
+});
+
+app.post('/api/v1/resetUserHistory', function (req, res) {
+  userManager.resetUserHistory(req.body.username, res);
+});
+
 app.post('/api/v1/register', function (req, res) {
-  setDefaultAvatarToUser(req.body.username, res)
+  setDefaultAvatarToUser(req.body.username, res);
   userManager.registerUser(req, res);
 });
 

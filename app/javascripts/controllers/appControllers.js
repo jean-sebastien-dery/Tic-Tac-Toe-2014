@@ -191,10 +191,49 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
   var imageIsSelected = false;
   var selectedImageMetadata;
   var fileSystem = null; // This will contain a reference to the file systme later on.
+  var gameWon;
+  var gameLost;
+  var gameRatio;
+  var gameRank;
 
   UserInfoService.getUsername().then(function(username) {
     controller.picture = username;
 
+    $http.post('/api/v1/getUserHistory', {"username" : username}).success(function (data) {
+      console.log("Was able to get the user history.");
+
+      console.log(data);
+      
+      if (data.gameWon == undefined) {
+        console.log("The value 'gameWon' was not defined, set to 0.");
+        controller.gameWon = 0;
+      } else {
+        controller.gameWon = data.gameWon;
+      }
+
+      if (data.gameLose == undefined) {
+        console.log("The value 'gameLose' was not defined, set to 0.");
+        controller.gameLost = 0;
+      } else {
+        controller.gameLost = data.gameLose;
+      }
+
+      if (controller.gameLost == 0) {
+        controller.gameRatio = controller.gameWon/1;
+      } else {
+        controller.gameRatio = controller.gameWon/controller.gameLost;
+      }
+
+      if (data.gameRank == undefined) {
+        console.log("The value 'gameRank' was not defined, set to 0.");
+        controller.gameRank = "unknown";
+      } else {
+        controller.gameRank = data.gameRank;
+      }
+    }).error(function () {
+      $location.path('/');
+      alert('An error occured while getting the user history');
+    });
   });
 
   // Reference for this part of the program: http://stackoverflow.com/questions/16631702/file-pick-with-angular-js
@@ -251,6 +290,19 @@ Tic.controller('AvatarMenuController', ['UserInfoService', 'WebSocketFactory', '
 
   this.resetHistory = function() {
     console.log("About to reset the user's history.");
+
+    UserInfoService.getUsername().then(function(username) {
+
+      $http.post('/api/v1/resetUserHistory', {"username" : username}).success(function () {
+        console.log("Was able to reset the user history.");
+        $location.path('/mainmenu');
+      }).error(function () {
+        $location.path('/');
+        alert('An error occured while resetting the user history');
+      });
+
+    });
+    
   }
 
   // Handles the error that might happen with the FS API.
