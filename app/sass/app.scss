@@ -260,12 +260,19 @@ div.lobby {
 		margin-top: 1em;
 	}
 
-	ul.chat {
+	div.chat-box {
+		height: 200px; 
+		overflow-y: scroll;
 		border-style: solid;
 		border-color: #000000;
 		border-width: 1px;
-		@include border-radius(3px);
-		list-style-type: none;
+		padding: 0.1em;
+		text-align: left;
+	}
+
+	ul.chat {
+		list-style:none;
+		padding-left: 0.5em;
 	}
 }
 
