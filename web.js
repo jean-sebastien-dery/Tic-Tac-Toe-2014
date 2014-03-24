@@ -76,8 +76,6 @@ function ensureAuthenticated (req, res, next) {
     }
 }
 
-
-
 mongoose.connect('mongodb://localhost/tictac');
 
 var db = mongoose.connection;
@@ -209,6 +207,10 @@ app.post('/api/v1/getAllGames', function (req, res) {
     userManager.getAllGames(req, res);
 });
 
+app.post('/api/v1/getAllUsersSorted', function (req, res) {
+  userManager.getAllUsersSorted(req, res);
+});
+
 app.get('/api/v1/logout', function (req, res) {
   req.logout();
   res.redirect('#/login');
@@ -237,14 +239,39 @@ var socket = require('socket.io').listen(app.listen(app.get('port')));
 
 var people  = {};
 var games   = {};
-var top = userManager.findHighestWinningUsers(5, function (err, data) {
+
+var all = userManager.getAllUsersSorted(null, function(err, data) {
+  if (!err) {
+    all = data;
+    allsocket.emit('update-all', all);
+  } else {
+    console.log(err);
+  }
+});
+
+var allsocket = socket.of('/all')
+  .on('connection', function (socket) {
+    if (all == null) {
+      all = userManager.getAllUsersSorted(null, function (err, data) {
         if (!err) {
-          top = data;
-          top10.emit('update-top', top);
+          all = data;
+          allsocket.emit('update-all', all);
         } else {
           console.log(err);
         }
       });
+    }
+    socket.emit('update-all', all);
+  });
+
+var top = userManager.findHighestWinningUsers(5, function (err, data) {
+  if (!err) {
+    top = data;
+    top10.emit('update-top', top);
+  } else {
+    console.log(err);
+  }
+});
 
 var top10 = socket.of('/top')
   .on('connection', function (socket) {

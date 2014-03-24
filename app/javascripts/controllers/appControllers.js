@@ -530,9 +530,77 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
   UserInfoService.validateLogin();
 
   var top = io.connect('/top');
+  var all = io.connect('/all');
 
+  $scope.all = {};
+  $scope.all.list = [];
   $scope.top = {};
   $scope.top.list = [];
+
+  this.promptRankChange = function(player){
+    UserInfoService.getUsername().then(function(username) {
+      if (username == player.username) {
+        if (rankChanged) {
+          alert("Your rank has changed to position " + rank);
+        }
+      }
+    }, function (err) {
+      alert('Unable to prompt the change in rank');
+    });
+  };
+  
+  all.on('connect', function (allsocket) {
+    console.log('connected to all socket');
+  });
+
+  all.on('update-all', function (all) {
+    console.log("function update-all has been called.");
+    var players = [];
+
+    for (var i = 0, player; player = all[i]; i++) {
+      var win = 1, lose = 1, rank = 0;
+      var rankchanged = false;
+
+      if (player.gameWon == undefined) {
+        win = 1;
+      } else if (player.gameWon != 0) {
+        win = player.gameWon;
+      }
+
+      if (player.gameLose == undefined) {
+        lose = 1;
+      } else if (player.gameLose != 0) {
+        lose = player.gameLose;
+      }
+
+      if (player.gameRank == undefined) {
+        rank = 0;
+      } else {
+        rank = player.gameRank;
+      }
+
+      if (player.rankChanged == undefined) {
+        rankchanged = false;
+      } else {
+        rankchanged = player.rankChanged;
+      }
+
+      promptRankChange(player);
+
+      console.log("Number of won games: " + win);
+      console.log("Number of lost games: " + lose);
+      console.log("Rank of player:" + rank);
+      console.log("Rank has changed? " + rankchanged);
+
+      player.ratio = win/lose;
+
+      players.push(player);
+    }
+
+    $scope.$apply(function () {
+      $scope.all.list = players;
+    });
+  });
 
   top.on('connect', function (top10) {
     console.log('connected to top 10 list');

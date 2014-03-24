@@ -11,6 +11,7 @@ var userSchema = new Schema({
 	gameLose	: {type:Number},
 	gameRank	: {type:Number},
 	defaultAvatar : {type:Boolean},
+	rankChanged : {type:Boolean},
 });
 
 //username of the player who created this game
@@ -37,6 +38,22 @@ exports.getAllGames = function (req, res){
     res.send(games);
 
 }
+
+exports.getAllUsersSorted = function (req, cb) {
+	
+	//return users in descending order of games won
+	User.find()
+	.sort('-gameWon' )
+	.exec( function (err, data) {
+		if (err) {
+			console.log('Error', err);
+			cb(err);
+		} else {
+			console.log('User Info', data);
+			cb(null, data);
+		}
+	}); 
+};
 
 exports.getScoreOf = function(username, cb) {
 
@@ -240,5 +257,11 @@ exports.registerLostGame = function(name){
 	} );
 
 };
+
+exports.setUserRank = function(name, rank) {
+    User.update( {username: name }, { $set: { gameRank: rank } }, function (err, data) {
+    	console.log('set user rank', data);
+    } );
+}
 
 

@@ -46,10 +46,24 @@ Game.prototype.isGameFinished = function () {
         userManager.registerWonGame(this.players[0].username);
         userManager.registerLostGame(this.players[1].username);
       }
+      calculateRankAndRegister();
       return true;
     } else {
     	return false;
     }
+}
+
+function calculateRankAndRegister() {
+	var allplayers = userManager.getAllUsersSorted(null, function(err, data) {
+	if (!err) {
+	    allplayers = data;
+	  } else {
+	    console.log(err);
+	  }
+	});
+	for (var i = 0, player; player = allplayers[i]; i++) {
+		userManager.setUserRank(player.username, i+1);
+	}
 }
 
 Game.prototype.whoWon = function () {
