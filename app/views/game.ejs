@@ -14,7 +14,6 @@
 		</div>
 		<div class="row" style="height:100%" ng-hide="game.load">
 			<div class="col-xs-11 col-sm-10 col-md-8 content-background">
-			    <a ng-click="game.toggleSound()"><img ng-src="{{game.soundIcon}}"></a>
 				<div class="content-container">
 					<div class="row top">
 						<div class="col-xs-4 col-sm-4 col-md-4" id="creator">
@@ -23,27 +22,32 @@
 						</div>
 						<div class="col-xs-4 col-sm-4 col-md-4" id="gameinfo">
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+						 			<a ng-click="game.toggleSound()"><img ng-src="{{game.soundIcon}}"></a>
+						 		</div>
+						 	</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
 									<font size="4em"><b>{{game.players[game.turn].username}}'s turn</b></font>									
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-4" ng-class="{red : game.countdown < 4}" class="counter">
+								<div class="col-xs-12 col-sm-12 col-md-12" ng-class="{red : game.countdown < 4}" class="counter">
 									00:{{game.countdown}} remaining
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-xs-12 col-sm-12 col-md-12">
 									Round {{game.round + 1}}/{{ game.rounds}}
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-xs-12 col-sm-12 col-md-12">
 									Previous round winner: {{game.recentWinner}}
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-xs-12 col-sm-12 col-md-12">
 									Who starts: {{game.recentLoser}}
 								</div>
 							</div>
@@ -55,7 +59,6 @@
 					</div>
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12">
-							<!-- TODO: Display appropriate images in each square -->
 							<table>
 								<tr>
 									<td class="square" valign="middle" ng-click="game.placeToken(0,0)">
