@@ -259,6 +259,14 @@ div.lobby {
 	button {
 		margin-top: 1em;
 	}
+
+	ul.chat {
+		border-style: solid;
+		border-color: #000000;
+		border-width: 1px;
+		@include border-radius(3px);
+		list-style-type: none;
+	}
 }
 
 /* ------------------------

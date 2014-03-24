@@ -247,57 +247,69 @@ div.lobby .game:hover {
 div.lobby button {
   margin-top: 1em;
 }
+/* line 263, ../sass/app.scss */
+div.lobby ul.chat {
+  border-style: solid;
+  border-color: #000000;
+  border-width: 1px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  list-style-type: none;
+}
 
 /* ------------------------
  * Game
  * ------------------------
  */
-/* line 271, ../sass/app.scss */
+/* line 279, ../sass/app.scss */
 div.game div {
   text-align: center;
 }
-/* line 275, ../sass/app.scss */
+/* line 283, ../sass/app.scss */
 div.game div.top {
   padding-bottom: 2em;
 }
-/* line 279, ../sass/app.scss */
+/* line 287, ../sass/app.scss */
 div.game div.bottom {
   padding-top: 1em;
 }
-/* line 283, ../sass/app.scss */
+/* line 291, ../sass/app.scss */
 div.game table {
   width: 100%;
   border: 0;
 }
-/* line 288, ../sass/app.scss */
+/* line 296, ../sass/app.scss */
 div.game td.square {
   text-align: center;
   height: 100px;
   width: 100px;
   padding: 0;
 }
-/* line 294, ../sass/app.scss */
+/* line 302, ../sass/app.scss */
 div.game td.square a {
   display: block;
   text-decoration: none;
   width: 100%;
   height: 100%;
 }
-/* line 302, ../sass/app.scss */
+/* line 310, ../sass/app.scss */
 div.game td.vertical-borders {
   border-left: 3px solid #000;
   border-right: 3px solid #000;
 }
-/* line 307, ../sass/app.scss */
+/* line 315, ../sass/app.scss */
 div.game td.horizontal-borders {
   border-top: 3px solid #000;
   border-bottom: 3px solid #000;
 }
-/* line 312, ../sass/app.scss */
+/* line 320, ../sass/app.scss */
 div.game div.counter {
   font-size: 2 em;
 }
-/* line 316, ../sass/app.scss */
+/* line 324, ../sass/app.scss */
 div.game div.red {
   color: red;
 }

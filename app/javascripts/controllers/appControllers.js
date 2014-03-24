@@ -107,6 +107,34 @@ Tic.controller('LobbyController', ['WebSocketFactory', 'UserInfoService','$locat
   this.players = [];
   this.games   = [];
 
+  // chat
+  this.newMsg = "";
+  this.messages = [];
+
+  WebSocketFactory.receive('new-message', function (msg) {
+    controller.messages.push(msg);
+  });
+
+  this.sendMessages = function (msg) {
+
+    if (controller.newMsg != "") {
+      WebSocketFactory.emit('new-message', controller.newMsg);
+    } else {
+      alert('Empty message');
+    }
+  }
+
+  
+  this.showChat = function() {
+      document.getElementById("chatbox").style.display = "initial";
+  }
+
+  this.hideChat = function() {
+      document.getElementById("chatbox").style.display = "none";
+  }
+    
+
+
   // Initialize the list when browser is refreshed
   WebSocketFactory.init().then(function () {
 
@@ -412,7 +440,7 @@ Tic.controller('WRController', ['$timeout', '$location', 'UserInfoService', 'Web
   this.gameStarted = false;
   this.counter = 5;
   this.rounds = 0;
-  this.timer= 0;
+  this.timer = 0;
   this.creator = '';
   this.newPlayer = "unknown-player-avatar";
   this.lock = false; // Allows two players to play on the same computer (different windows)
@@ -801,7 +829,6 @@ Tic.controller('GameController', ['$interval', '$location', 'UserInfoService', '
       $location.path("/lobby");
     });
   }
-    
 
     function refreshGame(game) {
 

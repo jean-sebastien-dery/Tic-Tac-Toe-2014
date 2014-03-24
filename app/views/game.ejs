@@ -105,3 +105,23 @@
 		</div>
 	</div>
 </div>
+<button	ng-click="game.showChat()" type="button"  name="showchat"	class="btn btn-primary">Show Chat</button>
+<button	ng-click="game.hideChat()" type="button"  name="hidechat"	class="btn btn-primary">Hide Chat</button>
+<div class="col-xs-6 col-sm-6 col-md-6" id="chatbox">
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<h3>Chat</h3>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<iframe src="views/chat.html" width="100%" height="300px"></iframe>
+	                        	</div>
+	                        </div>
+	                        <div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<input type="text" name="chatmessage" class="form-control">
+									<button ng-click="lobby.sendChatMessage()" type="button" class="btn btn-default">Send</button>
+	                        	</div>
+	                        </div>
+						</div>
