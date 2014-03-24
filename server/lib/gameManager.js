@@ -62,6 +62,12 @@ function calculateRankAndRegister() {
 	  }
 	});
 	for (var i = 0, player; player = allplayers[i]; i++) {
+		if (player.gameRank != (i+1)) {
+			userManager.setUserRankChanged(true);
+		}
+		else {
+			userManager.setUserRankChanged(false);
+		}
 		userManager.setUserRank(player.username, i+1);
 	}
 }

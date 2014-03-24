@@ -531,23 +531,12 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
 
   var top = io.connect('/top');
   var all = io.connect('/all');
+  var myUserName = UserInfoService.getUsername();
 
   $scope.all = {};
   $scope.all.list = [];
   $scope.top = {};
   $scope.top.list = [];
-
-  this.promptRankChange = function(player){
-    UserInfoService.getUsername().then(function(username) {
-      if (username == player.username) {
-        if (rankChanged) {
-          alert("Your rank has changed to position " + rank);
-        }
-      }
-    }, function (err) {
-      alert('Unable to prompt the change in rank');
-    });
-  };
   
   all.on('connect', function (allsocket) {
     console.log('connected to all socket');
@@ -585,7 +574,11 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
         rankchanged = player.rankChanged;
       }
 
-      promptRankChange(player);
+      if (myUserName == player.username) {
+        if (rankChanged) {
+          alert("Your rank has changed to position " + rank);
+        }
+      }
 
       console.log("Number of won games: " + win);
       console.log("Number of lost games: " + lose);

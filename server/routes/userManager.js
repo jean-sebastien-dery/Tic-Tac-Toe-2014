@@ -264,4 +264,10 @@ exports.setUserRank = function(name, rank) {
     } );
 }
 
+exports.setUserRankChanged = function(rankChanged) {
+	User.update( {username: name }, { $set: { rankChanged: rankChanged } }, function (err, data) {
+    	console.log('set rankChanged', data);
+    } );
+}
+
 
