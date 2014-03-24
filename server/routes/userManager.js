@@ -38,18 +38,18 @@ exports.getAllGames = function (req, res){
     res.send(games);
 }
 
-exports.getAllUsersSorted = function(req, res) {
-	var users = {};
+exports.getAllUsersSorted = function(cb) {
 
     User.find()
 	.sort('-gameWon')
 	.exec( function (err, data) {
-        users.push(data);
-        console.log("DATABASE: we have obtained user info:" + data);
+		if (!err) {	
+			console.log("DATABASE: we have obtained user info:" + data);
+	        cb(data);
+	    } else {
+	    	console.log(err);
+	    }
     });
-
-	console.log("DATABASE DEBUG: we have obtained all user info:" + users);
-    res.send(users);
 }
 
 exports.getUsersSorted = function (req, cb) {
