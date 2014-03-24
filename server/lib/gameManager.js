@@ -54,21 +54,21 @@ Game.prototype.isGameFinished = function () {
 }
 
 function calculateRankAndRegister() {
-	var allplayers = userManager.getAllUsersSorted(null, function(err, data) {
-	if (!err) {
-	    allplayers = data;
-	  } else {
-	    console.log(err);
-	  }
-	});
-	for (var i = 0, player; player = allplayers[i]; i++) {
-		if (player.gameRank != (i+1)) {
-			userManager.setUserRankChanged(true);
+	var allplayers = userManager.getAllUsersSorted(null);
+	console.log("we have obtained all players' data: " + allplayers);
+	if (allplayers != undefined) {
+		for (var i = 0; i < allplayers.length; i++) {
+			var player = allplayers[i];
+			if (player.gameRank != (i+1)) {
+				userManager.setUserRankChanged(true);
+			}
+			else {
+				userManager.setUserRankChanged(false);
+			}
+			userManager.setUserRank(player.username, i+1);
 		}
-		else {
-			userManager.setUserRankChanged(false);
-		}
-		userManager.setUserRank(player.username, i+1);
+	} else {
+		console.log("ERROR: error in obtaining all players' data in the Mongodb");
 	}
 }
 

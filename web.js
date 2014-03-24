@@ -240,7 +240,7 @@ var socket = require('socket.io').listen(app.listen(app.get('port')));
 var people  = {};
 var games   = {};
 
-var all = userManager.getAllUsersSorted(null, function(err, data) {
+var all = userManager.getUsersSorted(null, function(err, data) {
   if (!err) {
     all = data;
     allsocket.emit('update-all', all);
@@ -252,7 +252,7 @@ var all = userManager.getAllUsersSorted(null, function(err, data) {
 var allsocket = socket.of('/all')
   .on('connection', function (socket) {
     if (all == null) {
-      all = userManager.getAllUsersSorted(null, function (err, data) {
+      all = userManager.getUsersSorted(null, function (err, data) {
         if (!err) {
           all = data;
           allsocket.emit('update-all', all);

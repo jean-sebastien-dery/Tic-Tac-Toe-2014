@@ -36,24 +36,38 @@ exports.getAllGames = function (req, res){
     });
 
     res.send(games);
-
 }
 
-exports.getAllUsersSorted = function (req, cb) {
+exports.getAllUsersSorted = function(req, res) {
+	var users = {};
+
+    User.find()
+	.sort('-gameWon')
+	.exec( function (err, data) {
+        users.push(data);
+        console.log("DATABASE: we have obtained user info:" + data);
+    });
+
+	console.log("DATABASE DEBUG: we have obtained all user info:" + users);
+    res.send(users);
+}
+
+exports.getUsersSorted = function (req, cb) {
 	
 	//return users in descending order of games won
 	User.find()
-	.sort('-gameWon' )
+	.sort('-gameWon')
 	.exec( function (err, data) {
 		if (err) {
 			console.log('Error', err);
 			cb(err);
 		} else {
-			console.log('User Info', data);
+			console.log('DEBUG: User Info:', data);
 			cb(null, data);
 		}
 	}); 
 };
+
 
 exports.getScoreOf = function(username, cb) {
 
@@ -260,13 +274,13 @@ exports.registerLostGame = function(name){
 
 exports.setUserRank = function(name, rank) {
     User.update( {username: name }, { $set: { gameRank: rank } }, function (err, data) {
-    	console.log('set user rank', data);
+    	console.log('DATABASE: set user rank', data);
     } );
 }
 
 exports.setUserRankChanged = function(rankChanged) {
 	User.update( {username: name }, { $set: { rankChanged: rankChanged } }, function (err, data) {
-    	console.log('set rankChanged', data);
+    	console.log('DATABASE: set rankChanged', data);
     } );
 }
 
