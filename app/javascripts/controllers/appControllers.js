@@ -905,7 +905,7 @@ Tic.controller('CreateGameController', ['$location', 'WebSocketFactory', 'UserIn
   UserInfoService.validateLogin();
   var controller = this;
 
-  this.time   = 10;
+  this.time   = 2;
   this.rounds = 3;
 
   this.setTimer = function (time) {
