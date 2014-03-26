@@ -529,9 +529,36 @@ Tic.controller('RegisterController', ['$location', 'UserInfoService', function (
 Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 'WebSocketFactory', function ($scope, $location, UserInfoService, WebSocketFactory) {
   UserInfoService.validateLogin();
 
+  var controller = this;
   var top = io.connect('/top');
   var all = io.connect('/all');
-  var myUserName = UserInfoService.getUsername();
+  var myUserName = "";
+  UserInfoService.getUsername().then(function(username) {
+      controller.myUserName = username;
+      all.on('update-all', function (all) {
+      console.log("function update-all has been called.");
+      var players = [];
+
+      for (var i = 0, player; player = all[i]; i++) {
+
+        console.log("The player's name is " + player.username);
+        console.log("My name is " + controller.myUserName);
+        console.log("Rank of player:" + player.gameRank);
+        console.log("Rank has changed? " + player.rankChanged);
+        if (controller.myUserName == player.username) {
+          if (player.rankChanged) {
+            alert("Your rank has changed to position " + player.gameRank);
+          }
+        }
+
+        players.push(player);
+      }
+
+      $scope.$apply(function () {
+        $scope.all.list = players;
+      });
+    });
+  });
 
   $scope.all = {};
   $scope.all.list = [];
@@ -542,58 +569,7 @@ Tic.controller('MainMenuController', ['$scope', '$location', 'UserInfoService', 
     console.log('connected to all socket');
   });
 
-  all.on('update-all', function (all) {
-    console.log("function update-all has been called.");
-    var players = [];
 
-    for (var i = 0, player; player = all[i]; i++) {
-      var win = 1, lose = 1, rank = 0;
-      var rankchanged = false;
-
-      if (player.gameWon == undefined) {
-        win = 1;
-      } else if (player.gameWon != 0) {
-        win = player.gameWon;
-      }
-
-      if (player.gameLose == undefined) {
-        lose = 1;
-      } else if (player.gameLose != 0) {
-        lose = player.gameLose;
-      }
-
-      if (player.gameRank == undefined) {
-        rank = 0;
-      } else {
-        rank = player.gameRank;
-      }
-
-      if (player.rankChanged == undefined) {
-        rankchanged = false;
-      } else {
-        rankchanged = player.rankChanged;
-      }
-
-      if (myUserName == player.username) {
-        if (rankChanged) {
-          alert("Your rank has changed to position " + rank);
-        }
-      }
-
-      console.log("Number of won games: " + win);
-      console.log("Number of lost games: " + lose);
-      console.log("Rank of player:" + rank);
-      console.log("Rank has changed? " + rankchanged);
-
-      player.ratio = win/lose;
-
-      players.push(player);
-    }
-
-    $scope.$apply(function () {
-      $scope.all.list = players;
-    });
-  });
 
   top.on('connect', function (top10) {
     console.log('connected to top 10 list');

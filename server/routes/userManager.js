@@ -278,7 +278,7 @@ exports.setUserRank = function(name, rank) {
     } );
 }
 
-exports.setUserRankChanged = function(rankChanged) {
+exports.setUserRankChanged = function(name, rankChanged) {
 	User.update( {username: name }, { $set: { rankChanged: rankChanged } }, function (err, data) {
     	console.log('DATABASE: set rankChanged', data);
     } );

@@ -58,23 +58,23 @@ function calculateRankAndRegister() {
 	userManager.getAllUsersSorted(function (data) {
 		console.log("DEBUG: I have obtained all user data in descending order!" + data);
 		allplayers = data;
-	});
-	// if (allplayers != undefined) {
-		for (var i = 0, player; player = allplayers[i]; i++) {
-			console.log("DEBUG: now working on player: " + player.username);
-			if (player.gameRank != (i+1)) {
-				console.log("INFO: " + player.username + "'s rank has changed!");
-				userManager.setUserRankChanged(true);
+		if (allplayers != undefined) {
+			for (var i = 0, player; player = allplayers[i]; i++) {
+				console.log("DEBUG: now working on player: " + player.username);
+				if (player.gameRank != (i+1)) {
+					console.log("INFO: " + player.username + "'s rank has changed!");
+					userManager.setUserRankChanged(player.username, true);
+				}
+				else {
+					console.log("INFO: " + player.username + "'s rank has NOT changed!");
+					userManager.setUserRankChanged(player.username, false);
+				}
+				userManager.setUserRank(player.username, i+1);
 			}
-			else {
-				console.log("INFO: " + player.username + "'s rank has NOT changed!");
-				userManager.setUserRankChanged(false);
-			}
-			userManager.setUserRank(player.username, i+1);
+		} else {
+			console.log("ERROR: error in obtaining all players' data in the Mongodb");
 		}
-	// } else {
-	// 	console.log("ERROR: error in obtaining all players' data in the Mongodb");
-	// }
+	});
 }
 
 Game.prototype.whoWon = function () {
